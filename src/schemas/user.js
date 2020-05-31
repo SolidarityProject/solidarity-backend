@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
     dateCreated: {
         type: Date,
         default: Date.now(),
-    }
+    } // TODO: pictureUrl & fullname (virtual)
 });
 
 module.exports = mongoose.model("User", userSchema);

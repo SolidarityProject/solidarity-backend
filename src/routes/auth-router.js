@@ -5,17 +5,10 @@ const router = express.Router();
 
 //* register
 router.post("/register", async (req, res) => {
-    const newUser = new User({
-        name: req.body.name,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        password: req.body.password,
-        gender: req.body.gender,
-        birthdate: req.body.birthdate,
-    })
+    const newUser = new User(req.body);
     try {
-        const registeredUser = await newUser.save();
-        res.send(registeredUser); //TODO: status code 
+        const user = await newUser.save();
+        res.send(user); //TODO: status code 
     } catch (error) {
         res.send({ message: error })
     }

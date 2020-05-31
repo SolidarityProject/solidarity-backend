@@ -4,7 +4,7 @@ const User = require("../schemas/user");
 const router = express.Router();
 
 //* getbyid
-router.get("/:userId", async (req, res) => {
+router.get("/getbyid/:userId", async (req, res) => {
     try {
         const user = await User.findById(req.params.userId);
         res.send(user);
@@ -14,20 +14,20 @@ router.get("/:userId", async (req, res) => {
 })
 
 //* update  
-router.put("/", async (req, res) => { //TODO : validations
+router.put("/update", async (req, res) => { //TODO : validations
     try {
-        const updatedUser = await User.findByIdAndUpdate(req.body._id, req.body, { new: true });
-        res.send(updatedUser);
+        const user = await User.findByIdAndUpdate(req.body._id, req.body, { new: true });
+        res.send(user);
     } catch (err) {
         res.send({ message: err });
     }
 })
 
 //* delete
-router.delete("/", async (req, res) => {
+router.delete("/delete", async (req, res) => {
     try {
-        const updatedUser = await User.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
-        res.send(updatedUser);
+        const user = await User.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
+        res.send(user);
     } catch (err) {
         res.send({ message: err });
     }

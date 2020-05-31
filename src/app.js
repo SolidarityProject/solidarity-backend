@@ -3,14 +3,16 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const authRouter = require("./routes/auth-router");
 const userRouter = require("./routes/user-router");
+const postRouter = require("./routes/post-router");
 
 const app = express();
 
 app.use(bodyParser.json());
 
 // routers middleware
-app.use("/", authRouter);
+app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/posts", postRouter);
 
 
 app.get("/", (req, res) => {
