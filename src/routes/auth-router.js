@@ -8,9 +8,9 @@ router.post("/register", async (req, res) => {
     const newUser = new User(req.body);
     try {
         const user = await newUser.save();
-        res.send(user); //TODO: status code 
+        res.status(200).send(user);
     } catch (error) {
-        res.send({ message: error })
+        res.status(500).send(error);
     }
 });
 

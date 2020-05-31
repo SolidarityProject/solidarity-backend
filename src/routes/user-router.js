@@ -7,9 +7,9 @@ const router = express.Router();
 router.get("/getbyid/:userId", async (req, res) => {
     try {
         const user = await User.findById(req.params.userId);
-        res.send(user);
-    } catch (err) {
-        res.send({ message: err });
+        res.status(200).send(user);
+    } catch (error) {
+        res.status(500).send(error);
     }
 })
 
@@ -17,9 +17,9 @@ router.get("/getbyid/:userId", async (req, res) => {
 router.put("/update", async (req, res) => { //TODO : validations
     try {
         const user = await User.findByIdAndUpdate(req.body._id, req.body, { new: true });
-        res.send(user);
-    } catch (err) {
-        res.send({ message: err });
+        res.status(200).send(user);
+    } catch (error) {
+        res.status(500).send(error);
     }
 })
 
@@ -27,9 +27,9 @@ router.put("/update", async (req, res) => { //TODO : validations
 router.delete("/delete", async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
-        res.send(user);
-    } catch (err) {
-        res.send({ message: err });
+        res.status(200).send(user);
+    } catch (error) {
+        res.status(500).send(error);
     }
 })
 

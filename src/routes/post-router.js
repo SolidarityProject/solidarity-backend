@@ -7,9 +7,9 @@ const router = express.Router();
 router.get("/getbyid/:postId", async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId); //TODO : activeStatus == true
-        res.send(post);
-    } catch (err) {
-        res.send({ message: err });
+        res.status(200).send(post);
+    } catch (error) {
+        res.status(500).send(error);
     }
 })
 
@@ -17,9 +17,9 @@ router.get("/getbyid/:postId", async (req, res) => {
 router.get("/getbyuserid/:userId", async (req, res) => {
     try {
         const post = await Post.find({ userId: req.params.userId });
-        res.send(post);
-    } catch (err) {
-        res.send({ message: err });
+        res.status(200).send(post);
+    } catch (error) {
+        res.status(500).send(error);
     }
 })
 
@@ -27,9 +27,9 @@ router.get("/getbyuserid/:userId", async (req, res) => {
 router.get("/getbyfulladdress", async (req, res) => {
     try {
         const posts = await Post.find({ fullAddress: req.query.fa });
-        res.send(posts);
-    } catch (err) {
-        res.send({ message: err });
+        res.status(200).send(posts);
+    } catch (error) {
+        res.status(500).send(error);
     }
 })
 
@@ -37,9 +37,9 @@ router.get("/getbyfulladdress", async (req, res) => {
 router.get("/getbyprovinceaddress", async (req, res) => {
     try {
         const posts = await Post.find({ provinceAddress: req.query.pa });
-        res.send(posts);
-    } catch (err) {
-        res.send({ message: err });
+        res.status(200).send(posts);
+    } catch (error) {
+        res.status(500).send(error);
     }
 })
 
@@ -49,9 +49,9 @@ router.post("/add", async (req, res) => {
     generateAddress(newPost);
     try {
         const post = await newPost.save();
-        res.send(post);
+        res.status(200).send(post);
     } catch (error) {
-        res.send({ message: error });
+        res.status(500).send(error);
     }
 })
 
@@ -60,9 +60,9 @@ router.put("/update", async (req, res) => {
     try {
         generateAddress(req.body);
         const post = await Post.findByIdAndUpdate(req.body._id, req.body, { new: true });
-        res.send(post);
+        res.status(200).send(post);
     } catch (error) {
-        res.send({ message: error });
+        res.status(500).send(error);
     }
 })
 
@@ -70,9 +70,9 @@ router.put("/update", async (req, res) => {
 router.delete("/delete", async (req, res) => {
     try {
         const post = await Post.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
-        res.send(post);
+        res.status(200).send(post);
     } catch (err) {
-        res.send({ message: err });
+        res.status(500).send(error);
     }
 })
 

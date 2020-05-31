@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
         minlength: 6,
         maxlength: 15,
     },
+    pictureUrl: {
+        type: String,
+    },
     gender: {
         type: Number,
         default: 0,
@@ -43,7 +46,7 @@ const userSchema = new mongoose.Schema({
     dateCreated: {
         type: Date,
         default: Date.now(),
-    } // TODO: pictureUrl & fullname (virtual)
+    } // TODO: fullname (virtual)
 });
 
 module.exports = mongoose.model("User", userSchema);

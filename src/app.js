@@ -1,12 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+
 const authRouter = require("./routes/auth-router");
 const userRouter = require("./routes/user-router");
 const postRouter = require("./routes/post-router");
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 // routers middleware
@@ -16,11 +19,11 @@ app.use("/posts", postRouter);
 
 
 app.get("/", (req, res) => {
-    res.send("Hi!");
+    res.status(200).send(" ----  Solidarity Backend  ---- ");
 })
 
 app.use("", (req, res) => {
-    res.send("Opps! 404 Not Found.");
+    res.status(404).send("Opps! 404 Not Found.");
 })
 
 mongoose.connect("mongodb://localhost/SolidarityDB", {
