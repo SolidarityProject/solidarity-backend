@@ -13,6 +13,9 @@ const postSchema = new mongoose.Schema({
         minlength: 10,
         maxlength: 250,
     },
+    pictureUrl: {
+        type: String,
+    },
     address: { //TODO: address service 
         country: {
             type: String,
@@ -38,6 +41,10 @@ const postSchema = new mongoose.Schema({
     activeStatus: {
         type: Boolean,
         default: true,
+    },
+    dateSolidarity: {
+        type: Date,
+        required: true,
     },
     dateCreated: {
         type: Date,

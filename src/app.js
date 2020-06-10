@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+require("dotenv/config");
 
 const authRouter = require("./routes/auth-router");
 const userRouter = require("./routes/user-router");
@@ -26,14 +27,18 @@ app.use("", (req, res) => {
     res.status(404).send("Opps! 404 Not Found.");
 })
 
-mongoose.connect("mongodb://localhost/SolidarityDB", {
+
+//? const localDBConnection = "mongodb://localhost/SolidarityDB";
+
+mongoose.connect(process.env.DB_CONNECTION, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false
 }, () => {
     console.log("Connected to DB.");
-});
+}
+);
 
 app.listen(process.env.PORT || 2020, () => {
     console.log("App Started.");
