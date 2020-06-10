@@ -26,7 +26,7 @@ router.get("/getbyuserid/:userId", async (req, res) => {
 //* getbyfulladdress
 router.get("/getbyfulladdress", async (req, res) => {
     try {
-        const posts = await Post.find({ fullAddress: req.query.fa });
+        const posts = await Post.find({ fullAddress: req.query.fa }).sort("dateSolidarity");
         res.status(200).send(posts);
     } catch (error) {
         res.status(500).send(error);
@@ -36,7 +36,7 @@ router.get("/getbyfulladdress", async (req, res) => {
 //* getbyprovinceaddress
 router.get("/getbyprovinceaddress", async (req, res) => {
     try {
-        const posts = await Post.find({ provinceAddress: req.query.pa });
+        const posts = await Post.find({ provinceAddress: req.query.pa }).sort("dateSolidarity");
         res.status(200).send(posts);
     } catch (error) {
         res.status(500).send(error);
