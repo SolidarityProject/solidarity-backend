@@ -36,7 +36,7 @@ mongoose.connect(process.env.DB_CONNECTION, {
     useCreateIndex: true,
     useFindAndModify: false
 }, () => {
-    console.log("Connected to DB.");
+    console.log("Connected to DB."); // TODO : change password & hide env file 
 }
 );
 
