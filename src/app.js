@@ -28,15 +28,21 @@ app.use("", (req, res) => {
 })
 
 
-//? const localDBConnection = "mongodb://localhost/SolidarityDB";
+const localDBConnection = "mongodb://localhost/SolidarityDB";
+// const cloudDBConnection = process.env.DB_CONNECTION;
 
-mongoose.connect(process.env.DB_CONNECTION, {
+mongoose.connect(localDBConnection, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false
-}, () => {
-    console.log("Connected to DB."); // TODO : change password & hide env file 
+}, (error) => {
+    if (error) {
+        console.log(error);
+    }
+    else {
+        console.log("Connected to DB.");
+    } // TODO : change password & hide env file 
 }
 );
 
