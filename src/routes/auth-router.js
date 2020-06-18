@@ -6,8 +6,11 @@ const router = express.Router();
 
 //* register
 router.post("/register", async (req, res) => {
-    const { error } = registerValidation(req.body);
+    const { error } = registerValidation(req.body);  //* register validations (name, lastname, email, password ...)
     if (error) return res.status(400).send(error.details[0].message);
+
+    const userExist = await User.findOne({ email: req.body.email }); //* email validation (check user exists)
+    if (userExist) return res.status(400).send("This email address already exists");
 
     const newUser = new User(req.body);
     try {
