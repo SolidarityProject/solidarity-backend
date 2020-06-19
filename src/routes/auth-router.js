@@ -1,8 +1,8 @@
 const express = require("express");
 const User = require("../schemas/user");
-const { registerValidation, loginValidation } = require("../utils/validations/auth-validation");
+const { registerValidation, loginValidation } = require("../utils/validation/auth-validation");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { createToken } = require("../utils/security/token");
 
 const router = express.Router();
 
@@ -48,7 +48,7 @@ router.post("/login", async (req, res) => {
 
     //* create token (1h) 
     // TODO : refreshtoken
-    const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, { expiresIn: '1h' }) // default encryption algoritm : HS256
+    const token = createToken(user);
 
     res.setHeader("Token", token);
     res.status(200).send({ token: token });
