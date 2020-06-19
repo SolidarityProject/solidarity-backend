@@ -42,7 +42,7 @@ mongoose.connect(localDBConnection, {
     }
     else {
         console.log("Connected to DB.");
-    } // TODO : change password & hide env file 
+    }
 }
 );
 
