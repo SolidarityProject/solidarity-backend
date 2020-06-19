@@ -1,10 +1,11 @@
 const express = require("express");
 const Post = require("../schemas/post");
+const { verifyToken } = require("../utils/security/token");
 
 const router = express.Router();
 
 //* getbyid
-router.get("/getbyid/:postId", async (req, res) => {
+router.get("/getbyid/:postId", verifyToken, async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId); //TODO : activeStatus == true
         res.status(200).send(post);
@@ -14,7 +15,7 @@ router.get("/getbyid/:postId", async (req, res) => {
 })
 
 //* getbyuserid
-router.get("/getbyuserid/:userId", async (req, res) => {
+router.get("/getbyuserid/:userId", verifyToken, async (req, res) => {
     try {
         const post = await Post.find({ userId: req.params.userId });
         res.status(200).send(post);
@@ -44,7 +45,7 @@ router.get("/getbyprovinceaddress", async (req, res) => {
 })
 
 //* add
-router.post("/add", async (req, res) => {
+router.post("/add", verifyToken, async (req, res) => {
     const newPost = new Post(req.body);
     generateAddress(newPost);
     try {
@@ -56,7 +57,7 @@ router.post("/add", async (req, res) => {
 })
 
 //* update
-router.put("/update", async (req, res) => {
+router.put("/update", verifyToken, async (req, res) => {
     try {
         generateAddress(req.body);
         const post = await Post.findByIdAndUpdate(req.body._id, req.body, { new: true });
@@ -67,7 +68,7 @@ router.put("/update", async (req, res) => {
 })
 
 //* delete
-router.delete("/delete", async (req, res) => {
+router.delete("/delete", verifyToken, async (req, res) => {
     try {
         const post = await Post.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
         res.status(200).send(post);
