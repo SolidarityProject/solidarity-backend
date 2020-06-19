@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../schemas/user");
 const { registerValidation, loginValidation } = require("../utils/validations/auth-validation");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
@@ -45,7 +46,12 @@ router.post("/login", async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).send("Check your email or password.");
 
-    res.status(200).send({ "_id": user._id, "email": user.email });
+    //* create token (1h) 
+    // TODO : refreshtoken
+    const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, { expiresIn: '1h' }) // default encryption algoritm : HS256
+
+    res.setHeader("Token", token);
+    res.status(200).send({ token: token });
 });
 
 //TODO: login & authentication
