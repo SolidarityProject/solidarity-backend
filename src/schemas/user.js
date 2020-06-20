@@ -45,7 +45,9 @@ const userSchema = new mongoose.Schema({
     dateCreated: {
         type: Date,
         default: Date.now(),
-    } // TODO: fullname (virtual)
+    } 
+    // TODO : address property
+    // TODO: fullname (virtual)
 });
 
 module.exports = mongoose.model("User", userSchema);

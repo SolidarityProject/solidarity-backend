@@ -41,8 +41,18 @@ function userUpdateValidation(data) {
     return schema.validate(data);
 };
 
+function userDeleteValidation(data) {
+    const schema = Joi.object({
+
+        _id: Joi.string()
+            .required(),
+    });
+
+    return schema.validate(data);
+};
+
 function birthdateCheck(year) { // TODO : move -> helper folder
     return new Date(new Date().setFullYear(new Date().getFullYear() - year));
 }
 
-module.exports = { userUpdateValidation };
+module.exports = { userUpdateValidation, userDeleteValidation };

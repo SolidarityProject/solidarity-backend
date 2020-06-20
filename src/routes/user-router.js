@@ -1,7 +1,8 @@
 const express = require("express");
 const User = require("../schemas/user");
 const { verifyToken } = require("../utils/security/token");
-const { userUpdateValidation } = require("../utils/validation/user-validation");
+const { userUpdateValidation, userDeleteValidation } = require("../utils/validation/user-validation");
+const checkUser = require("../utils/helper/userId-check-helper");
 
 const router = express.Router();
 
@@ -9,17 +10,19 @@ const router = express.Router();
 router.get("/getbyid/:userId", verifyToken, async (req, res) => {
     try {
         const user = await User.findById(req.params.userId);
-        res.status(200).send(user);
+        res.status(200).send(user); // TODO: dto ?? research (show -> name, email, picture, etc  XXX  don't show -> password, address)
     } catch (error) {
         res.status(500).send(error);
     }
 })
 
 //* update  
-router.put("/update", verifyToken, async (req, res) => { //TODO : validations
-    if (req.user._id != req.body._id) return res.status(400).send("Access Denied.");
+router.put("/update", verifyToken, async (req, res) => {
 
-    //* update validations (name, lastname, password ... all property)
+    //* checking user for authorization
+    checkUser(req, res, req.body._id);
+
+    //* update validations (_id, name, lastname ... all property)
     const { error } = userUpdateValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -33,7 +36,13 @@ router.put("/update", verifyToken, async (req, res) => { //TODO : validations
 
 //* delete
 router.delete("/delete", verifyToken, async (req, res) => {
-    if (req.user._id != req.body._id) return res.status(400).send("Access Denied.");
+
+    //* checking user for authorization
+    checkUser(req, res, req.body._id);
+
+    //* delete validations (_id)
+    const { error } = userDeleteValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
     try {
         const user = await User.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
