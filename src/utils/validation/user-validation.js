@@ -51,4 +51,26 @@ function deleteUserValidation(data) {
     return schema.validate(data);
 };
 
-module.exports = { updateUserValidation, deleteUserValidation };
+function changePasswordValidation(data) {
+    const schema = Joi.object({
+
+        _id: Joi.string()
+            .required(),
+
+        oldPassword: Joi.string()
+            .required(),
+
+        newPassword: Joi.string()
+            .min(6)
+            .max(15)
+            .required()
+    });
+
+    return schema.validate(data);
+};
+
+module.exports = {
+    updateUserValidation,
+    deleteUserValidation,
+    changePasswordValidation
+};
