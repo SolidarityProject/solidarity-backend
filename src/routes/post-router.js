@@ -1,6 +1,7 @@
 const express = require("express");
 const Post = require("../schemas/post");
 const { verifyToken } = require("../utils/security/token");
+const { addPostValidation } = require("../utils/validation/post-validation");
 const checkUser = require("../utils/helper/userId-check-helper");
 
 const router = express.Router();
@@ -57,7 +58,13 @@ router.get("/free/getbyprovinceaddress", async (req, res) => {
 
 //* add
 router.post("/add", verifyToken, async (req, res) => {
+
+    //* add validations (title, description, picture, address, dateSolidarity)
+    const { error } = addPostValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
     const newPost = new Post(req.body);
+    newPost.userId = req.user._id;
     generateAddress(newPost);
     try {
         const post = await newPost.save();
