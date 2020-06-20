@@ -1,6 +1,7 @@
 const express = require("express");
 const Post = require("../schemas/post");
 const { verifyToken } = require("../utils/security/token");
+const checkUser = require("../utils/helper/userId-check-helper");
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ router.get("/getbyuserid/:userId", verifyToken, async (req, res) => {
 })
 
 //* getbyfulladdress
-router.get("/getbyfulladdress", async (req, res) => {
+router.get("/getbyfulladdress", verifyToken, async (req, res) => {
     try {
         const posts = await Post.find({ fullAddress: req.query.fa }).sort("dateSolidarity");
         res.status(200).send(posts);
@@ -35,9 +36,19 @@ router.get("/getbyfulladdress", async (req, res) => {
 })
 
 //* getbyprovinceaddress
-router.get("/getbyprovinceaddress", async (req, res) => {
+router.get("/getbyprovinceaddress", verifyToken, async (req, res) => {
     try {
         const posts = await Post.find({ provinceAddress: req.query.pa }).sort("dateSolidarity");
+        res.status(200).send(posts);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
+
+//* getbyprovinceaddress for free user
+router.get("/free/getbyprovinceaddress", async (req, res) => {
+    try {
+        const posts = await Post.find({ provinceAddress: req.query.pa }).sort("dateSolidarity").limit(3);
         res.status(200).send(posts);
     } catch (error) {
         res.status(500).send(error);
@@ -58,6 +69,10 @@ router.post("/add", verifyToken, async (req, res) => {
 
 //* update
 router.put("/update", verifyToken, async (req, res) => {
+
+    //* checking user for authorization 
+    checkUser(req, res, res.body.userId);
+
     try {
         generateAddress(req.body);
         const post = await Post.findByIdAndUpdate(req.body._id, req.body, { new: true });
@@ -69,6 +84,10 @@ router.put("/update", verifyToken, async (req, res) => {
 
 //* delete
 router.delete("/delete", verifyToken, async (req, res) => {
+
+    //* checking user for authorization 
+    checkUser(req, res, res.body.userId);
+
     try {
         const post = await Post.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
         res.status(200).send(post);

@@ -53,6 +53,4 @@ router.post("/login", async (req, res) => {
     res.status(200).send({ token: token });
 });
 
-//TODO: edit authentication -> getfulladdress ?? user_update ??
-
 module.exports = router;
