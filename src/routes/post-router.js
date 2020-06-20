@@ -1,7 +1,7 @@
 const express = require("express");
 const Post = require("../schemas/post");
 const { verifyToken } = require("../utils/security/token");
-const { addPostValidation } = require("../utils/validation/post-validation");
+const { addPostValidation, updatePostValidation } = require("../utils/validation/post-validation");
 const checkUser = require("../utils/helper/userId-check-helper");
 
 const router = express.Router();
@@ -46,7 +46,7 @@ router.get("/getbyprovinceaddress", verifyToken, async (req, res) => {
     }
 })
 
-//* getbyprovinceaddress for free user
+//* getbyprovinceaddress for free user (with token-less)
 router.get("/free/getbyprovinceaddress", async (req, res) => {
     try {
         const posts = await Post.find({ provinceAddress: req.query.pa }).sort("dateSolidarity").limit(3);
@@ -78,7 +78,11 @@ router.post("/add", verifyToken, async (req, res) => {
 router.put("/update", verifyToken, async (req, res) => {
 
     //* checking user for authorization 
-    checkUser(req, res, res.body.userId);
+    checkUser(req, res, req.body.userId); 
+
+    //* update validations (_id, title, description, picture ... all property)
+    const { error } = updatePostValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
     try {
         generateAddress(req.body);

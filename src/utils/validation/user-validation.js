@@ -1,6 +1,6 @@
 const Joi = require("@hapi/joi");
 
-function userUpdateValidation(data) {
+function updateUserValidation(data) {
     const schema = Joi.object({
 
         _id: Joi.string()
@@ -41,7 +41,7 @@ function userUpdateValidation(data) {
     return schema.validate(data);
 };
 
-function userDeleteValidation(data) {
+function deleteUserValidation(data) {
     const schema = Joi.object({
 
         _id: Joi.string()
@@ -51,4 +51,4 @@ function userDeleteValidation(data) {
     return schema.validate(data);
 };
 
-module.exports = { userUpdateValidation, userDeleteValidation };
+module.exports = { updateUserValidation, deleteUserValidation };

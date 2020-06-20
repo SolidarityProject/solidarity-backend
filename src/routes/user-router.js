@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../schemas/user");
 const { verifyToken } = require("../utils/security/token");
-const { userUpdateValidation, userDeleteValidation } = require("../utils/validation/user-validation");
+const { updateUserValidation, deleteUserValidation } = require("../utils/validation/user-validation");
 const checkUser = require("../utils/helper/userId-check-helper");
 
 const router = express.Router();
@@ -20,10 +20,10 @@ router.get("/getbyid/:userId", verifyToken, async (req, res) => {
 router.put("/update", verifyToken, async (req, res) => {
 
     //* checking user for authorization
-    checkUser(req, res, req.body._id);
+    checkUser(req, res, req.body._id); // TODO : _id check || post -> userId check ***** first validation -> checkUser
 
     //* update validations (_id, name, lastname ... all property)
-    const { error } = userUpdateValidation(req.body);
+    const { error } = updateUserValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     try {
@@ -41,7 +41,7 @@ router.delete("/delete", verifyToken, async (req, res) => {
     checkUser(req, res, req.body._id);
 
     //* delete validations (_id)
-    const { error } = userDeleteValidation(req.body);
+    const { error } = deleteUserValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     try {

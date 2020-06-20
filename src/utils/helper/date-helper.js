@@ -7,7 +7,6 @@ function getDateForCheck_month(month) {
 }
 
 function getDateForCheck_hour(hour) {
-    console.log(new Date())
     return new Date(new Date().setHours(new Date().getHours() + hour));
 }
 
