@@ -2,7 +2,6 @@ const express = require("express");
 const User = require("../schemas/user");
 const { verifyToken } = require("../utils/security/token");
 const { updateUserValidation, deleteUserValidation } = require("../utils/validation/user-validation");
-const checkUser = require("../utils/helper/userId-check-helper");
 
 const router = express.Router();
 
@@ -19,12 +18,12 @@ router.get("/getbyid/:userId", verifyToken, async (req, res) => {
 //* update  
 router.put("/update", verifyToken, async (req, res) => {
 
-    //* checking user for authorization
-    checkUser(req, res, req.body._id); // TODO : _id check || post -> userId check ***** first validation -> checkUser
-
     //* update validations (_id, name, lastname ... all property)
     const { error } = updateUserValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
+
+    //* checking user for authorization (is own account ?)
+    if (req.user._id != req.body._id) return res.status(400).send("Access Denied.");
 
     try {
         const user = await User.findByIdAndUpdate(req.body._id, req.body, { new: true });
@@ -37,12 +36,12 @@ router.put("/update", verifyToken, async (req, res) => {
 //* delete
 router.delete("/delete", verifyToken, async (req, res) => {
 
-    //* checking user for authorization
-    checkUser(req, res, req.body._id);
-
     //* delete validations (_id)
     const { error } = deleteUserValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
+
+    //* checking user for authorization (is own account ?)
+    if (req.user._id != req.body._id) return res.status(400).send("Access Denied.");
 
     try {
         const user = await User.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });

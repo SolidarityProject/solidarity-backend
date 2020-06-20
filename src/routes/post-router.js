@@ -2,7 +2,6 @@ const express = require("express");
 const Post = require("../schemas/post");
 const { verifyToken } = require("../utils/security/token");
 const { addPostValidation, updatePostValidation } = require("../utils/validation/post-validation");
-const checkUser = require("../utils/helper/userId-check-helper");
 
 const router = express.Router();
 
@@ -77,12 +76,12 @@ router.post("/add", verifyToken, async (req, res) => {
 //* update
 router.put("/update", verifyToken, async (req, res) => {
 
-    //* checking user for authorization 
-    checkUser(req, res, req.body.userId); 
-
     //* update validations (_id, title, description, picture ... all property)
     const { error } = updatePostValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
+
+    //* checking user for authorization (is own post ?)
+    if (req.user._id != req.body.userId) return res.status(400).send("Access Denied.");
 
     try {
         generateAddress(req.body);
@@ -96,8 +95,8 @@ router.put("/update", verifyToken, async (req, res) => {
 //* delete
 router.delete("/delete", verifyToken, async (req, res) => {
 
-    //* checking user for authorization 
-    checkUser(req, res, res.body.userId);
+    //* checking user for authorization (is own post ?)
+    if (req.user._id != req.body.userId) return res.status(400).send("Access Denied.");
 
     try {
         const post = await Post.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
