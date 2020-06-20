@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../schemas/user");
 const { registerValidation, loginValidation } = require("../utils/validation/auth-validation");
-const bcrypt = require("bcrypt");
+const { passwordHashing, passwordComparing } = require("../utils/helper/password-helper");
 const { createToken } = require("../utils/security/token");
 
 const router = express.Router();
@@ -18,8 +18,7 @@ router.post("/register", async (req, res) => {
     if (userExist) return res.status(400).send("This email address already exists.");
 
     //* password hashing
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const hashedPassword = await passwordHashing(req.body.password);
 
     const newUser = new User(req.body);
     newUser.password = hashedPassword; //* password -> hashed password
@@ -42,8 +41,8 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(400).send("Check your email or password.");
 
-    //* password compare
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    //* password comparing
+    const validPassword = await passwordComparing(req.body.password, user.password);
     if (!validPassword) return res.status(400).send("Check your email or password.");
 
     //* create token (1h) 
