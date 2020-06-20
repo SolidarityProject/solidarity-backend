@@ -28,8 +28,8 @@ function userUpdateValidation(data) {
             .max(4),
 
         birthdate: Joi.date()
-            .min(birthdateCheck(100))
-            .max(birthdateCheck(18)),
+            .min(getDateForCheck_year(-100)) // valid age -> 18 - 100
+            .max(getDateForCheck_year(-18)),
 
         activeStatus: Joi.boolean(),
 
@@ -50,9 +50,5 @@ function userDeleteValidation(data) {
 
     return schema.validate(data);
 };
-
-function birthdateCheck(year) { // TODO : move -> helper folder
-    return new Date(new Date().setFullYear(new Date().getFullYear() - year));
-}
 
 module.exports = { userUpdateValidation, userDeleteValidation };

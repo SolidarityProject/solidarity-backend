@@ -1,4 +1,5 @@
 const Joi = require("@hapi/joi");
+const { getDateForCheck_year } = require("../helper/date-helper");
 
 const registerValidation = data => {
     const schema = Joi.object({
@@ -30,8 +31,8 @@ const registerValidation = data => {
             .max(4),
 
         birthdate: Joi.date()
-            .min(birthdateCheck(100))
-            .max(birthdateCheck(18))
+            .min(getDateForCheck_year(-100)) // valid age -> 18 - 100
+            .max(getDateForCheck_year(-18))
     });
 
     return schema.validate(data);
@@ -53,10 +54,6 @@ const loginValidation = data => {
 
     return schema.validate(data);
 };
-
-function birthdateCheck(year) {
-    return new Date(new Date().setFullYear(new Date().getFullYear() - year));
-}
 
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
