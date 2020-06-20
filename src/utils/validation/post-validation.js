@@ -76,4 +76,17 @@ function updatePostValidation(data) {
     return schema.validate(data);
 };
 
-module.exports = { addPostValidation, updatePostValidation };
+function deletePostValidation(data) {
+    const schema = Joi.object({
+
+        _id: Joi.string()
+            .required(),
+
+        userId: Joi.string()
+            .required()
+    });
+
+    return schema.validate(data);
+};
+
+module.exports = { addPostValidation, updatePostValidation, deletePostValidation };

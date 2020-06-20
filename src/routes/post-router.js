@@ -1,7 +1,7 @@
 const express = require("express");
 const Post = require("../schemas/post");
 const { verifyToken } = require("../utils/security/token");
-const { addPostValidation, updatePostValidation } = require("../utils/validation/post-validation");
+const { addPostValidation, updatePostValidation, deletePostValidation } = require("../utils/validation/post-validation");
 
 const router = express.Router();
 
@@ -95,13 +95,17 @@ router.put("/update", verifyToken, async (req, res) => {
 //* delete
 router.delete("/delete", verifyToken, async (req, res) => {
 
+    //* delete validations (_id, userId)
+    const { error } = deletePostValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
     //* checking user for authorization (is own post ?)
     if (req.user._id != req.body.userId) return res.status(400).send("Access Denied.");
 
     try {
         const post = await Post.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
         res.status(200).send(post);
-    } catch (err) {
+    } catch (error) {
         res.status(500).send(error);
     }
 })
