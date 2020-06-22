@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const addressSchema = require("./address");
+
+// TODO : mongoose update
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -34,6 +37,7 @@ const userSchema = new mongoose.Schema({
     birthdate: {
         type: Date,
     },
+    address: addressSchema, // TODO : address property
     activeStatus: {
         type: Boolean,
         default: true,
@@ -45,8 +49,7 @@ const userSchema = new mongoose.Schema({
     dateCreated: {
         type: Date,
         default: Date.now(),
-    } 
-    // TODO : address property
+    }
     // TODO: fullname (virtual)
 });
 

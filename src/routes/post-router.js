@@ -45,10 +45,10 @@ router.get("/getbyprovinceaddress", verifyToken, async (req, res) => {
     }
 })
 
-//* getbyprovinceaddress for free user (with token-less)
-router.get("/free/getbyprovinceaddress", async (req, res) => {
+//* getbyprovinceaddress for free user (not required token)
+router.get("/free/getbyprovinceaddress/:provinceId", async (req, res) => {
     try {
-        const posts = await Post.find({ provinceAddress: req.query.pa }).sort("dateSolidarity").limit(3);
+        const posts = await Post.find({ "address.provinceId": req.params.provinceId }).sort("dateSolidarity").limit(3);
         res.status(200).send(posts);
     } catch (error) {
         res.status(500).send(error);

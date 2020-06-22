@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const addressSchema = require("./address");
 
 const postSchema = new mongoose.Schema({
     title: {
@@ -16,28 +17,7 @@ const postSchema = new mongoose.Schema({
     pictureUrl: {
         type: String,
     },
-    address: { //TODO: address service 
-        country: {
-            type: String,
-            required: true,
-        },
-        province: {
-            type: String,
-            required: true,
-        },
-        district: {
-            type: String,
-            required: true,
-        },
-    },
-    provinceAddress: {
-        type: String,
-        required: true,
-    },
-    fullAddress: {
-        type: String,
-        required: true,
-    },
+    address: addressSchema, //TODO: address service 
     activeStatus: {
         type: Boolean,
         default: true,
