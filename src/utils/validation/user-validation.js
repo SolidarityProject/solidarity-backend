@@ -1,4 +1,6 @@
 const Joi = require("@hapi/joi");
+const addressValidationObj = require("./address-validation");
+const { getDateForCheck_year } = require("../helper/date-helper");
 
 function updateUserValidation(data) {
     const schema = Joi.object({
@@ -30,6 +32,8 @@ function updateUserValidation(data) {
         birthdate: Joi.date()
             .min(getDateForCheck_year(-100)) // valid age -> 18 - 100
             .max(getDateForCheck_year(-18)),
+
+        address: addressValidationObj.required(),
 
         activeStatus: Joi.boolean(),
 
