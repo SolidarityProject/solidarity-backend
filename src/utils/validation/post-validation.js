@@ -1,4 +1,5 @@
 const Joi = require("@hapi/joi");
+const addressValidationObj = require("./address-validation");
 const { getDateForCheck_hour, getDateForCheck_month } = require("../helper/date-helper");
 
 function addPostValidation(data) {
@@ -16,14 +17,8 @@ function addPostValidation(data) {
 
         pictureUrl: Joi.string(),
 
-        address: {
-            country: Joi.string()
-                .required(),
-            province: Joi.string()
-                .required(),
-            district: Joi.string()
-                .required(),
-        },
+        address: addressValidationObj.required(),
+
         dateSolidarity: Joi.date()
             .min(getDateForCheck_hour(2)) // min 2 hour later
             .max(getDateForCheck_month(2)) // max 2 month later
@@ -51,14 +46,7 @@ function updatePostValidation(data) {
 
         pictureUrl: Joi.string(),
 
-        address: {
-            country: Joi.string()
-                .required(),
-            province: Joi.string()
-                .required(),
-            district: Joi.string()
-                .required(),
-        },
+        address: addressValidationObj.required(),
 
         activeStatus: Joi.boolean(),
 
