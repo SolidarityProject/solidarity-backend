@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
     birthdate: {
         type: Date,
     },
-    address: addressSchema, // TODO : address property
+    address: addressSchema,
     activeStatus: {
         type: Boolean,
         default: true,

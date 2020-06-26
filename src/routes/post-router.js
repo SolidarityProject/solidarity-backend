@@ -26,9 +26,9 @@ router.get("/getbyuserid/:userId", verifyToken, async (req, res) => {
 })
 
 //* getbyfulladdress
-router.get("/getbyfulladdress", verifyToken, async (req, res) => {
+router.get("/getbyfulladdress/:districtId", verifyToken, async (req, res) => {
     try {
-        const posts = await Post.find({ fullAddress: req.query.fa }).sort("dateSolidarity");
+        const posts = await Post.find({ "address.districtId": req.params.districtId }).sort("dateSolidarity");
         res.status(200).send(posts);
     } catch (error) {
         res.status(500).send(error);
@@ -36,9 +36,9 @@ router.get("/getbyfulladdress", verifyToken, async (req, res) => {
 })
 
 //* getbyprovinceaddress
-router.get("/getbyprovinceaddress", verifyToken, async (req, res) => {
+router.get("/getbyprovinceaddress/:provinceId", verifyToken, async (req, res) => {
     try {
-        const posts = await Post.find({ provinceAddress: req.query.pa }).sort("dateSolidarity");
+        const posts = await Post.find({ "address.provinceId": req.params.provinceId }).sort("dateSolidarity");
         res.status(200).send(posts);
     } catch (error) {
         res.status(500).send(error);
@@ -64,7 +64,6 @@ router.post("/add", verifyToken, async (req, res) => {
 
     const newPost = new Post(req.body);
     newPost.userId = req.user._id;
-    generateAddress(newPost);
     try {
         const post = await newPost.save();
         res.status(200).send(post);
@@ -84,7 +83,6 @@ router.put("/update", verifyToken, async (req, res) => {
     if (req.user._id != req.body.userId) return res.status(400).send("Access Denied.");
 
     try {
-        generateAddress(req.body);
         const post = await Post.findByIdAndUpdate(req.body._id, req.body, { new: true });
         res.status(200).send(post);
     } catch (error) {
@@ -109,11 +107,5 @@ router.delete("/delete", verifyToken, async (req, res) => {
         res.status(500).send(error);
     }
 })
-
-// generate province & full address functions
-function generateAddress(postSchema) {
-    postSchema.provinceAddress = postSchema.address.province + "-" + postSchema.address.country;
-    postSchema.fullAddress = postSchema.address.district + "-" + postSchema.address.province + "-" + postSchema.address.country;
-};
 
 module.exports = router;

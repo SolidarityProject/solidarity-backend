@@ -17,7 +17,7 @@ const postSchema = new mongoose.Schema({
     pictureUrl: {
         type: String,
     },
-    address: addressSchema, //TODO: address service 
+    address: addressSchema,
     activeStatus: {
         type: Boolean,
         default: true,
