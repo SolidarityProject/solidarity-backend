@@ -2,6 +2,7 @@ const express = require("express");
 const Post = require("../schemas/post");
 const { verifyToken } = require("../utils/security/token");
 const { addPostValidation, updatePostValidation, deletePostValidation } = require("../utils/validation/post-validation");
+const { getDateForCheck_minute } = require("../utils/helper/date-helper");
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.get("/getbyid/:postId", verifyToken, async (req, res) => {
 //* getbyuserid
 router.get("/getbyuserid/:userId", verifyToken, async (req, res) => {
     try {
-        const post = await Post.find({ userId: req.params.userId });
+        const post = await Post.find({ userId: req.params.userId, activeStatus: true });
         res.status(200).send(post);
     } catch (error) {
         res.status(500).send(error);
@@ -28,7 +29,11 @@ router.get("/getbyuserid/:userId", verifyToken, async (req, res) => {
 //* getbyfulladdress
 router.get("/getbyfulladdress/:districtId", verifyToken, async (req, res) => {
     try {
-        const posts = await Post.find({ "address.districtId": req.params.districtId }).sort("dateSolidarity");
+        const posts = await Post.find({
+            "address.districtId": req.params.districtId,
+            activeStatus: true,
+            dateSolidarity: { $gt: getDateForCheck_minute(15) }
+        }).sort("dateSolidarity");
         res.status(200).send(posts);
     } catch (error) {
         res.status(500).send(error);
@@ -38,7 +43,11 @@ router.get("/getbyfulladdress/:districtId", verifyToken, async (req, res) => {
 //* getbyprovinceaddress
 router.get("/getbyprovinceaddress/:provinceId", verifyToken, async (req, res) => {
     try {
-        const posts = await Post.find({ "address.provinceId": req.params.provinceId }).sort("dateSolidarity");
+        const posts = await Post.find({
+            "address.provinceId": req.params.provinceId,
+            activeStatus: true,
+            dateSolidarity: { $gt: getDateForCheck_minute(15) }
+        }).sort("dateSolidarity");
         res.status(200).send(posts);
     } catch (error) {
         res.status(500).send(error);
@@ -48,7 +57,11 @@ router.get("/getbyprovinceaddress/:provinceId", verifyToken, async (req, res) =>
 //* getbyprovinceaddress for free user (not required token)
 router.get("/free/getbyprovinceaddress/:provinceId", async (req, res) => {
     try {
-        const posts = await Post.find({ "address.provinceId": req.params.provinceId }).sort("dateSolidarity").limit(3);
+        const posts = await Post.find({
+            "address.provinceId": req.params.provinceId,
+            activeStatus: true,
+            dateSolidarity: { $gt: getDateForCheck_minute(15) }
+        }).sort("dateSolidarity").limit(3);
         res.status(200).send(posts);
     } catch (error) {
         res.status(500).send(error);
