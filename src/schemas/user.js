@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const addressSchema = require("./address");
+const { string } = require("@hapi/joi");
 
 // TODO : mongoose update
 
@@ -15,6 +16,12 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 2,
         maxlength: 50,
+    },
+    username: { // TODO : username validation
+        type: String,
+        required: true,
+        lowercase: true,
+        unique: true
     },
     email: {
         type: String,

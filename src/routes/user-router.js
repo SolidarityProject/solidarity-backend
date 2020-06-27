@@ -10,7 +10,17 @@ const router = express.Router();
 router.get("/getbyid/:userId", verifyToken, async (req, res) => {
     try {
         const user = await User.findById(req.params.userId);
-        res.status(200).send(user); // TODO: dto ?? research (show -> name, email, picture, etc  XXX  don't show -> password, address)
+        res.status(200).send(user);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
+
+//* getbyusername 
+router.get("/getbyusername/:username", async (req, res) => {
+    try {
+        const user = await User.find({ username: req.params.username, activeStatus: true });
+        res.status(200).send(user);
     } catch (error) {
         res.status(500).send(error);
     }
