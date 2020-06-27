@@ -17,7 +17,7 @@ router.get("/getbyid/:userId", verifyToken, async (req, res) => {
 })
 
 //* getbyusername 
-router.get("/getbyusername/:username", async (req, res) => {
+router.get("/getbyusername/:username", verifyToken, async (req, res) => {
     try {
         const user = await User.find({ username: req.params.username, activeStatus: true });
         res.status(200).send(user);

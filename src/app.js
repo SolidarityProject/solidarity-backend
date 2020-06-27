@@ -20,7 +20,7 @@ app.use("/posts", postRouter);
 
 
 app.get("/", (req, res) => {
-    res.status(200).send(" ----  Solidarity Backend  ---- ");
+    res.status(200).send("----  Solidarity Backend  ----");
 })
 
 app.use("", (req, res) => {
@@ -28,10 +28,10 @@ app.use("", (req, res) => {
 })
 
 
-const localDBConnection = "mongodb://localhost/SolidarityDB";
-// const cloudDBConnection = process.env.DB_CONNECTION;
+// const localDBConnection = "mongodb://localhost/SolidarityDB";
+const cloudDBConnection = process.env.DB_CONNECTION;
 
-mongoose.connect(localDBConnection, {
+mongoose.connect(cloudDBConnection, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

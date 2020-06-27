@@ -9,7 +9,7 @@ const router = express.Router();
 //* getbyid
 router.get("/getbyid/:postId", verifyToken, async (req, res) => {
     try {
-        const post = await Post.findById(req.params.postId); //TODO : activeStatus == true
+        const post = await Post.findById(req.params.postId);
         res.status(200).send(post);
     } catch (error) {
         res.status(500).send(error);
