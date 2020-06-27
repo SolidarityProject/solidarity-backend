@@ -1,6 +1,7 @@
 const Joi = require("@hapi/joi");
 const addressValidationObj = require("./address-validation");
 const { getDateForCheck_year } = require("../helper/date-helper");
+const { usernameRegexPattern, emailRegexPattern } = require("../helper/regex-pattern-helper");
 
 const registerValidation = data => {
     const schema = Joi.object({
@@ -15,9 +16,16 @@ const registerValidation = data => {
             .max(50)
             .required(),
 
+        username: Joi.string()
+            .min(2)
+            .max(20)
+            .regex(usernameRegexPattern)
+            .required(),
+
         email: Joi.string()
             .lowercase()
             .email()
+            .regex(emailRegexPattern)
             .required(),
 
         password: Joi.string()
@@ -50,8 +58,6 @@ const loginValidation = data => {
             .required(),
 
         password: Joi.string()
-            .min(6)
-            .max(15)
             .required(),
     });
 
