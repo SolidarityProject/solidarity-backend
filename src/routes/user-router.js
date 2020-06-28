@@ -36,6 +36,14 @@ router.put("/update", verifyToken, async (req, res) => {
     //* checking user for authorization (is own account ?)
     if (req.user._id != req.body._id) return res.status(400).send("Access Denied.");
 
+    //* email validation (check mail exists)
+    const userExist_email = await User.findOne({ email: req.body.email });
+    if (userExist_email) return res.status(400).send("This email address already exists.");
+
+    //* username validation (check username exists)
+    const userExist_username = await User.findOne({ username: req.body.username });
+    if (userExist_username) return res.status(400).send("This username already exists.");
+
     try {
         const user = await User.findByIdAndUpdate(req.body._id, req.body, { new: true });
         res.status(200).send(user);

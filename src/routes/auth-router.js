@@ -13,9 +13,13 @@ router.post("/register", async (req, res) => {
     const { error } = registerValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    //* email validation (check user exists)
-    const userExist = await User.findOne({ email: req.body.email });
-    if (userExist) return res.status(400).send("This email address already exists.");
+    //* email validation (check mail exists)
+    const userExist_email = await User.findOne({ email: req.body.email });
+    if (userExist_email) return res.status(400).send("This email address already exists.");
+
+    //* username validation (check username exists)
+    const userExist_username = await User.findOne({ username: req.body.username });
+    if (userExist_username) return res.status(400).send("This username already exists.");
 
     //* password hashing
     const hashedPassword = await passwordHashing(req.body.password);
