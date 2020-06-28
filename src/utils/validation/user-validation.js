@@ -22,14 +22,12 @@ function updateUserValidation(data) {
         username: Joi.string()
             .min(2)
             .max(20)
-            .regex(usernameRegexPattern)
-            .required(),
+            .regex(usernameRegexPattern),
 
         email: Joi.string()
             .lowercase()
             .email()
-            .regex(emailRegexPattern)
-            .required(),
+            .regex(emailRegexPattern),
 
         pictureUrl: Joi.string(),
 
@@ -42,12 +40,6 @@ function updateUserValidation(data) {
             .max(getDateForCheck_year(-18)),
 
         address: addressValidationObj.required(),
-
-        activeStatus: Joi.boolean(),
-
-        verifiedStatus: Joi.boolean(),
-
-        dateCreated: Joi.date(),
     });
 
     return schema.validate(data);

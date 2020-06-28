@@ -48,14 +48,10 @@ function updatePostValidation(data) {
 
         address: addressValidationObj.required(),
 
-        activeStatus: Joi.boolean(),
-
         dateSolidarity: Joi.date()
             .min(getDateForCheck_hour(2)) // min 2 hour later
             .max(getDateForCheck_month(2)) // max 2 month later
             .required(),
-
-        dateCreated: Joi.date(),
 
         userId: Joi.string()
             .required()

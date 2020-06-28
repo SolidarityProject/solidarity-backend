@@ -1,10 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
-
-const { verifyToken } = require("../utils/security/token");
-
-const { auth } = require("../middlewares/auth");
-
+const { auth, auth_checkUser } = require("../middlewares/auth");
 const { updateUserValidation, deleteUserValidation, changePasswordValidation } = require("../utils/validation/user-validation");
 const { passwordComparing, passwordHashing } = require("../helpers/password-helper");
 
@@ -21,7 +17,7 @@ router.get("/getbyid/:userId", auth, async (req, res) => {
 })
 
 //* getbyusername 
-router.get("/getbyusername/:username", verifyToken, async (req, res) => {
+router.get("/getbyusername/:username", auth, async (req, res) => {
     try {
         const user = await User.find({ username: req.params.username, activeStatus: true });
         res.status(200).send(user);
@@ -31,14 +27,11 @@ router.get("/getbyusername/:username", verifyToken, async (req, res) => {
 })
 
 //* update  
-router.put("/update", verifyToken, async (req, res) => {
+router.put("/update", auth_checkUser, async (req, res) => {
 
     //* update validations (_id, name, lastname ... all property)
     const { error } = updateUserValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-
-    //* checking user for authorization (is own account ?)
-    if (req.user._id != req.body._id) return res.status(400).send("Access Denied.");
 
     //* email validation (check mail exists)
     const userExist_email = await User.findOne({ email: req.body.email });
@@ -57,14 +50,11 @@ router.put("/update", verifyToken, async (req, res) => {
 })
 
 //* changepassword  
-router.put("/changepassword", verifyToken, async (req, res) => {
+router.put("/changepassword", auth_checkUser, async (req, res) => {
 
     //* change password validations (_id, oldPassword, newPassword )
     const { error } = changePasswordValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-
-    //* checking user for authorization (is own account ?)
-    if (req.user._id != req.body._id) return res.status(400).send("Access Denied.");
 
     //* finding user
     const findUser = await User.findById(req.body._id);
@@ -85,18 +75,18 @@ router.put("/changepassword", verifyToken, async (req, res) => {
     }
 })
 
+// TODO : PUT - change verify status
+
 //* delete
-router.delete("/delete", verifyToken, async (req, res) => {
+router.delete("/delete", auth_checkUser, async (req, res) => {
 
     //* delete validations (_id)
     const { error } = deleteUserValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    //* checking user for authorization (is own account ?)
-    if (req.user._id != req.body._id) return res.status(400).send("Access Denied.");
-
     try {
         const user = await User.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
+        res.removeHeader("Token");  //! remove token header because user deleted
         res.status(200).send(user);
     } catch (error) {
         res.status(500).send(error);
