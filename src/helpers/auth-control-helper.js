@@ -16,7 +16,7 @@ function auth_post_error(verifiedData, reqBodyData) {
 
 //* checking account -> is active & verified account & own post
 function auth_post_verified_error(verifiedData, reqBodyData) {
-    if (auth_post_error(verifiedData, reqBodyData) || !reqBodyData.verifiedStatus) return true;
+    if (auth_post_error(verifiedData, reqBodyData) || !verifiedData.verifiedStatus) return true;
 }
 
 module.exports = {

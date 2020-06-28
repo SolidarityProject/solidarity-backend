@@ -1,13 +1,13 @@
 const express = require("express");
 const User = require("../models/user");
-const { auth, auth_user } = require("../middlewares/auth");
+const middleware = require("../middlewares/auth");
 const { updateUserValidation, deleteUserValidation, changePasswordValidation } = require("../utils/validation/user-validation");
 const { passwordComparing, passwordHashing } = require("../helpers/password-helper");
 
 const router = express.Router();
 
 //* getbyid
-router.get("/getbyid/:userId", auth, async (req, res) => {
+router.get("/getbyid/:userId", middleware.auth, async (req, res) => {
     try {
         const user = await User.findById(req.params.userId);
         res.status(200).send(user);
@@ -17,7 +17,7 @@ router.get("/getbyid/:userId", auth, async (req, res) => {
 })
 
 //* getbyusername 
-router.get("/getbyusername/:username", auth, async (req, res) => {
+router.get("/getbyusername/:username", middleware.auth, async (req, res) => {
     try {
         const user = await User.find({ username: req.params.username, activeStatus: true });
         res.status(200).send(user);
@@ -27,7 +27,7 @@ router.get("/getbyusername/:username", auth, async (req, res) => {
 })
 
 //* update  
-router.put("/update", auth_user, async (req, res) => {
+router.put("/update", middleware.auth_user, async (req, res) => {
 
     //* update validations (_id, name, lastname ... all property)
     const { error } = updateUserValidation(req.body);
@@ -50,7 +50,7 @@ router.put("/update", auth_user, async (req, res) => {
 })
 
 //* changepassword  
-router.put("/changepassword", auth_user, async (req, res) => {
+router.put("/changepassword", middleware.auth_user, async (req, res) => {
 
     //* change password validations (_id, oldPassword, newPassword )
     const { error } = changePasswordValidation(req.body);
@@ -78,7 +78,7 @@ router.put("/changepassword", auth_user, async (req, res) => {
 // TODO : PUT - change verify status
 
 //* delete
-router.delete("/delete", auth_user, async (req, res) => {
+router.delete("/delete", middleware.auth_user, async (req, res) => {
 
     //* delete validations (_id)
     const { error } = deleteUserValidation(req.body);

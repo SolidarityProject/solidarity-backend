@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "//TODO: git-repo"
+    "url": "https://github.com/SolidarityProject/solidarity-backend"
   },
   "keywords": [
     "NodeJS",
     "Express",
     "MongoDB"
   ],
-  "author": "Mustafa CEVIK",
+  "author": "@semustafacevik",
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^17.1.1",

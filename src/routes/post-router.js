@@ -1,6 +1,6 @@
 const express = require("express");
 const Post = require("../models/post");
-const { auth, auth_post, auth_post_verified } = require("../middlewares/auth");
+const middleware = require("../middlewares/auth");
 const { addPostValidation, updatePostValidation, deletePostValidation } = require("../utils/validation/post-validation");
 const { getDateForCheck_minute } = require("../helpers/date-helper");
 
@@ -9,7 +9,7 @@ const { getDateForCheck_minute } = require("../helpers/date-helper");
 const router = express.Router();
 
 //* getbyid
-router.get("/getbyid/:postId", auth, async (req, res) => {
+router.get("/getbyid/:postId", middleware.auth, async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId);
         res.status(200).send(post);
@@ -19,7 +19,7 @@ router.get("/getbyid/:postId", auth, async (req, res) => {
 })
 
 //* getbyuserid
-router.get("/getbyuserid/:userId", auth, async (req, res) => {
+router.get("/getbyuserid/:userId", middleware.auth, async (req, res) => {
     try {
         const post = await Post.find({ userId: req.params.userId, activeStatus: true });
         res.status(200).send(post);
@@ -29,7 +29,7 @@ router.get("/getbyuserid/:userId", auth, async (req, res) => {
 })
 
 //* getbyfulladdress
-router.get("/getbyfulladdress/:districtId", auth, async (req, res) => {
+router.get("/getbyfulladdress/:districtId", middleware.auth, async (req, res) => {
     try {
         const posts = await Post.find({
             "address.districtId": req.params.districtId,
@@ -43,7 +43,7 @@ router.get("/getbyfulladdress/:districtId", auth, async (req, res) => {
 })
 
 //* getbyprovinceaddress
-router.get("/getbyprovinceaddress/:provinceId", auth, async (req, res) => {
+router.get("/getbyprovinceaddress/:provinceId", middleware.auth, async (req, res) => {
     try {
         const posts = await Post.find({
             "address.provinceId": req.params.provinceId,
@@ -71,7 +71,7 @@ router.get("/free/getbyprovinceaddress/:provinceId", async (req, res) => {
 })
 
 //* add
-router.post("/add", auth_post_verified, async (req, res) => {
+router.post("/add", middleware.auth_post_verified, async (req, res) => {
 
     //* add validations (title, description, picture, address, dateSolidarity)
     const { error } = addPostValidation(req.body);
@@ -88,7 +88,7 @@ router.post("/add", auth_post_verified, async (req, res) => {
 })
 
 //* update
-router.put("/update", auth_post, async (req, res) => {
+router.put("/update", middleware.auth_post, async (req, res) => {
 
     //* update validations (_id, title, description, picture ... all property)
     const { error } = updatePostValidation(req.body);
@@ -103,7 +103,7 @@ router.put("/update", auth_post, async (req, res) => {
 })
 
 //* delete
-router.delete("/delete", auth_post, async (req, res) => {
+router.delete("/delete", middleware.auth_post, async (req, res) => {
 
     //* delete validations (_id, userId)
     const { error } = deletePostValidation(req.body);
