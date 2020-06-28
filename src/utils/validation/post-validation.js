@@ -1,6 +1,6 @@
 const Joi = require("@hapi/joi");
 const addressValidationObj = require("./address-validation");
-const { getDateForCheck_hour, getDateForCheck_month } = require("../helper/date-helper");
+const { getDateForCheck_hour, getDateForCheck_month } = require("../../helpers/date-helper");
 
 function addPostValidation(data) {
     const schema = Joi.object({

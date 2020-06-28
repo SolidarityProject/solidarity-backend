@@ -1,7 +1,7 @@
 const Joi = require("@hapi/joi");
 const addressValidationObj = require("./address-validation");
-const { getDateForCheck_year } = require("../helper/date-helper");
-const { usernameRegexPattern, emailRegexPattern } = require("../helper/regex-pattern-helper");
+const { getDateForCheck_year } = require("../../helpers/date-helper");
+const { usernameRegexPattern, emailRegexPattern } = require("../../helpers/regex-pattern-helper");
 
 const registerValidation = data => {
     const schema = Joi.object({

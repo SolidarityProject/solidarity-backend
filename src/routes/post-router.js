@@ -1,8 +1,8 @@
 const express = require("express");
-const Post = require("../schemas/post");
+const Post = require("../models/post");
 const { verifyToken } = require("../utils/security/token");
 const { addPostValidation, updatePostValidation, deletePostValidation } = require("../utils/validation/post-validation");
-const { getDateForCheck_minute } = require("../utils/helper/date-helper");
+const { getDateForCheck_minute } = require("../helpers/date-helper");
 
 const router = express.Router();
 

@@ -1,8 +1,8 @@
 const express = require("express");
-const User = require("../schemas/user");
+const User = require("../models/user");
 const { verifyToken } = require("../utils/security/token");
 const { updateUserValidation, deleteUserValidation, changePasswordValidation } = require("../utils/validation/user-validation");
-const { passwordComparing, passwordHashing } = require("../utils/helper/password-helper");
+const { passwordComparing, passwordHashing } = require("../helpers/password-helper");
 
 const router = express.Router();
 
