@@ -9,9 +9,4 @@ function createToken(user) { // TODO : async function
     }, process.env.SECRET_KEY, { expiresIn: "1h" }) // default encryption algoritm : HS256
 }
 
-//* verify token
-function verifyToken(req, res, next) {
-    // move to -> middlewares // TODO : delete this function
-}
-
-module.exports = { createToken, verifyToken };
+module.exports = { createToken };

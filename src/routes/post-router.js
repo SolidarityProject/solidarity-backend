@@ -1,9 +1,10 @@
 const express = require("express");
 const Post = require("../models/post");
-const { auth, auth_post } = require("../middlewares/auth");
-//const { verifyToken } = require("../utils/security/token");
+const { auth, auth_post, auth_post_verified } = require("../middlewares/auth");
 const { addPostValidation, updatePostValidation, deletePostValidation } = require("../utils/validation/post-validation");
 const { getDateForCheck_minute } = require("../helpers/date-helper");
+
+// TODO : edit requires
 
 const router = express.Router();
 
@@ -68,9 +69,9 @@ router.get("/free/getbyprovinceaddress/:provinceId", async (req, res) => {
         res.status(500).send(error);
     }
 })
- // -> auth_verified
+
 //* add
-router.post("/add", auth, async (req, res) => {
+router.post("/add", auth_post_verified, async (req, res) => {
 
     //* add validations (title, description, picture, address, dateSolidarity)
     const { error } = addPostValidation(req.body);
