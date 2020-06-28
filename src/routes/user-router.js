@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
-const { auth, auth_checkUser } = require("../middlewares/auth");
+const { auth, auth_user } = require("../middlewares/auth");
 const { updateUserValidation, deleteUserValidation, changePasswordValidation } = require("../utils/validation/user-validation");
 const { passwordComparing, passwordHashing } = require("../helpers/password-helper");
 
@@ -27,7 +27,7 @@ router.get("/getbyusername/:username", auth, async (req, res) => {
 })
 
 //* update  
-router.put("/update", auth_checkUser, async (req, res) => {
+router.put("/update", auth_user, async (req, res) => {
 
     //* update validations (_id, name, lastname ... all property)
     const { error } = updateUserValidation(req.body);
@@ -50,7 +50,7 @@ router.put("/update", auth_checkUser, async (req, res) => {
 })
 
 //* changepassword  
-router.put("/changepassword", auth_checkUser, async (req, res) => {
+router.put("/changepassword", auth_user, async (req, res) => {
 
     //* change password validations (_id, oldPassword, newPassword )
     const { error } = changePasswordValidation(req.body);
@@ -78,7 +78,7 @@ router.put("/changepassword", auth_checkUser, async (req, res) => {
 // TODO : PUT - change verify status
 
 //* delete
-router.delete("/delete", auth_checkUser, async (req, res) => {
+router.delete("/delete", auth_user, async (req, res) => {
 
     //* delete validations (_id)
     const { error } = deleteUserValidation(req.body);
@@ -86,7 +86,7 @@ router.delete("/delete", auth_checkUser, async (req, res) => {
 
     try {
         const user = await User.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
-        res.removeHeader("Token");  //! remove token header because user deleted
+        // TODO : token delete ?? research
         res.status(200).send(user);
     } catch (error) {
         res.status(500).send(error);

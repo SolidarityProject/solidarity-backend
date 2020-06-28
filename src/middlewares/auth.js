@@ -19,7 +19,7 @@ function auth(req, res, next) {
     }
 }
 
-function auth_checkUser(req, res, next) {
+function auth_user(req, res, next) {
     const token = req.header("Token");
     if (!token) return res.status(401).send("Access Denied.");
 
@@ -36,4 +36,25 @@ function auth_checkUser(req, res, next) {
     }
 }
 
-module.exports = { auth, auth_checkUser }
+function auth_post(req, res, next) {
+    const token = req.header("Token");
+    if (!token) return res.status(401).send("Access Denied.");
+
+    try {
+        const verified = jwt.verify(token, process.env.SECRET_KEY);
+
+        //* checking user for authorization (is active account & own post ?)
+        if (!verified.activeStatus || verified._id != req.body.userId) return res.status(400).send("Access Denied.");
+
+        req.user = verified;
+        next();
+    } catch (error) {
+        res.status(400).send("Invalid Token.");
+    }
+}
+
+module.exports = {
+    auth,
+    auth_user,
+    auth_post
+}
