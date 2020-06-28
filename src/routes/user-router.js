@@ -1,13 +1,17 @@
 const express = require("express");
 const User = require("../models/user");
+
 const { verifyToken } = require("../utils/security/token");
+
+const { auth } = require("../middlewares/auth");
+
 const { updateUserValidation, deleteUserValidation, changePasswordValidation } = require("../utils/validation/user-validation");
 const { passwordComparing, passwordHashing } = require("../helpers/password-helper");
 
 const router = express.Router();
 
 //* getbyid
-router.get("/getbyid/:userId", verifyToken, async (req, res) => {
+router.get("/getbyid/:userId", auth, async (req, res) => {
     try {
         const user = await User.findById(req.params.userId);
         res.status(200).send(user);
