@@ -4,8 +4,6 @@ const middleware = require("../middlewares/auth");
 const { addPostValidation, updatePostValidation, deletePostValidation } = require("../utils/validation/post-validation");
 const { getDateForCheck_minute } = require("../helpers/date-helper");
 
-// TODO : edit requires
-
 const router = express.Router();
 
 //* getbyid

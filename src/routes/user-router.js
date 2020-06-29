@@ -75,8 +75,6 @@ router.put("/changepassword", middleware.auth_user, async (req, res) => {
     }
 })
 
-// TODO : PUT - change verify status
-
 //* delete
 router.delete("/delete", middleware.auth_user, async (req, res) => {
 
@@ -86,7 +84,6 @@ router.delete("/delete", middleware.auth_user, async (req, res) => {
 
     try {
         const user = await User.findByIdAndUpdate(req.body._id, { $set: { "activeStatus": false, } }, { new: true });
-        // TODO : token delete ?? research
         res.status(200).send(user);
     } catch (error) {
         res.status(500).send(error);

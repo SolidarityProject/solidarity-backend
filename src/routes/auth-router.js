@@ -49,7 +49,11 @@ router.post("/login", async (req, res) => {
     const validPassword = await passwordComparing(req.body.password, user.password);
     if (!validPassword) return res.status(400).send("Check your email or password.");
 
-    // TODO : activeStatus == false ?? -> true
+    //* checking active status 
+    if (!user.activeStatus) {
+        user.activeStatus = true; // user not active ?? -> user active now
+        await user.save(); // update & save db
+    }
 
     //* create token (1h) 
     // TODO : refreshtoken
