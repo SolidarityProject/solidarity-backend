@@ -18,8 +18,89 @@
     }
   },
 
+  "registerObj2": {
+    "gender": 0,
+    "name": "Test",
+    "lastname": "User",
+    "username": "testuser2",
+    "email": "user@test2.com",
+    "password": "t123123",
+    "birthdate": "1996-06-04",
+    "pictureUrl": "pic.lk",
+    "address": {
+      "country": "Türkiye",
+      "countryId": "5eef52787e2213196405352e",
+      "province": "İzmir",
+      "provinceId": "5eef530e7e22131964053531",
+      "district": "Ödemiş",
+      "districtId": "5eef567d7e22131964053540"
+    }
+  },
+
   "loginObj": {
     "email": "user@test.com",
     "password": "t123123"
+  },
+
+  "createTokenObj": {
+    "_id": "5efb3602c106002090dc7746",
+    "activeStatus": true,
+    "verifiedStatus": true
+  },
+
+  "createTokenObj2": {
+    "_id": "5efb7e7b87650a0a74881503",
+    "activeStatus": true,
+    "verifiedStatus": false
+  },
+
+  "updateUserObj": {
+    "address": {
+      "country": "Türkiye",
+      "countryId": "5eef52787e2213196405352e",
+      "province": "İzmir",
+      "provinceId": "5eef530e7e22131964053531",
+      "district": "Ödemiş",
+      "districtId": "5eef567d7e22131964053540"
+    },
+    "gender": 0,
+    "_id": "5efb3602c106002090dc7746",
+    "name": "Test **** updated",
+    "lastname": "User",
+    "birthdate": "1996-06-04",
+    "pictureUrl": "pic.lk"
+  },
+
+  "updateUserObj_username_mail": {
+    "address": {
+      "country": "Türkiye",
+      "countryId": "5eef52787e2213196405352e",
+      "province": "İzmir",
+      "provinceId": "5eef530e7e22131964053531",
+      "district": "Ödemiş",
+      "districtId": "5eef567d7e22131964053540"
+    },
+    "gender": 0,
+    "_id": "5efb7e7b87650a0a74881503",
+    "name": "Test **** updated",
+    "lastname": "User **** username & email",
+    "username": "testuser_upd",
+    "email": "user@testt.com",
+    "birthdate": "1996-06-04",
+    "pictureUrl": "pic.lk"
+  },
+
+  "changePasswordObj": {
+    "_id": "5efb7e7b87650a0a74881503",
+    "oldPassword": "t123123x",
+    "newPassword": "t123123x"
+  },
+
+  "deleteUserObj": {
+    "_id": "5efb7e7b87650a0a74881503"
+  },
+
+  "deleteUserObj_error": {
+    "_id": "5efb7e7b87650a0a74881503"
   }
 }

@@ -19,7 +19,7 @@ router.get("/getbyid/:userId", middleware.auth, async (req, res) => {
 //* getbyusername 
 router.get("/getbyusername/:username", middleware.auth, async (req, res) => {
     try {
-        const user = await User.find({ username: req.params.username, activeStatus: true });
+        const user = await User.findOne({ username: req.params.username, activeStatus: true });
         res.status(200).send(user);
     } catch (error) {
         res.status(500).send(error);
