@@ -45,3 +45,5 @@ mongoose.connect(process.env.DB_CONNECTION, {
 app.listen(process.env.PORT || 2020, () => {
     console.log("App Started.");
 })
+
+module.exports = app;

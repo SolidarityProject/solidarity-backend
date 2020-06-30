@@ -1,0 +1,25 @@
+{
+  "registerObj": {
+    "gender": 0,
+    "name": "Test",
+    "lastname": "User",
+    "username": "testuser",
+    "email": "user@test.com",
+    "password": "t123123",
+    "birthdate": "1996-06-04",
+    "pictureUrl": "pic.lk",
+    "address": {
+      "country": "Türkiye",
+      "countryId": "5eef52787e2213196405352e",
+      "province": "İzmir",
+      "provinceId": "5eef530e7e22131964053531",
+      "district": "Ödemiş",
+      "districtId": "5eef567d7e22131964053540"
+    }
+  },
+
+  "loginObj": {
+    "email": "user@test.com",
+    "password": "t123123"
+  }
+}

@@ -4,7 +4,7 @@
   "description": "Solidarity Project - NodeJS Backend",
   "main": "./src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --recursive --exit",
     "start": "node ./src/app.js",
     "start:dev": "nodemon ./src/app.js"
   },
