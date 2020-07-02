@@ -156,5 +156,33 @@
   "deletePostObj": {
     "_id": "5efbaab0fc804a04d8004f14",
     "userId": "5efb3602c106002090dc7746"
+  },
+
+  "verifiedDataObj": {
+    "_id": "1",
+    "activeStatus": true,
+    "verifiedStatus": true
+  },
+
+  "verifiedDataObj_active_error": {
+    "_id": "1",
+    "activeStatus": false,
+    "verifiedStatus": true
+  },
+
+  "verifiedDataObj_verified_error": {
+    "_id": "1",
+    "activeStatus": true,
+    "verifiedStatus": false
+  },
+
+  "reqBodyDataObj": {
+    "_id": "1",
+    "userId": "1"
+  },
+
+  "reqBodyDataObj_error": {
+    "_id": "2",
+    "userId": "2"
   }
 }
