@@ -92,7 +92,7 @@
 
   "changePasswordObj": {
     "_id": "5efb7e7b87650a0a74881503",
-    "oldPassword": "t123123x",
+    "oldPassword": "t123123",
     "newPassword": "t123123x"
   },
 
@@ -102,5 +102,59 @@
 
   "deleteUserObj_error": {
     "_id": "5efb7e7b87650a0a74881503"
+  },
+
+  "addPostObj": {
+    "address": {
+      "countryId": "5ed2c0e3bd08e22e84efea44",
+      "provinceId": "5ed2c0e3bd08e22e84efea49",
+      "districtId": "5eef567d7e22131964053540",
+      "country": "Türkiye",
+      "province": "İzmir",
+      "district": "Ödemiş"
+    },
+    "dateSolidarity": "2020-07-15T18:00",
+    "title": "Test Post",
+    "description": "Desc Test Post",
+    "pictureUrl": "pic.lk",
+    "userId": "5efb3602c106002090dc7746"
+  },
+
+  "addPostObj2": {
+    "address": {
+      "countryId": "5ed2c0e3bd08e22e84efea44",
+      "provinceId": "5ed2c0e3bd08e22e84efea49",
+      "districtId": "5eef567d7e22131964053540",
+      "country": "Türkiye",
+      "province": "İzmir",
+      "district": "Ödemiş"
+    },
+    "dateSolidarity": "2020-07-15T18:00",
+    "title": "Test Post",
+    "description": "Desc Test Post",
+    "pictureUrl": "pic.lk",
+    "userId": "5efb7e7b87650a0a74881503"
+  },
+
+  "updatePostObj": {
+    "address": {
+      "countryId": "5ed2c0e3bd08e22e84efea44",
+      "provinceId": "5ed2c0e3bd08e22e84efea49",
+      "districtId": "5eef567d7e2213196405353f",
+      "country": "Türkiye",
+      "province": "İzmir",
+      "district": "Ödemiş"
+    },
+    "_id": "5efbaab0fc804a04d8004f13",
+    "dateSolidarity": "2020-07-10T12:00:00.000Z",
+    "title": "New Post **** updated",
+    "description": "Desc New Post Test",
+    "pictureUrl": "pic.lk",
+    "userId": "5efb3602c106002090dc7746"
+  },
+
+  "deletePostObj": {
+    "_id": "5efbaab0fc804a04d8004f14",
+    "userId": "5efb3602c106002090dc7746"
   }
 }

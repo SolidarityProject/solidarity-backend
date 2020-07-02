@@ -95,7 +95,7 @@ describe("User Router Test Functions", () => {
     //* testing delete
     it("DEL : delete", done => {
         chai.request(server)
-            .delete("/users/delete")
+            .del("/users/delete")
             .set("token", token2)
             .send(testObjects.deleteUserObj)
             .end((error, response) => {
