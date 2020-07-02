@@ -30,7 +30,7 @@ describe("Post Router Test Functions", () => {
                 .end((error, response) => {
                     expect(response.status).to.equal(200);
                 });
-        }
+        } // add 5 posts
         done();
     });
 
@@ -70,7 +70,6 @@ describe("Post Router Test Functions", () => {
                 done();
             });
     });
-
 
     //* testing getbyuserid
     it("GET : getbyuserid", done => {
@@ -124,7 +123,7 @@ describe("Post Router Test Functions", () => {
                 expect(response.body).to.have.property("_id", "5efbaab0fc804a04d8004f13");
                 expect(response.body).to.have.property("title", "New Post **** updated");
                 done();
-            })
+            });
     });
 
     //* testing delete
@@ -139,6 +138,6 @@ describe("Post Router Test Functions", () => {
                 expect(response.body).to.have.property("_id", "5efbaab0fc804a04d8004f14");
                 expect(response.body).to.have.property("activeStatus", false);
                 done();
-            })
+            });
     });
 });

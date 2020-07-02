@@ -4,7 +4,6 @@ const server = require("../../src/app");
 const testObjects = require("../test-objects.json");
 
 const should = chai.should();
-
 chai.use(chaiHttp);
 
 describe("Auth Router Test Functions", () => {
@@ -20,7 +19,7 @@ describe("Auth Router Test Functions", () => {
                 response.body.should.be.property("_id");
                 response.body.should.be.property("email").eql(testObjects.registerObj.email);
                 done();
-            })
+            });
     });
 
     //* testing register other account -> required update & delete
@@ -34,7 +33,7 @@ describe("Auth Router Test Functions", () => {
                 response.body.should.be.property("_id");
                 response.body.should.be.property("email").eql(testObjects.registerObj2.email);
                 done();
-            })
+            });
     });
 
     //* testing login
@@ -47,6 +46,6 @@ describe("Auth Router Test Functions", () => {
                 response.body.should.be.property("token");
                 response.header.should.be.property("token"); // check token header
                 done();
-            })
+            });
     });
 });

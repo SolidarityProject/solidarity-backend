@@ -5,7 +5,6 @@ const testObjects = require("../test-objects.json");
 const { createToken } = require("../../src/utils/security/token");
 
 const should = chai.should();
-
 chai.use(chaiHttp);
 
 let token;
@@ -30,7 +29,7 @@ describe("User Router Test Functions", () => {
                 response.body.should.be.a("object");
                 response.body.should.be.property("username").eql("testuser");
                 done();
-            })
+            });
     });
 
     //* testing getbyusername
@@ -43,7 +42,7 @@ describe("User Router Test Functions", () => {
                 response.body.should.be.a("object");
                 response.body.should.be.property("_id").eql("5efb3602c106002090dc7746");
                 done();
-            })
+            });
     });
 
     //* testing update
@@ -58,7 +57,7 @@ describe("User Router Test Functions", () => {
                 response.body.should.be.property("_id").eql(testObjects.updateUserObj._id);
                 response.body.should.be.property("name").eql(testObjects.updateUserObj.name);
                 done();
-            })
+            });
     });
 
     //* testing update with changing email & username
@@ -74,7 +73,7 @@ describe("User Router Test Functions", () => {
                 response.body.should.be.property("username").eql(testObjects.updateUserObj_username_mail.username);
                 response.body.should.be.property("email").eql(testObjects.updateUserObj_username_mail.email);
                 done();
-            })
+            });
     });
 
     //* testing changepassword
@@ -89,7 +88,7 @@ describe("User Router Test Functions", () => {
                 response.body.should.be.property("_id").eql(testObjects.changePasswordObj._id);
                 response.body.should.be.property("password");
                 done();
-            })
+            });
     });
 
     //* testing delete
@@ -104,7 +103,7 @@ describe("User Router Test Functions", () => {
                 response.body.should.be.property("_id").eql(testObjects.deleteUserObj._id);
                 response.body.should.be.property("activeStatus").eql(false);
                 done();
-            })
+            });
     });
 
     //* testing delete error because not own account
@@ -116,6 +115,6 @@ describe("User Router Test Functions", () => {
             .end((error, response) => {
                 response.should.have.status(400);
                 done();
-            })
+            });
     });
 });
