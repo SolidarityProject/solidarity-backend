@@ -43,13 +43,13 @@
   },
 
   "createTokenObj": {
-    "_id": "5efb3602c106002090dc7746",
+    "_id": "id1",
     "activeStatus": true,
     "verifiedStatus": true
   },
 
   "createTokenObj2": {
-    "_id": "5efb7e7b87650a0a74881503",
+    "_id": "id2",
     "activeStatus": true,
     "verifiedStatus": false
   },
@@ -64,8 +64,8 @@
       "districtId": "5eef567d7e22131964053540"
     },
     "gender": 0,
-    "_id": "5efb3602c106002090dc7746",
-    "name": "Test **** updated",
+    "_id": "id1",
+    "name": "Test upd",
     "lastname": "User",
     "birthdate": "1996-06-04",
     "pictureUrl": "pic.lk"
@@ -81,9 +81,9 @@
       "districtId": "5eef567d7e22131964053540"
     },
     "gender": 0,
-    "_id": "5efb7e7b87650a0a74881503",
-    "name": "Test **** updated",
-    "lastname": "User **** username & email",
+    "_id": "id2",
+    "name": "Test upd username email",
+    "lastname": "User",
     "username": "testuser_upd",
     "email": "user@testt.com",
     "birthdate": "1996-06-04",
@@ -91,17 +91,17 @@
   },
 
   "changePasswordObj": {
-    "_id": "5efb7e7b87650a0a74881503",
+    "_id": "id2",
     "oldPassword": "t123123",
     "newPassword": "t123123x"
   },
 
   "deleteUserObj": {
-    "_id": "5efb7e7b87650a0a74881503"
+    "_id": "id2"
   },
 
   "deleteUserObj_error": {
-    "_id": "5efb7e7b87650a0a74881503"
+    "_id": "id2"
   },
 
   "addPostObj": {
@@ -115,9 +115,9 @@
     },
     "dateSolidarity": "2020-07-15T18:00",
     "title": "Test Post",
-    "description": "Desc Test Post",
+    "description": "Desc Test Post ",
     "pictureUrl": "pic.lk",
-    "userId": "5efb3602c106002090dc7746"
+    "userId": "id1"
   },
 
   "addPostObj2": {
@@ -131,9 +131,9 @@
     },
     "dateSolidarity": "2020-07-15T18:00",
     "title": "Test Post",
-    "description": "Desc Test Post",
+    "description": "Desc Test Post ",
     "pictureUrl": "pic.lk",
-    "userId": "5efb7e7b87650a0a74881503"
+    "userId": "id2"
   },
 
   "updatePostObj": {
@@ -145,17 +145,17 @@
       "province": "İzmir",
       "district": "Ödemiş"
     },
-    "_id": "5efbaab0fc804a04d8004f13",
+    "_id": "postId",
     "dateSolidarity": "2020-07-10T12:00:00.000Z",
-    "title": "New Post **** updated",
-    "description": "Desc New Post Test",
+    "title": "New Post upd",
+    "description": "Desc New Post Test ",
     "pictureUrl": "pic.lk",
-    "userId": "5efb3602c106002090dc7746"
+    "userId": "id1"
   },
 
   "deletePostObj": {
-    "_id": "5efbaab0fc804a04d8004f14",
-    "userId": "5efb3602c106002090dc7746"
+    "_id": "postId",
+    "userId": "id1"
   },
 
   "verifiedDataObj": {

@@ -2,43 +2,59 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../../src/app");
 const testObjects = require("../test-objects.json");
-const { createToken } = require("../../src/utils/security/token");
+
+const { user1, user2 } = require("./i-auth-router.test");
+const faker = require("faker/locale/tr");
 
 const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-let token;
-let token2;
 
 describe("Post Router Test Functions", () => {
 
     //* before creating token
     before(done => {
-        token = createToken(testObjects.createTokenObj);    // token  -> all functions 
-        token2 = createToken(testObjects.createTokenObj2);  // token2 -> not verified account
+
+        testObjects.addPostObj.userId = user1._id;
+        testObjects.addPostObj.description += faker.random.words(5);
+
+        testObjects.addPostObj2.userId = user2._id;
+        testObjects.addPostObj2.description += faker.random.words(5);
+
+        testObjects.updatePostObj.description += faker.random.words(5);
+        testObjects.updatePostObj.userId = user1._id;
+
+        testObjects.deletePostObj.userId = user1._id;
+
+
         done();
     });
 
-    //* testing add
-    it("POST : add (5 posts)", done => {
-        for (let i = 0; i < 5; i++) {
+    //* testing add (5 posts)
+    for (let postCount = 0; postCount < 5; postCount++) {
+
+        //* testing add
+        it("POST : add (count of new post : " + (postCount + 1) + ")", done => { // POST : add (count of new post : 1,2,3,4,5)
             chai.request(server)
                 .post("/posts/add")
-                .set("token", token)
+                .set("token", user1.token)
                 .send(testObjects.addPostObj)
                 .end((error, response) => {
                     expect(response.status).to.equal(200);
+                    expect(response.body).to.be.an.instanceof(Object);
+                    expect(response.body).to.have.property("_id");
+                    user1.postId = response.body._id;
+                    done();
                 });
-        } // add 5 posts
-        done();
-    });
+        });
+    }
 
     //* testing add error because not verified account
     it("POST : add (error)", done => {
         chai.request(server)
             .post("/posts/add")
-            .set("token", token2)
+            .set("token", user2.token)
             .send(testObjects.addPostObj2)
             .end((error, response) => {
                 expect(response.status).to.equal(400);
@@ -61,12 +77,13 @@ describe("Post Router Test Functions", () => {
     //* testing getbyid
     it("GET : getbyid", done => {
         chai.request(server)
-            .get("/posts/getbyid/5efbaab0fc804a04d8004f13")
-            .set("token", token)
+            .get("/posts/getbyid/" + user1.postId)
+            .set("token", user1.token)
             .end((error, response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.be.an.instanceof(Object);
-                expect(response.body).to.have.property("_id", "5efbaab0fc804a04d8004f13");
+                expect(response.body).to.have.property("_id", user1.postId);
+                expect(response.body).to.have.property("description", testObjects.addPostObj.description);
                 done();
             });
     });
@@ -74,13 +91,13 @@ describe("Post Router Test Functions", () => {
     //* testing getbyuserid
     it("GET : getbyuserid", done => {
         chai.request(server)
-            .get("/posts/getbyuserid/5efb3602c106002090dc7746")
-            .set("token", token)
+            .get("/posts/getbyuserid/" + user1._id)
+            .set("token", user1.token)
             .end((error, response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.be.an.instanceof(Array);
-                expect(response.body).to.have.lengthOf.at.least(5);
-                expect(response.body[0]).to.have.property("userId", "5efb3602c106002090dc7746");
+                expect(response.body).to.have.lengthOf(5);
+                expect(response.body[0]).to.have.property("userId", user1._id);
                 done();
             });
     });
@@ -89,7 +106,7 @@ describe("Post Router Test Functions", () => {
     it("GET : getbyfulladdress", done => {
         chai.request(server)
             .get("/posts/getbyfulladdress/5eef567d7e22131964053540")
-            .set("token", token)
+            .set("token", user1.token)
             .end((error, response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.be.an.instanceof(Array);
@@ -102,7 +119,7 @@ describe("Post Router Test Functions", () => {
     it("GET : getbyprovinceaddress", done => {
         chai.request(server)
             .get("/posts/getbyprovinceaddress/5ed2c0e3bd08e22e84efea49")
-            .set("token", token)
+            .set("token", user1.token)
             .end((error, response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.be.an.instanceof(Array);
@@ -113,29 +130,31 @@ describe("Post Router Test Functions", () => {
 
     //* testing update
     it("PUT : update", done => {
+        testObjects.updatePostObj._id = user1.postId;
         chai.request(server)
             .put("/posts/update")
-            .set("token", token)
+            .set("token", user1.token)
             .send(testObjects.updatePostObj)
             .end((error, response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.be.an.instanceof(Object);
-                expect(response.body).to.have.property("_id", "5efbaab0fc804a04d8004f13");
-                expect(response.body).to.have.property("title", "New Post **** updated");
+                expect(response.body).to.have.property("_id", user1.postId);
+                expect(response.body).to.have.property("title", testObjects.updatePostObj.title);
                 done();
             });
     });
 
     //* testing delete
     it("DEL : delete", done => {
+        testObjects.deletePostObj._id = user1.postId;
         chai.request(server)
             .del("/posts/delete")
-            .set("token", token)
+            .set("token", user1.token)
             .send(testObjects.deletePostObj)
             .end((error, response) => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.be.an.instanceof(Object);
-                expect(response.body).to.have.property("_id", "5efbaab0fc804a04d8004f14");
+                expect(response.body).to.have.property("_id", user1.postId);
                 expect(response.body).to.have.property("activeStatus", false);
                 done();
             });

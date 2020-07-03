@@ -4,30 +4,49 @@ const server = require("../../src/app");
 const testObjects = require("../test-objects.json");
 const { createToken } = require("../../src/utils/security/token");
 
+const { user1, user2 } = require("./i-auth-router.test");
+const faker = require("faker");
+
 const should = chai.should();
 chai.use(chaiHttp);
-
-let token;
-let token2;
 
 describe("User Router Test Functions", () => {
 
     //* before creating token
     before(done => {
-        token = createToken(testObjects.createTokenObj);    // token  -> get functions, update
-        token2 = createToken(testObjects.createTokenObj2);  // token2 -> update (username & email), changepassword, delete
+
+        testObjects.createTokenObj._id = user1._id;
+        testObjects.createTokenObj2._id = user2._id;
+
+        testObjects.updateUserObj._id = user1._id;
+        testObjects.updateUserObj.lastname = user1.lastName;
+
+        testObjects.updateUserObj_username_mail._id = user2._id;
+        testObjects.updateUserObj_username_mail.lastname = user2.lastName;
+        testObjects.updateUserObj_username_mail.email = faker.internet.email();
+        testObjects.updateUserObj_username_mail.username = faker.internet.userName();
+
+        testObjects.changePasswordObj._id = user2._id;
+
+        testObjects.deleteUserObj._id = user2._id;
+
+        testObjects.deleteUserObj_error._id = user2._id;
+
+        user1.token = createToken(testObjects.createTokenObj);    // token  -> get functions, update
+        user2.token = createToken(testObjects.createTokenObj2);  // token2 -> update (username & email), changepassword, delete
+
         done();
     });
 
     //* testing getbyid
     it("GET : getbyid", done => {
         chai.request(server)
-            .get("/users/getbyid/5efb3602c106002090dc7746")
-            .set("token", token)
+            .get("/users/getbyid/" + user1._id)
+            .set("token", user1.token)
             .end((error, response) => {
                 response.should.have.status(200);
                 response.body.should.be.a("object");
-                response.body.should.be.property("username").eql("testuser");
+                response.body.should.be.property("email").eql(user1.email);
                 done();
             });
     });
@@ -35,12 +54,12 @@ describe("User Router Test Functions", () => {
     //* testing getbyusername
     it("GET : getbyusername", done => {
         chai.request(server)
-            .get("/users/getbyusername/testuser")
-            .set("token", token)
+            .get("/users/getbyusername/" + user1.username)
+            .set("token", user1.token)
             .end((error, response) => {
                 response.should.have.status(200);
                 response.body.should.be.a("object");
-                response.body.should.be.property("_id").eql("5efb3602c106002090dc7746");
+                response.body.should.be.property("_id").eql(user1._id);
                 done();
             });
     });
@@ -49,12 +68,12 @@ describe("User Router Test Functions", () => {
     it("PUT : update", done => {
         chai.request(server)
             .put("/users/update")
-            .set("token", token)
+            .set("token", user1.token)
             .send(testObjects.updateUserObj)
             .end((error, response) => {
                 response.should.have.status(200);
                 response.body.should.be.a("object");
-                response.body.should.be.property("_id").eql(testObjects.updateUserObj._id);
+                response.body.should.be.property("_id").eql(user1._id);
                 response.body.should.be.property("name").eql(testObjects.updateUserObj.name);
                 done();
             });
@@ -64,14 +83,14 @@ describe("User Router Test Functions", () => {
     it("PUT : update (change email & username)", done => {
         chai.request(server)
             .put("/users/update")
-            .set("token", token2)
+            .set("token", user2.token)
             .send(testObjects.updateUserObj_username_mail)
             .end((error, response) => {
                 response.should.have.status(200);
                 response.body.should.be.a("object");
                 response.body.should.be.property("_id").eql(testObjects.updateUserObj_username_mail._id);
-                response.body.should.be.property("username").eql(testObjects.updateUserObj_username_mail.username);
-                response.body.should.be.property("email").eql(testObjects.updateUserObj_username_mail.email);
+                response.body.should.be.property("username").eql(testObjects.updateUserObj_username_mail.username.toLowerCase());
+                response.body.should.be.property("email").eql(testObjects.updateUserObj_username_mail.email.toLowerCase());
                 done();
             });
     });
@@ -80,7 +99,7 @@ describe("User Router Test Functions", () => {
     it("PUT : changepassword", done => {
         chai.request(server)
             .put("/users/changepassword")
-            .set("token", token2)
+            .set("token", user2.token)
             .send(testObjects.changePasswordObj)
             .end((error, response) => {
                 response.should.have.status(200);
@@ -91,11 +110,13 @@ describe("User Router Test Functions", () => {
             });
     });
 
+    // login***
+
     //* testing delete
     it("DEL : delete", done => {
         chai.request(server)
             .del("/users/delete")
-            .set("token", token2)
+            .set("token", user2.token)
             .send(testObjects.deleteUserObj)
             .end((error, response) => {
                 response.should.have.status(200);
@@ -110,7 +131,7 @@ describe("User Router Test Functions", () => {
     it("DEL : delete (error)", done => {
         chai.request(server)
             .delete("/users/delete")
-            .set("token", token)
+            .set("token", user1.token)
             .send(testObjects.deleteUserObj)
             .end((error, response) => {
                 response.should.have.status(400);
