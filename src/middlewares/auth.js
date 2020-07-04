@@ -69,9 +69,26 @@ function auth_post_verified(req, res, next) {
     }
 }
 
+function change_password(req, res, next) {
+    const token = req.header("Token");
+    if (!token) return res.status(401).send("Access Denied.");
+
+    try {
+        const verified = jwt.verify(token, process.env.SECRET_KEY);
+
+        //* checking account -> is own account ?
+        if (verified._id != req.body._id) return res.status(400).send("Access Denied.");
+
+        next();
+    } catch (error) {
+        res.status(400).send("Invalid Token.");
+    }
+}
+
 module.exports = {
     auth,
     auth_user,
     auth_post,
-    auth_post_verified
+    auth_post_verified,
+    change_password
 }
