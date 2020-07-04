@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/user");
 const { registerValidation, loginValidation, passwordRequestValidation, changePasswordValidation } = require("../utils/validation/auth-validation");
 const { passwordHashing, passwordComparing } = require("../helpers/password-helper");
+const passwordCodeHelper = require("../helpers/password-code-helper");
 const { createToken, createToken_changePassword } = require("../utils/security/token");
 const { change_password } = require("../middlewares/auth");
 
@@ -64,7 +65,7 @@ router.post("/login", async (req, res) => {
     res.status(200).send({ token: token });
 });
 
-let passwordCode;
+let tempPasswordCode;
 
 //* passwordrequest
 router.post("/passwordrequest", async (req, res) => {
@@ -81,8 +82,7 @@ router.post("/passwordrequest", async (req, res) => {
     const token = createToken_changePassword(user.id);
 
     //* create random password code
-    passwordCode = Math.floor(100000 + Math.random() * 900000);
-    console.log(passwordCode + " - " + new Date()); // TODO : sent user
+    tempPasswordCode = passwordCodeHelper.generatePasswordCode();
 
     res.setHeader("Token", token);
     res.status(200).send({ token: token });
@@ -96,7 +96,7 @@ router.post("/changepassword", change_password, async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     //* check password code
-    if (passwordCode != req.body.passwordCode) return res.status(400).send("Check your code.");
+    if (tempPasswordCode != req.body.passwordCode) return res.status(400).send("Check your code.");
 
     //* password hashing
     const hashedPassword = await passwordHashing(req.body.newPassword);

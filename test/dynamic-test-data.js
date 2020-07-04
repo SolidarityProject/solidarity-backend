@@ -10,7 +10,8 @@ let user1 = {
     username: "",
     email: "",
     token: "",
-    postId: ""
+    postId: "",
+    passwordCode: ""
 }; // user1 -> temp test object
 
 let user2 = {

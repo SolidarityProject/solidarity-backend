@@ -42,6 +42,12 @@
     "password": "t123123"
   },
 
+  "authChangePasswordObj": {
+    "_id": "id1",
+    "newPassword": "t123123x",
+    "passwordCode": "code"
+  },
+
   "createTokenObj": {
     "_id": "id1",
     "activeStatus": true,

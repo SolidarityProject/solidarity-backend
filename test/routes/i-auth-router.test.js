@@ -2,6 +2,7 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../../src/app");
 const { user1, user2, authRouterTestBeforeFunc } = require("../dynamic-test-data");
+const { passwordCode } = require("../../src/helpers/password-code-helper");
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -90,6 +91,36 @@ describe("Auth Router Test Functions", () => {
             .send({ email: user1.email, password: "password" })
             .end((error, response) => {
                 response.should.have.status(400);
+                done();
+            });
+    });
+
+    let changePasswordToken;
+
+    //* testing passwordrequest
+    it("POST : passwordrequest", done => {
+        chai.request(server)
+            .post("/auth/passwordrequest")
+            .send({ email: user1.email })
+            .end((error, response) => {
+                response.should.have.status(200);
+                response.body.should.be.property("token");
+                response.header.should.be.property("token");
+                changePasswordToken = response.body.token;
+                done();
+            });
+    });
+
+    //* testing changepassword
+    it("POST : changepassword", done => {
+        testObjects.authChangePasswordObj._id = user1._id;
+        testObjects.authChangePasswordObj.passwordCode = user1.passwordCode;
+        chai.request(server)
+            .post("/auth/changepassword")
+            .set("token", changePasswordToken)
+            .send(testObjects.authChangePasswordObj)
+            .end((error, response) => {
+                response.should.have.status(200);
                 done();
             });
     });
