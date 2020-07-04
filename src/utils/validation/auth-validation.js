@@ -64,6 +64,38 @@ const loginValidation = data => {
     return schema.validate(data);
 };
 
+const passwordRequestValidation = data => {
+    const schema = Joi.object({
+
+        email: Joi.string()
+            .lowercase()
+            .email()
+            .required()
+    });
+
+    return schema.validate(data);
+};
+
+const changePasswordValidation = data => {
+    const schema = Joi.object({
+
+        _id: Joi.string()
+            .required(),
+
+        newPassword: Joi.string()
+            .min(6)
+            .max(15)
+            .required(),
+
+        passwordCode: Joi.string()
+            .length(6)
+    });
+
+    return schema.validate(data);
+};
+
 
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
+module.exports.passwordRequestValidation = passwordRequestValidation;
+module.exports.changePasswordValidation = changePasswordValidation;

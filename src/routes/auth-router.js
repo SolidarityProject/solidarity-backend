@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
-const { registerValidation, loginValidation } = require("../utils/validation/auth-validation");
+const { registerValidation, loginValidation, passwordRequestValidation, changePasswordValidation } = require("../utils/validation/auth-validation");
 const { passwordHashing, passwordComparing } = require("../helpers/password-helper");
 const { createToken, createToken_changePassword } = require("../utils/security/token");
 const { change_password } = require("../middlewares/auth");
@@ -69,19 +69,20 @@ let passwordCode;
 //* passwordrequest
 router.post("/passwordrequest", async (req, res) => {
 
-    //* login validations (email & password)
-    // const { error } = loginValidation(req.body);
-    //if (error) return res.status(400).send(error.details[0].message);
+    //* password request validations (email)
+    const { error } = passwordRequestValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
-    //* email validation (check user)
+    //* find user
     const user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(400).send("Check your email.");
 
     //* create token (2m)
     const token = createToken_changePassword(user.id);
 
-    passwordCode = Math.floor(100000 + Math.random() * 900000); // TODO : sent user
-    console.log(passwordCode);
+    //* create random password code
+    passwordCode = Math.floor(100000 + Math.random() * 900000);
+    console.log(passwordCode + " - " + new Date()); // TODO : sent user
 
     res.setHeader("Token", token);
     res.status(200).send({ token: token });
@@ -90,17 +91,20 @@ router.post("/passwordrequest", async (req, res) => {
 //* changepassword
 router.post("/changepassword", change_password, async (req, res) => {
 
-    //* login validations (email & password)
-    // const { error } = loginValidation(req.body);
-    //if (error) return res.status(400).send(error.details[0].message);
+    //* change password validations (_id, newPassword, passwordCode)
+    const { error } = changePasswordValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
+    //* check password code
     if (passwordCode != req.body.passwordCode) return res.status(400).send("Check your code.");
 
+    //* password hashing
     const hashedPassword = await passwordHashing(req.body.newPassword);
 
+    //* update password
     const user = await User.findByIdAndUpdate(req.body._id, { $set: { password: hashedPassword } }, { new: true });
 
-    res.status(200).send(user);
+    res.status(200).send({ "_id": user._id, "email": user.email });
 });
 
 module.exports = router;
