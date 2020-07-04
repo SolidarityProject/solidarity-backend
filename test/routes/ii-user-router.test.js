@@ -29,6 +29,16 @@ describe("User Router Test Functions", () => {
             });
     });
 
+    //* testing getbyid error because token is required
+    it("GET : getbyid (error)", done => {
+        chai.request(server)
+            .get("/users/getbyid/" + user1._id)
+            .end((error, response) => {
+                response.should.have.status(401); // unauthorize
+                done();
+            });
+    });
+
     //* testing getbyusername
     it("GET : getbyusername", done => {
         chai.request(server)
@@ -53,6 +63,19 @@ describe("User Router Test Functions", () => {
                 response.body.should.be.a("object");
                 response.body.should.be.property("_id").eql(user1._id);
                 response.body.should.be.property("name").eql(testObjects.updateUserObj.name);
+                done();
+            });
+    });
+
+    //* testing update error because gender isn't valid (valid gender numbers : 0,1,2,3,4)
+    it("PUT : update (error)", done => {
+        testObjects.updateUserObj.gender = 5;
+        chai.request(server)
+            .put("/users/update")
+            .set("token", user1.token)
+            .send(testObjects.updateUserObj)
+            .end((error, response) => {
+                response.should.have.status(400);
                 done();
             });
     });
@@ -84,6 +107,19 @@ describe("User Router Test Functions", () => {
                 response.body.should.be.a("object");
                 response.body.should.be.property("_id").eql(testObjects.changePasswordObj._id);
                 response.body.should.be.property("password");
+                done();
+            });
+    });
+
+    //* testing changepassword error because oldPassword is wrong
+    it("PUT : changepassword (error)", done => {
+        testObjects.changePasswordObj.oldPassword = "password";
+        chai.request(server)
+            .put("/users/changepassword")
+            .set("token", user2.token)
+            .send(testObjects.changePasswordObj)
+            .end((error, response) => {
+                response.should.have.status(400);
                 done();
             });
     });

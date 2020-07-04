@@ -1,6 +1,7 @@
 const faker = require("faker");
 const faker_tr = require("faker/locale/tr");
 const { createToken } = require("../src/utils/security/token");
+const { getDateForCheck_month } = require("../src/helpers/date-helper");
 const testObjects = require("./test-objects.json");
 
 let user1 = {
@@ -70,12 +71,15 @@ function postRouterTestBeforeFunc() {
 
     testObjects.addPostObj.userId = user1._id;
     testObjects.addPostObj.description += faker_tr.random.words(5);
+    testObjects.addPostObj.dateSolidarity = getDateForCheck_month(1);
 
     testObjects.addPostObj2.userId = user2._id;
     testObjects.addPostObj2.description += faker_tr.random.words(5);
+    testObjects.addPostObj2.dateSolidarity = getDateForCheck_month(1);
 
     testObjects.updatePostObj.userId = user1._id;
     testObjects.updatePostObj.description += faker_tr.random.words(5);
+    testObjects.updatePostObj.dateSolidarity = getDateForCheck_month(1);
 
     testObjects.deletePostObj.userId = user1._id;
 

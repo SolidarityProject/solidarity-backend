@@ -36,11 +36,24 @@ describe("Post Router Test Functions", () => {
     }
 
     //* testing add error because not verified account
-    it("POST : add (error)", done => {
+    it("POST : add (error 1)", done => {
         chai.request(server)
             .post("/posts/add")
             .set("token", user2.token)
             .send(testObjects.addPostObj2)
+            .end((error, response) => {
+                expect(response.status).to.equal(400);
+                done();
+            });
+    });
+
+    //* testing add error because dateSolidarity isn't valid (valid time 2 hours later - 2 months later)
+    it("POST : add (error 2)", done => {
+        testObjects.addPostObj.dateSolidarity = Date.now();
+        chai.request(server)
+            .post("/posts/add")
+            .set("token", user1.token)
+            .send(testObjects.addPostObj)
             .end((error, response) => {
                 expect(response.status).to.equal(400);
                 done();
@@ -69,6 +82,17 @@ describe("Post Router Test Functions", () => {
                 expect(response.body).to.be.an.instanceof(Object);
                 expect(response.body).to.have.property("_id", user1.postId);
                 expect(response.body).to.have.property("description", testObjects.addPostObj.description);
+                done();
+            });
+    });
+
+    //* testing getbyid error because token is invalid
+    it("GET : getbyid (error)", done => {
+        chai.request(server)
+            .get("/posts/getbyid/" + user1.postId)
+            .set("token", "token")
+            .end((error, response) => {
+                expect(response.status).to.equal(400);
                 done();
             });
     });
@@ -129,6 +153,20 @@ describe("Post Router Test Functions", () => {
             });
     });
 
+    //* testing update error because description isn't valid (valid description length : 10 - 250)
+    it("PUT : update (error)", done => {
+        testObjects.updatePostObj._id = user1.postId;
+        testObjects.updatePostObj.description = "desc";
+        chai.request(server)
+            .put("/posts/update")
+            .set("token", user1.token)
+            .send(testObjects.updatePostObj)
+            .end((error, response) => {
+                expect(response.status).to.equal(400);
+                done();
+            });
+    });
+
     //* testing delete
     it("DEL : delete", done => {
         testObjects.deletePostObj._id = user1.postId;
@@ -141,6 +179,20 @@ describe("Post Router Test Functions", () => {
                 expect(response.body).to.be.an.instanceof(Object);
                 expect(response.body).to.have.property("_id", user1.postId);
                 expect(response.body).to.have.property("activeStatus", false);
+                done();
+            });
+    });
+
+    //* testing delete error because not own post
+    it("DEL : delete (error)", done => {
+        testObjects.deletePostObj._id = user1.postId;
+        testObjects.deletePostObj.userId = user2._id;
+        chai.request(server)
+            .del("/posts/delete")
+            .set("token", user1.token)
+            .send(testObjects.deletePostObj)
+            .end((error, response) => {
+                expect(response.status).to.equal(400);
                 done();
             });
     });

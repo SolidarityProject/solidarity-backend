@@ -17,7 +17,7 @@ describe("Auth Router Test Functions", () => {
     });
 
     //* testing register
-    it("Register", done => {
+    it("register", done => {
         chai.request(server)
             .post("/auth/register")
             .send(testObjects.registerObj)
@@ -37,8 +37,20 @@ describe("Auth Router Test Functions", () => {
             });
     });
 
+    //* testing register error because birthdate isn't valid (valid age : 18 - 100)
+    it("register (error)", done => {
+        testObjects.registerObj.birthdate = "2020-01-01";
+        chai.request(server)
+            .post("/auth/register")
+            .send(testObjects.registerObj)
+            .end((error, response) => {
+                response.should.have.status(400);
+                done();
+            });
+    });
+
     //* testing register other account -> required update & delete
-    it("Register (other account for update & delete)", done => {
+    it("register (other account)", done => {
         chai.request(server)
             .post("/auth/register")
             .send(testObjects.registerObj2)
@@ -59,7 +71,7 @@ describe("Auth Router Test Functions", () => {
     });
 
     //* testing login
-    it("Login", done => {
+    it("login", done => {
         chai.request(server)
             .post("/auth/login")
             .send({ email: user1.email, password: testObjects.loginObj.password })
@@ -67,6 +79,17 @@ describe("Auth Router Test Functions", () => {
                 response.should.have.status(200);
                 response.body.should.be.property("token");
                 response.header.should.be.property("token"); // check token header
+                done();
+            });
+    });
+
+    //* testing login error because password is wrong
+    it("login (error)", done => {
+        chai.request(server)
+            .post("/auth/login")
+            .send({ email: user1.email, password: "password" })
+            .end((error, response) => {
+                response.should.have.status(400);
                 done();
             });
     });
