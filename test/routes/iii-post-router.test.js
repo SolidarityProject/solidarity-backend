@@ -1,33 +1,18 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../../src/app");
-const testObjects = require("../test-objects.json");
-
-const { user1, user2 } = require("./i-auth-router.test");
-const faker = require("faker/locale/tr");
+const { user1, user2, postRouterTestBeforeFunc } = require("../dynamic-test-data");
 
 const expect = chai.expect;
-
 chai.use(chaiHttp);
 
+let testObjects;
 
 describe("Post Router Test Functions", () => {
 
-    //* before creating token
+    //* things to do before
     before(done => {
-
-        testObjects.addPostObj.userId = user1._id;
-        testObjects.addPostObj.description += faker.random.words(5);
-
-        testObjects.addPostObj2.userId = user2._id;
-        testObjects.addPostObj2.description += faker.random.words(5);
-
-        testObjects.updatePostObj.description += faker.random.words(5);
-        testObjects.updatePostObj.userId = user1._id;
-
-        testObjects.deletePostObj.userId = user1._id;
-
-
+        testObjects = postRouterTestBeforeFunc(); // update test objects dynamic values before
         done();
     });
 

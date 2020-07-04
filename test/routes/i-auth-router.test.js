@@ -1,41 +1,18 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../../src/app");
-const testObjects = require("../test-objects.json");
-const faker = require("faker");
+const { user1, user2, authRouterTestBeforeFunc } = require("../dynamic-test-data");
 
 const should = chai.should();
 chai.use(chaiHttp);
 
-let user1 = {
-    _id: "",
-    lastName: "",
-    email: "",
-    username: "",
-    token: "",
-    postId: ""
-}
-
-let user2 = {
-    _id: "",
-    lastName: "",
-    email: "",
-    username: "",
-    token: ""
-}
+let testObjects;
 
 describe("Auth Router Test Functions", () => {
 
+    //* things to do before
     before(done => {
-
-        testObjects.registerObj.lastname = faker.name.lastName();
-        testObjects.registerObj.username = faker.internet.userName("user", faker.random.alphaNumeric(4));
-        testObjects.registerObj.email = faker.internet.email("user", faker.random.alphaNumeric(4));
-
-        testObjects.registerObj2.lastname = faker.name.lastName();
-        testObjects.registerObj2.username = faker.internet.userName("user", faker.random.alphaNumeric(4));
-        testObjects.registerObj2.email = faker.internet.email("user", faker.random.alphaNumeric(4));
-
+        testObjects = authRouterTestBeforeFunc(); // update test objects dynamic values before
         done();
     });
 
@@ -50,6 +27,7 @@ describe("Auth Router Test Functions", () => {
                 response.body.should.be.property("_id");
                 response.body.should.be.property("email").eql(testObjects.registerObj.email);
 
+                // update user1 (temp test object) values
                 user1._id = response.body._id;
                 user1.lastName = testObjects.registerObj.lastname;
                 user1.email = testObjects.registerObj.email;
@@ -70,6 +48,7 @@ describe("Auth Router Test Functions", () => {
                 response.body.should.be.property("_id");
                 response.body.should.be.property("email").eql(testObjects.registerObj2.email);
 
+                // update user2 (temp test object) values
                 user2._id = response.body._id;
                 user2.lastName = testObjects.registerObj2.lastname;
                 user2.email = testObjects.registerObj2.email;
@@ -92,5 +71,3 @@ describe("Auth Router Test Functions", () => {
             });
     });
 });
-
-module.exports = { user1, user2 };

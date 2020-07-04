@@ -1,40 +1,18 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../../src/app");
-const testObjects = require("../test-objects.json");
-const { createToken } = require("../../src/utils/security/token");
-
-const { user1, user2 } = require("./i-auth-router.test");
-const faker = require("faker");
+const { user1, user2, userRouterTestBeforeFunc } = require("../dynamic-test-data");
 
 const should = chai.should();
 chai.use(chaiHttp);
 
+let testObjects;
+
 describe("User Router Test Functions", () => {
 
-    //* before creating token
+    //* things to do before
     before(done => {
-
-        testObjects.createTokenObj._id = user1._id;
-        testObjects.createTokenObj2._id = user2._id;
-
-        testObjects.updateUserObj._id = user1._id;
-        testObjects.updateUserObj.lastname = user1.lastName;
-
-        testObjects.updateUserObj_username_mail._id = user2._id;
-        testObjects.updateUserObj_username_mail.lastname = user2.lastName;
-        testObjects.updateUserObj_username_mail.email = faker.internet.email();
-        testObjects.updateUserObj_username_mail.username = faker.internet.userName();
-
-        testObjects.changePasswordObj._id = user2._id;
-
-        testObjects.deleteUserObj._id = user2._id;
-
-        testObjects.deleteUserObj_error._id = user2._id;
-
-        user1.token = createToken(testObjects.createTokenObj);    // token  -> get functions, update
-        user2.token = createToken(testObjects.createTokenObj2);  // token2 -> update (username & email), changepassword, delete
-
+        testObjects = userRouterTestBeforeFunc(); // update test objects dynamic values before
         done();
     });
 
@@ -109,8 +87,6 @@ describe("User Router Test Functions", () => {
                 done();
             });
     });
-
-    // login***
 
     //* testing delete
     it("DEL : delete", done => {
