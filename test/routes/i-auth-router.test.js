@@ -2,7 +2,6 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../../src/app");
 const { user1, user2, authRouterTestBeforeFunc } = require("../dynamic-test-data");
-const { passwordCode } = require("../../src/helpers/password-code-helper");
 
 const should = chai.should();
 chai.use(chaiHttp);
