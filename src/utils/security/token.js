@@ -6,7 +6,7 @@ function createToken(user) {
         _id: user._id,
         activeStatus: user.activeStatus,
         verifiedStatus: user.verifiedStatus
-    }, process.env.SECRET_KEY, { expiresIn: "1h" }); // default encryption algoritm : HS256
+    }, process.env.SECRET_KEY, { expiresIn: process.env.EXPIRE_TIME }); // default encryption algoritm : HS256
 }
 
 //* create token for change password (2m) 
