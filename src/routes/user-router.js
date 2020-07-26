@@ -6,6 +6,16 @@ const { passwordComparing, passwordHashing } = require("../helpers/password-help
 
 const router = express.Router();
 
+//* me
+router.get("/me", middleware.auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        res.status(200).send(user);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
+
 //* getbyid
 router.get("/getbyid/:userId", middleware.auth, async (req, res) => {
     try {
