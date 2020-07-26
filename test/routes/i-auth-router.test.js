@@ -110,16 +110,15 @@ describe("Auth Router Test Functions", () => {
             });
     });
 
-    //* testing changepassword
-    it("POST : changepassword", done => {
+    //* testing changepassword error because passwordRequestCode is wrong
+    it("POST : changepassword (error)", done => {
         testObjects.authChangePasswordObj._id = user1._id;
-        testObjects.authChangePasswordObj.passwordCode = user1.passwordCode;
         chai.request(server)
             .post("/auth/changepassword")
             .set("token", changePasswordToken)
             .send(testObjects.authChangePasswordObj)
             .end((error, response) => {
-                response.should.have.status(200);
+                response.should.have.status(400);
                 done();
             });
     });

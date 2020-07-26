@@ -11,7 +11,6 @@ let user1 = {
     email: "",
     token: "",
     postId: "",
-    passwordCode: ""
 }; // user1 -> temp test object
 
 let user2 = {

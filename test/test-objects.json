@@ -45,7 +45,7 @@
   "authChangePasswordObj": {
     "_id": "id1",
     "newPassword": "t123123x",
-    "passwordCode": "code"
+    "passwordRequestCode": "000000"
   },
 
   "createTokenObj": {
