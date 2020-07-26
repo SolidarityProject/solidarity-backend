@@ -16,6 +16,19 @@ describe("User Router Test Functions", () => {
         done();
     });
 
+    //* testing me
+    it("GET : me", done => {
+        chai.request(server)
+            .get("/users/me/")
+            .set("token", user1.token)
+            .end((error, response) => {
+                response.should.have.status(200);
+                response.body.should.be.a("object");
+                response.body.should.be.property("_id").eql(user1._id);
+                done();
+            });
+    });
+
     //* testing getbyid
     it("GET : getbyid", done => {
         chai.request(server)
