@@ -87,8 +87,9 @@ const changePasswordValidation = data => {
             .max(15)
             .required(),
 
-        passwordCode: Joi.string()
-            .length(6)
+        passwordRequestCode: Joi.number()
+            .min(100000)
+            .max(999999)
     });
 
     return schema.validate(data);

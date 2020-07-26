@@ -31,6 +31,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 6,
     },
+    passwordRequestCode: {
+        type: Number,
+        min: 100000,
+        max: 999999,
+    },
     pictureUrl: {
         type: String,
     },
@@ -54,7 +59,6 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now(),
     }
-    // TODO: fullname (virtual)
 });
 
 module.exports = mongoose.model("User", userSchema);

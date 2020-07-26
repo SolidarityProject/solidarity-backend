@@ -65,8 +65,6 @@ router.post("/login", async (req, res) => {
     res.status(200).send({ token: token });
 });
 
-let tempPasswordCode;
-
 //* passwordrequest
 router.post("/passwordrequest", async (req, res) => {
 
@@ -81,8 +79,9 @@ router.post("/passwordrequest", async (req, res) => {
     //* create token (2m)
     const token = createToken_changePassword(user.id);
 
-    //* create random password code
-    tempPasswordCode = passwordCodeHelper.generatePasswordCode();
+    //* create random password code & save
+    user.passwordRequestCode = passwordCodeHelper.generatePasswordCode();
+    await user.save();
 
     res.setHeader("Token", token);
     res.status(200).send({ token: token });
@@ -95,14 +94,18 @@ router.post("/changepassword", change_password, async (req, res) => {
     const { error } = changePasswordValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
+    //* find user
+    const user = await User.findById(req.body._id);
+
     //* check password code
-    if (tempPasswordCode != req.body.passwordCode) return res.status(400).send("Check your code.");
+    if (user.passwordRequestCode != req.body.passwordRequestCode) return res.status(400).send("Check your code.");
 
     //* password hashing
     const hashedPassword = await passwordHashing(req.body.newPassword);
 
     //* update password
-    const user = await User.findByIdAndUpdate(req.body._id, { $set: { password: hashedPassword } }, { new: true });
+    user.password = hashedPassword;
+    await user.save();
 
     res.status(200).send({ "_id": user._id, "email": user.email });
 });
