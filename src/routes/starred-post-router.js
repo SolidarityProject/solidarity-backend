@@ -7,7 +7,7 @@ const middleware = require("../middlewares/auth");
 const router = express.Router();
 
 //* getbyid
-router.get("/getbyid/:starredPostId", async (req, res) => {
+router.get("/getbyid/:starredPostId", middleware.auth, async (req, res) => {
   try {
     await StarredPost.findById(
       req.params.starredPostId,
@@ -51,7 +51,7 @@ router.get("/getbyuserid/:userId", middleware.auth, async (req, res) => {
 });
 
 //* getbypostid
-router.get("/getbypostid/:postId", async (req, res) => {
+router.get("/getbypostid/:postId", middleware.auth, async (req, res) => {
   try {
     await StarredPost.find(
       { postId: req.params.postId },
