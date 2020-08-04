@@ -7,6 +7,30 @@ const validation = require("../utils/validation/starred-post-validation");
 
 const router = express.Router();
 
+//* getmystarredposts
+router.get("/getmystarredposts", middleware.auth, async (req, res) => {
+  try {
+    await StarredPost.find(
+      { userId: req.user._id },
+      async (err, starredPosts) => {
+        if (err) res.status(500).send(err);
+
+        if (starredPosts.length) {
+          const myPosts = [];
+
+          for (let index = 0; index < starredPosts.length; index++) {
+            const post = await Post.findById(starredPosts[index].postId);
+            myPosts.push(post._id);
+          }
+          res.status(200).send(myPosts);
+        } else return res.status(400).send("Starred Post not found.");
+      }
+    );
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 //* getbyid
 router.get("/getbyid/:starredPostId", middleware.auth, async (req, res) => {
   try {
