@@ -3,6 +3,7 @@ const StarredPost = require("../models/starred-post");
 const Post = require("../models/post");
 const User = require("../models/user");
 const middleware = require("../middlewares/auth");
+const validation = require("../utils/validation/starred-post-validation");
 
 const router = express.Router();
 
@@ -74,13 +75,11 @@ router.get("/getbypostid/:postId", middleware.auth, async (req, res) => {
   }
 });
 
-// TODO : validation - middleware
-
 //* add
 router.post("/add", middleware.auth, async (req, res) => {
-  //* add validations (title, description, picture, address, dateSolidarity)
-  //const { error } = addPostValidation(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
+  //* add validations (postId)
+  const { error } = validation.addStarredPostValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
   const newStarredPost = new StarredPost(req.body);
   newStarredPost.userId = req.user._id;
@@ -106,9 +105,9 @@ router.post("/add", middleware.auth, async (req, res) => {
 
 //* delete
 router.delete("/delete", middleware.auth, async (req, res) => {
-  //* delete validations (_id, userId)
-  //const { error } = deletePostValidation(req.body);
-  //if (error) return res.status(400).send(error.details[0].message);
+  //* delete validations (postId)
+  const { error } = validation.deleteStarredPostValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
   try {
     await StarredPost.findOneAndDelete(
