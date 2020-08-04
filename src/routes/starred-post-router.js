@@ -85,8 +85,20 @@ router.post("/add", middleware.auth, async (req, res) => {
   const newStarredPost = new StarredPost(req.body);
   newStarredPost.userId = req.user._id;
   try {
-    const starredPost = await newStarredPost.save();
-    res.status(200).send(starredPost);
+    await StarredPost.findOne(
+      {
+        userId: newStarredPost.userId,
+        postId: newStarredPost.postId,
+      },
+      async (err, starredPost) => {
+        if (err) return res.status(500).send(err);
+
+        if (!starredPost) {
+          const starredPost = await newStarredPost.save();
+          res.status(200).send(starredPost);
+        } else return res.status(400).send("This post already starred.");
+      }
+    );
   } catch (error) {
     res.status(500).send(error);
   }
