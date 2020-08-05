@@ -20,32 +20,33 @@ app.use("/users", userRouter);
 app.use("/posts", postRouter);
 app.use("/starredposts", starredPostRouter);
 
-
 app.get("/", (req, res) => {
-    res.status(200).send("----  Solidarity Backend  ----");
-})
+  res.status(200).send("----  Solidarity Backend  ----");
+});
 
 app.use("", (req, res) => {
-    res.status(404).send("Opps! 404 Not Found.");
-})
+  res.status(404).send("Opps! 404 Not Found.");
+});
 
-mongoose.connect(process.env.DB_CONNECTION, {
+mongoose.connect(
+  process.env.DB_CONNECTION,
+  {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
-}, (error) => {
+    useFindAndModify: false,
+  },
+  (error) => {
     if (error) {
-        console.log(error);
+      console.log(error);
+    } else {
+      console.log("Connected to DB.");
     }
-    else {
-        console.log("Connected to DB.");
-    }
-}
+  }
 );
 
 app.listen(process.env.PORT || 2020, () => {
-    console.log("App Started.");
-})
+  console.log("App Started.");
+});
 
 module.exports = app;
