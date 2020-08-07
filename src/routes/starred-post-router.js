@@ -42,7 +42,9 @@ router.get("/getbyid/:starredPostId", middleware.auth, async (req, res) => {
         if (starredPost) {
           const user = await User.findById(starredPost.userId);
           const post = await Post.findById(starredPost.postId);
-          res.status(200).send({ user: user, post: post });
+          res
+            .status(200)
+            .send({ _id: starredPost._id, user: user, post: post });
         } else return res.status(400).send("Starred Post not found.");
       }
     );
@@ -128,16 +130,13 @@ router.post("/add", middleware.auth, async (req, res) => {
 });
 
 //* delete
-router.delete("/delete", middleware.auth, async (req, res) => {
-  //* delete validations (postId)
-  const { error } = validation.deleteStarredPostValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+router.delete("/delete/:postId", middleware.auth, async (req, res) => {
 
   try {
     await StarredPost.findOneAndDelete(
       {
         userId: req.user._id,
-        postId: req.body.postId,
+        postId: req.params.postId,
       },
       async (err, starredPost) => {
         if (err) return res.status(500).send(err);
