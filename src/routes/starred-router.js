@@ -1,5 +1,4 @@
 const express = require("express");
-const StarredPost = require("../models/starred-post");
 const Post = require("../models/post");
 const User = require("../models/user");
 const middleware = require("../middlewares/auth");
