@@ -10,96 +10,76 @@ const router = express.Router();
 //* getmystarredposts
 router.get("/getmystarredposts", middleware.auth, async (req, res) => {
   try {
-    await StarredPost.find(
-      { userId: req.user._id },
-      async (err, starredPosts) => {
+    await User.findById(req.user._id, async (err, user) => {
+      if (err) res.status(500).send(err);
+
+      if (user) res.status(200).send(user.starredPosts);
+      else return res.status(400).send("User not found.");
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+//* getusersbypostid
+router.get("/getusersbypostid/:postId", middleware.auth, async (req, res) => {
+  try {
+    await Post.findById(req.params.postId, async (err, post) => {
+      if (err) res.status(500).send(err);
+
+      if (post) res.status(200).send(post.starredUsers);
+      else return res.status(400).send("Post not found.");
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+//* getpostsbyuserid
+router.get("/getpostsbyuserid/:userId", middleware.auth, async (req, res) => {
+  try {
+    await User.findById(req.params.userId, async (err, user) => {
+      if (err) res.status(500).send(err);
+
+      if (user) {
+        const posts = [];
+
+        for (let index = 0; index < user.starredPosts.length; index++) {
+          const post = await Post.findById(user.starredPosts[index]);
+          posts.push(post);
+        }
+        res.status(200).send(posts);
+      } else return res.status(400).send("User not found.");
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+//* getusersinfobypostid
+router.get(
+  "/getusersinfobypostid/:postId",
+  middleware.auth,
+  async (req, res) => {
+    try {
+      await Post.findById(req.params.postId, async (err, post) => {
         if (err) res.status(500).send(err);
 
-        if (starredPosts.length) {
-          const myPosts = [];
-
-          for (let index = 0; index < starredPosts.length; index++) {
-            const post = await Post.findById(starredPosts[index].postId);
-            myPosts.push(post._id);
-          }
-          res.status(200).send(myPosts);
-        } else return res.status(400).send("Starred Post not found.");
-      }
-    );
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-//* getbyid
-router.get("/getbyid/:starredPostId", middleware.auth, async (req, res) => {
-  try {
-    await StarredPost.findById(
-      req.params.starredPostId,
-      async (err, starredPost) => {
-        if (err) return res.status(500).send(err);
-
-        if (starredPost) {
-          const user = await User.findById(starredPost.userId);
-          const post = await Post.findById(starredPost.postId);
-          res
-            .status(200)
-            .send({ _id: starredPost._id, user: user, post: post });
-        } else return res.status(400).send("Starred Post not found.");
-      }
-    );
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-//* getbyuserid
-router.get("/getbyuserid/:userId", middleware.auth, async (req, res) => {
-  try {
-    await StarredPost.find(
-      { userId: req.params.userId },
-      async (err, starredPosts) => {
-        if (err) res.status(500).send(err);
-
-        if (starredPosts.length) {
-          const posts = [];
-
-          for (let index = 0; index < starredPosts.length; index++) {
-            const post = await Post.findById(starredPosts[index].postId);
-            posts.push(post);
-          }
-          res.status(200).send(posts);
-        } else return res.status(400).send("Starred Post not found.");
-      }
-    );
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-//* getbypostid
-router.get("/getbypostid/:postId", middleware.auth, async (req, res) => {
-  try {
-    await StarredPost.find(
-      { postId: req.params.postId },
-      async (err, starredPosts) => {
-        if (err) return res.status(500).send(err);
-
-        if (starredPosts.length) {
+        if (post) {
           const users = [];
 
-          for (let index = 0; index < starredPosts.length; index++) {
-            const user = await User.findById(starredPosts[index].userId);
+          for (let index = 0; index < post.starredUsers.length; index++) {
+            const user = await User.findById(post.starredUsers[index]);
             users.push(user);
           }
           res.status(200).send(users);
-        } else return res.status(400).send("Starred Post not found.");
-      }
-    );
-  } catch (error) {
-    res.status(500).send(error);
+        } else return res.status(400).send("Post not found.");
+      });
+    } catch (error) {
+      res.status(500).send(error);
+    }
   }
-});
+);
 
 //* add
 router.post("/add", middleware.auth, async (req, res) => {
@@ -107,23 +87,20 @@ router.post("/add", middleware.auth, async (req, res) => {
   const { error } = validation.addStarredPostValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const newStarredPost = new StarredPost(req.body);
-  newStarredPost.userId = req.user._id;
   try {
-    await StarredPost.findOne(
-      {
-        userId: newStarredPost.userId,
-        postId: newStarredPost.postId,
-      },
-      async (err, starredPost) => {
-        if (err) return res.status(500).send(err);
+    await User.findById(req.user._id, async (err, user) => {
+      if (err) return res.status(500).send(err);
 
-        if (!starredPost) {
-          const starredPost = await newStarredPost.save();
-          res.status(200).send(starredPost);
-        } else return res.status(400).send("This post already starred.");
-      }
-    );
+      if (user) {
+        const existStatus = user.starredPosts.includes(req.body.postId);
+        if (existStatus)
+          return res.status(400).send("This post already starred.");
+
+        user.starredPosts.push(req.body.postId);
+        await user.save();
+        res.status(200).send(user.starredPosts);
+      } else return res.status(400).send("User not found.");
+    });
   } catch (error) {
     res.status(500).send(error);
   }
@@ -131,20 +108,19 @@ router.post("/add", middleware.auth, async (req, res) => {
 
 //* delete
 router.delete("/delete/:postId", middleware.auth, async (req, res) => {
-
   try {
-    await StarredPost.findOneAndDelete(
-      {
-        userId: req.user._id,
-        postId: req.params.postId,
-      },
-      async (err, starredPost) => {
-        if (err) return res.status(500).send(err);
+    await User.findById(req.user._id, async (err, user) => {
+      if (err) return res.status(500).send(err);
 
-        if (starredPost) res.status(200).send(starredPost);
-        else return res.status(400).send("Starred Post not found.");
-      }
-    );
+      if (user) {
+        const existStatus = user.starredPosts.includes(req.params.postId);
+        if (!existStatus) return res.status(400).send("This post non starred.");
+
+        user.starredPosts.pop(req.params.postId);
+        await user.save();
+        res.status(200).send(user.starredPosts);
+      } else return res.status(400).send("User not found.");
+    });
   } catch (error) {
     res.status(500).send(error);
   }
