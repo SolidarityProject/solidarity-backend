@@ -164,6 +164,10 @@
     "userId": "id1"
   },
 
+  "addStarredPostObj": {
+    "postId": "postId"
+  },
+
   "verifiedDataObj": {
     "_id": "1",
     "activeStatus": true,

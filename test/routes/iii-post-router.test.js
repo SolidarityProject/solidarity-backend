@@ -33,7 +33,7 @@ describe("Post Router Test Functions", () => {
           expect(response.status).to.equal(200);
           expect(response.body).to.be.an.instanceof(Object);
           expect(response.body).to.have.property("_id");
-          user1.postId = response.body._id;
+          user1.postId[postCount] = response.body._id;
           done();
         });
     });
@@ -83,12 +83,12 @@ describe("Post Router Test Functions", () => {
   it("GET : getbyid", (done) => {
     chai
       .request(server)
-      .get("/posts/getbyid/" + user1.postId)
+      .get("/posts/getbyid/" + user1.postId[0])
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
         expect(response.body).to.be.an.instanceof(Object);
-        expect(response.body).to.have.property("_id", user1.postId);
+        expect(response.body).to.have.property("_id", user1.postId[0]);
         expect(response.body).to.have.property(
           "description",
           testObjects.addPostObj.description
@@ -101,7 +101,7 @@ describe("Post Router Test Functions", () => {
   it("GET : getbyid (error)", (done) => {
     chai
       .request(server)
-      .get("/posts/getbyid/" + user1.postId)
+      .get("/posts/getbyid/" + user1.postId[0])
       .set("token", "token")
       .end((error, response) => {
         expect(response.status).to.equal(400);
@@ -160,7 +160,7 @@ describe("Post Router Test Functions", () => {
 
   //* testing update
   it("PUT : update", (done) => {
-    testObjects.updatePostObj._id = user1.postId;
+    testObjects.updatePostObj._id = user1.postId[0];
     chai
       .request(server)
       .put("/posts/update")
@@ -169,7 +169,7 @@ describe("Post Router Test Functions", () => {
       .end((error, response) => {
         expect(response.status).to.equal(200);
         expect(response.body).to.be.an.instanceof(Object);
-        expect(response.body).to.have.property("_id", user1.postId);
+        expect(response.body).to.have.property("_id", user1.postId[0]);
         expect(response.body).to.have.property(
           "title",
           testObjects.updatePostObj.title
@@ -180,7 +180,7 @@ describe("Post Router Test Functions", () => {
 
   //* testing update error because description isn't valid (valid description length : 10 - 250)
   it("PUT : update (error)", (done) => {
-    testObjects.updatePostObj._id = user1.postId;
+    testObjects.updatePostObj._id = user1.postId[0];
     testObjects.updatePostObj.description = "desc";
     chai
       .request(server)
@@ -195,7 +195,7 @@ describe("Post Router Test Functions", () => {
 
   //* testing delete
   it("DEL : delete", (done) => {
-    testObjects.deletePostObj._id = user1.postId;
+    testObjects.deletePostObj._id = user1.postId[4];
     chai
       .request(server)
       .del("/posts/delete")
@@ -204,7 +204,7 @@ describe("Post Router Test Functions", () => {
       .end((error, response) => {
         expect(response.status).to.equal(200);
         expect(response.body).to.be.an.instanceof(Object);
-        expect(response.body).to.have.property("_id", user1.postId);
+        expect(response.body).to.have.property("_id", user1.postId[4]);
         expect(response.body).to.have.property("activeStatus", false);
         done();
       });
@@ -212,7 +212,7 @@ describe("Post Router Test Functions", () => {
 
   //* testing delete error because not own post
   it("DEL : delete (error)", (done) => {
-    testObjects.deletePostObj._id = user1.postId;
+    testObjects.deletePostObj._id = user1.postId[0];
     testObjects.deletePostObj.userId = user2._id;
     chai
       .request(server)

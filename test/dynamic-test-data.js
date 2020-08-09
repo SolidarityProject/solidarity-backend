@@ -10,7 +10,7 @@ let user1 = {
   username: "",
   email: "",
   token: "",
-  postId: "",
+  postId: [],
 }; // user1 -> temp test object
 
 let user2 = {
@@ -93,10 +93,17 @@ function postRouterTestBeforeFunc() {
   return testObjects;
 }
 
+function starredRouterTestBeforeFunc() {
+  testObjects.addStarredPostObj.postId = user1.postId[0];
+
+  return testObjects;
+}
+
 module.exports = {
   user1,
   user2,
   authRouterTestBeforeFunc,
   userRouterTestBeforeFunc,
   postRouterTestBeforeFunc,
+  starredRouterTestBeforeFunc,
 };
