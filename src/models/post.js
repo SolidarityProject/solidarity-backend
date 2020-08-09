@@ -18,6 +18,9 @@ const postSchema = new mongoose.Schema({
     type: String,
   },
   address: addressSchema,
+  starredUsers: {
+    type: [String],
+  },
   activeStatus: {
     type: Boolean,
     default: true,

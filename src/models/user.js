@@ -47,6 +47,9 @@ const userSchema = new mongoose.Schema({
     type: Date,
   },
   address: addressSchema,
+  starredPosts: {
+    type: [String],
+  },
   activeStatus: {
     type: Boolean,
     default: true,
