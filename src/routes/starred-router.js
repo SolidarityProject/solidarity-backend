@@ -3,7 +3,7 @@ const StarredPost = require("../models/starred-post");
 const Post = require("../models/post");
 const User = require("../models/user");
 const middleware = require("../middlewares/auth");
-const validation = require("../utils/validation/starred-post-validation");
+const validation = require("../utils/validation/starred-validation");
 
 const router = express.Router();
 
