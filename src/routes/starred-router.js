@@ -88,6 +88,7 @@ router.post("/add", middleware.auth, async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
+    //* find user
     await User.findById(req.user._id, async (err, user) => {
       if (err) return res.status(500).send(err);
 
@@ -96,6 +97,18 @@ router.post("/add", middleware.auth, async (req, res) => {
         if (existStatus)
           return res.status(400).send("This post already starred.");
 
+        //* find post
+        await Post.findById(req.body.postId, async (err, post) => {
+          if (err) return res.status(500).send(err);
+
+          if (post) {
+            //* add new user -> array
+            post.starredUsers.push(req.user._id);
+            await post.save();
+          } else return res.status(400).send("Post not found");
+        });
+
+        //* add new post -> array
         user.starredPosts.push(req.body.postId);
         await user.save();
         res.status(200).send(user.starredPosts);
@@ -109,6 +122,7 @@ router.post("/add", middleware.auth, async (req, res) => {
 //* delete
 router.delete("/delete/:postId", middleware.auth, async (req, res) => {
   try {
+    //* find user
     await User.findById(req.user._id, async (err, user) => {
       if (err) return res.status(500).send(err);
 
@@ -116,6 +130,18 @@ router.delete("/delete/:postId", middleware.auth, async (req, res) => {
         const existStatus = user.starredPosts.includes(req.params.postId);
         if (!existStatus) return res.status(400).send("This post non starred.");
 
+        //* find post
+        await Post.findById(req.params.postId, async (err, post) => {
+          if (err) return res.status(500).send(err);
+
+          if (post) {
+            //* remove user -> array
+            post.starredUsers.pop(req.user._id);
+            await post.save();
+          } else return res.status(400).send("Post not found");
+        });
+
+        //* remove post -> array
         user.starredPosts.pop(req.params.postId);
         await user.save();
         res.status(200).send(user.starredPosts);
