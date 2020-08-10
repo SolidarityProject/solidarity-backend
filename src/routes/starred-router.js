@@ -3,6 +3,7 @@ const Post = require("../models/post");
 const User = require("../models/user");
 const middleware = require("../middlewares/auth");
 const validation = require("../utils/validation/starred-validation");
+const { getDateForCheck_minute } = require("../helpers/date-helper");
 
 const router = express.Router();
 
@@ -44,10 +45,24 @@ router.get("/getpostsbyuserid/:userId", middleware.auth, async (req, res) => {
         const posts = [];
 
         for (let index = 0; index < user.starredPosts.length; index++) {
-          const post = await Post.findById(user.starredPosts[index]);
-          posts.push(post);
+          await Post.findOne(
+            {
+              _id: user.starredPosts[index],
+              activeStatus: true,
+              dateSolidarity: { $gt: getDateForCheck_minute(15) },
+            },
+            (err, post) => {
+              if (err) res.status(500).send(err);
+
+              if (post) {
+                posts.push(post);
+              }
+            }
+          );
         }
-        res.status(200).send(posts);
+        res
+          .status(200)
+          .send(posts.sort((a, b) => a.dateSolidarity - b.dateSolidarity));
       } else return res.status(400).send("User not found.");
     });
   } catch (error) {
