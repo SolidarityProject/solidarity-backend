@@ -135,13 +135,13 @@ router.delete("/delete/:postId", middleware.auth, async (req, res) => {
 
           if (post) {
             //* remove user -> array
-            post.starredUsers.pop(req.user._id);
+            post.starredUsers.pull(req.user._id);
             await post.save();
           } else return res.status(400).send("Post not found");
         });
 
         //* remove post -> array
-        user.starredPosts.pop(req.params.postId);
+        user.starredPosts.pull(req.params.postId);
         await user.save();
         res.status(200).send(user.starredPosts);
       } else return res.status(400).send("User not found.");
