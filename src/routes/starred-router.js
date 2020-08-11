@@ -43,13 +43,14 @@ router.get("/getpostsbyuserid/:userId", middleware.auth, async (req, res) => {
 
       if (user) {
         const posts = [];
+        const dateForCheck = getDateForCheck_minute(15);
 
         for (let index = 0; index < user.starredPosts.length; index++) {
           await Post.findOne(
             {
               _id: user.starredPosts[index],
               activeStatus: true,
-              dateSolidarity: { $gt: getDateForCheck_minute(15) },
+              dateSolidarity: { $gt: dateForCheck },
             },
             (err, post) => {
               if (err) res.status(500).send(err);
