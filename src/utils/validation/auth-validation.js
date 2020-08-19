@@ -66,7 +66,25 @@ const changePasswordValidation = (data) => {
   return schema.validate(data);
 };
 
+const checkAvailableEmailValidation = (data) => {
+  const schema = Joi.object({
+    email: Joi.string().required(),
+  });
+
+  return schema.validate(data);
+};
+
+const checkAvailableUsernameValidation = (data) => {
+  const schema = Joi.object({
+    username: Joi.string().required(),
+  });
+
+  return schema.validate(data);
+};
+
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.passwordRequestValidation = passwordRequestValidation;
 module.exports.changePasswordValidation = changePasswordValidation;
+module.exports.checkAvailableEmailValidation = checkAvailableEmailValidation;
+module.exports.checkAvailableUsernameValidation = checkAvailableUsernameValidation;

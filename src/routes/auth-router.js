@@ -123,6 +123,10 @@ router.post("/changepassword", change_password, async (req, res) => {
 
 //* checkavailableemail
 router.get("/checkavailableemail", async (req, res) => {
+  //* check available email validation (email)
+  const { error } = validation.checkAvailableEmailValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
   const userExist_email = await User.exists({ email: req.body.email });
   if (userExist_email)
     return res.status(400).send("This email address already exists.");
@@ -132,6 +136,10 @@ router.get("/checkavailableemail", async (req, res) => {
 
 //* checkavailableusername
 router.get("/checkavailableusername", async (req, res) => {
+  //* check available username validation (username)
+  const { error } = validation.checkAvailableUsernameValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
   const userExist_username = await User.exists({ username: req.body.username });
   if (userExist_username)
     return res.status(400).send("This username already exists.");
