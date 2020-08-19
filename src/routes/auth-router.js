@@ -122,7 +122,7 @@ router.post("/changepassword", change_password, async (req, res) => {
 });
 
 //* checkavailableemail
-router.get("/checkavailableemail", async (req, res) => {
+router.post("/checkavailableemail", async (req, res) => {
   //* check available email validation (email)
   const { error } = validation.checkAvailableEmailValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -135,7 +135,7 @@ router.get("/checkavailableemail", async (req, res) => {
 });
 
 //* checkavailableusername
-router.get("/checkavailableusername", async (req, res) => {
+router.post("/checkavailableusername", async (req, res) => {
   //* check available username validation (username)
   const { error } = validation.checkAvailableUsernameValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);

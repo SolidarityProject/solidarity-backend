@@ -138,11 +138,11 @@ describe("Auth Router Test Functions", () => {
   });
 
   //* testing checkavailableemail
-  it("GET : checkavailableemail", (done) => {
+  it("POST : checkavailableemail", (done) => {
     testObjects.checkAvailableEmailObj.email += ".tr";
     chai
       .request(server)
-      .get("/auth/checkavailableemail")
+      .post("/auth/checkavailableemail")
       .send(testObjects.checkAvailableEmailObj)
       .end((error, response) => {
         response.should.have.status(200);
@@ -151,10 +151,10 @@ describe("Auth Router Test Functions", () => {
   });
 
   //* testing checkavailableusername error because username exists
-  it("GET : checkavailableusername (error)", (done) => {
+  it("POST : checkavailableusername (error)", (done) => {
     chai
       .request(server)
-      .get("/auth/checkavailableusername")
+      .post("/auth/checkavailableusername")
       .send(testObjects.checkAvailableUsernameObj)
       .end((error, response) => {
         response.should.have.status(400);
@@ -163,11 +163,11 @@ describe("Auth Router Test Functions", () => {
   });
 
   //* testing checkavailableusername
-  it("GET : checkavailableusername", (done) => {
+  it("POST : checkavailableusername", (done) => {
     testObjects.checkAvailableUsernameObj.username += "456";
     chai
       .request(server)
-      .get("/auth/checkavailableusername")
+      .post("/auth/checkavailableusername")
       .send(testObjects.checkAvailableUsernameObj)
       .end((error, response) => {
         response.should.have.status(200);
