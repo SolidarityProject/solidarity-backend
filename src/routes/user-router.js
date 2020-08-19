@@ -48,20 +48,26 @@ router.put("/update", middleware.auth_user, async (req, res) => {
   const { error } = validation.updateUserValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  //* email validation (check mail exists)
-  const userExist_email = await User.findOne({ email: req.body.email });
-  if (userExist_email)
-    return res.status(400).send("This email address already exists.");
+  const user = await User.findById(req.user._id);
 
-  //* username validation (check username exists)
-  const userExist_username = await User.findOne({
-    username: req.body.username,
-  });
-  if (userExist_username)
-    return res.status(400).send("This username already exists.");
+  if (user.email != req.body.email) {
+    //* email validation (check mail exists)
+    const userExist_email = await User.exists({ email: req.body.email });
+    if (userExist_email)
+      return res.status(400).send("This email address already exists.");
+  }
+
+  if (user.username != req.body.username) {
+    //* username validation (check username exists)
+    const userExist_username = await User.exists({
+      username: req.body.username,
+    });
+    if (userExist_username)
+      return res.status(400).send("This username already exists.");
+  }
 
   try {
-    const user = await User.findByIdAndUpdate(req.body._id, req.body, {
+    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
       new: true,
     });
     res.status(200).send(user);

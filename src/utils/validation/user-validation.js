@@ -14,9 +14,18 @@ function updateUserValidation(data) {
 
     lastname: Joi.string().min(2).max(50).required(),
 
-    username: Joi.string().min(2).max(20).regex(usernameRegexPattern),
+    username: Joi.string()
+      .min(2)
+      .max(20)
+      .regex(usernameRegexPattern)
+      .required(),
 
-    email: Joi.string().lowercase().email().regex(emailRegexPattern),
+    email: Joi.string()
+      .max(50)
+      .lowercase()
+      .email()
+      .regex(emailRegexPattern)
+      .required(),
 
     pictureUrl: Joi.string(),
 

@@ -73,6 +73,8 @@
     "_id": "id1",
     "name": "Test upd",
     "lastname": "User",
+    "username": "username",
+    "email": "email",
     "birthdate": "1996-06-04",
     "pictureUrl": "pic.lk"
   },

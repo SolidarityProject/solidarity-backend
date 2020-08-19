@@ -60,6 +60,8 @@ function userRouterTestBeforeFunc() {
 
   testObjects.updateUserObj._id = user1._id;
   testObjects.updateUserObj.lastname = user1.lastName;
+  testObjects.updateUserObj.username = user1.username;
+  testObjects.updateUserObj.email = user1.email;
 
   testObjects.updateUserObj_username_mail._id = user2._id;
   testObjects.updateUserObj_username_mail.lastname = user2.lastName;
