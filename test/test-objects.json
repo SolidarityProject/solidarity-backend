@@ -48,6 +48,14 @@
     "passwordRequestCode": "000000"
   },
 
+  "checkAvailableEmailObj": {
+    "email": "email"
+  },
+
+  "checkAvailableUsernameObj": {
+    "username": "username"
+  },
+
   "createTokenObj": {
     "_id": "id1",
     "activeStatus": true,

@@ -136,4 +136,42 @@ describe("Auth Router Test Functions", () => {
         done();
       });
   });
+
+  //* testing checkavailableemail
+  it("GET : checkavailableemail", (done) => {
+    testObjects.checkAvailableEmailObj.email += ".tr";
+    chai
+      .request(server)
+      .get("/auth/checkavailableemail")
+      .send(testObjects.checkAvailableEmailObj)
+      .end((error, response) => {
+        response.should.have.status(200);
+        done();
+      });
+  });
+
+  //* testing checkavailableusername error because username exists
+  it("GET : checkavailableusername (error)", (done) => {
+    chai
+      .request(server)
+      .get("/auth/checkavailableusername")
+      .send(testObjects.checkAvailableUsernameObj)
+      .end((error, response) => {
+        response.should.have.status(400);
+        done();
+      });
+  });
+
+  //* testing checkavailableusername
+  it("GET : checkavailableusername", (done) => {
+    testObjects.checkAvailableUsernameObj.username += "456";
+    chai
+      .request(server)
+      .get("/auth/checkavailableusername")
+      .send(testObjects.checkAvailableUsernameObj)
+      .end((error, response) => {
+        response.should.have.status(200);
+        done();
+      });
+  });
 });

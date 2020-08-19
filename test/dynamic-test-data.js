@@ -47,6 +47,9 @@ function authRouterTestBeforeFunc() {
     faker.random.alphaNumeric(4)
   );
 
+  testObjects.checkAvailableEmailObj.email = user1.email;
+  testObjects.checkAvailableUsernameObj.username = user1.username;
+
   return testObjects;
 }
 
