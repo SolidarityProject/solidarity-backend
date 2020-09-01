@@ -15,6 +15,8 @@ function addPostValidation(data) {
 
     address: addressValidationObj.required(),
 
+    addressDetail: Joi.string().min(10).max(100).required(),
+
     dateSolidarity: Joi.date()
       .min(getDateForCheck_hour(2)) // min 2 hour later
       .max(getDateForCheck_month(2)) // max 2 month later
@@ -37,6 +39,8 @@ function updatePostValidation(data) {
     pictureUrl: Joi.string(),
 
     address: addressValidationObj.required(),
+
+    addressDetail: Joi.string().min(10).max(100).required(),
 
     dateSolidarity: Joi.date()
       .min(getDateForCheck_hour(2)) // min 2 hour later

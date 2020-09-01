@@ -129,6 +129,7 @@
       "province": "İzmir",
       "district": "Ödemiş"
     },
+    "addressDetail": "Address Detail Ödemiş / İzmir",
     "dateSolidarity": "2020-07-15T18:00",
     "title": "Test Post",
     "description": "Desc Test Post ",
@@ -145,6 +146,7 @@
       "province": "İzmir",
       "district": "Ödemiş"
     },
+    "addressDetail": "Address Detail Ödemiş / İzmir",
     "dateSolidarity": "2020-07-15T18:00",
     "title": "Test Post",
     "description": "Desc Test Post ",
@@ -161,6 +163,7 @@
       "province": "İzmir",
       "district": "Ödemiş"
     },
+    "addressDetail": "Address Detail Ödemiş / İzmir",
     "_id": "postId",
     "dateSolidarity": "2020-07-10T12:00:00.000Z",
     "title": "New Post upd",

@@ -18,6 +18,12 @@ const postSchema = new mongoose.Schema({
     type: String,
   },
   address: addressSchema,
+  addressDetail: {
+    type: String,
+    required: true,
+    minlength: 10,
+    maxlength: 100,
+  },
   starredUsers: {
     type: [String],
   },
