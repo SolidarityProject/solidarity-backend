@@ -1,8 +1,10 @@
 const express = require("express");
 const Post = require("../models/post");
+const User = require("../models/user");
 const middleware = require("../middlewares/auth");
 const validation = require("../utils/validation/post-validation");
 const { getDateForCheck_minute } = require("../helpers/date-helper");
+const { detailPostDTO } = require("../models/dtos/detail-post-dto");
 
 const router = express.Router();
 
@@ -11,6 +13,19 @@ router.get("/getbyid/:postId", middleware.auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.postId);
     res.status(200).send(post);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+//* getdetailbyid
+router.get("/getdetailbyid/:postId", middleware.auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+    const user = await User.findById(post.userId);
+    const detailPost = detailPostDTO(post, user);
+
+    res.status(200).send(detailPost);
   } catch (error) {
     res.status(500).send(error);
   }
