@@ -109,6 +109,25 @@ describe("Post Router Test Functions", () => {
       });
   });
 
+  //* testing getdetailbyid
+  it("GET : getdetailbyid", (done) => {
+    chai
+      .request(server)
+      .get("/posts/getdetailbyid/" + user1.postId[0])
+      .set("token", user1.token)
+      .end((error, response) => {
+        expect(response.status).to.equal(200);
+        expect(response.body).to.be.an.instanceof(Object);
+        expect(response.body.post).to.have.property("_id", user1.postId[0]);
+        expect(response.body.post).to.have.property("userId", user1._id);
+        expect(response.body).to.have.property(
+          "createdFullName",
+          "Test upd " + user1.lastName
+        );
+        done();
+      });
+  });
+
   //* testing getbyuserid
   it("GET : getbyuserid", (done) => {
     chai
