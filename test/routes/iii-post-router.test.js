@@ -39,13 +39,37 @@ describe("Post Router Test Functions", () => {
     });
   }
 
+  //* testing add (other district - 5 posts)
+  for (let postCount = 0; postCount < 5; postCount++) {
+    //* testing add
+    it(
+      "POST : add (count of new post : " +
+        (postCount + 1) +
+        " - other district)",
+      (done) => {
+        // POST : add (count of new post : 1,2,3,4,5 other district)
+        chai
+          .request(server)
+          .post("/posts/add")
+          .set("token", user1.token)
+          .send(testObjects.addPostObj_otherDistrict)
+          .end((error, response) => {
+            expect(response.status).to.equal(200);
+            expect(response.body).to.be.an.instanceof(Object);
+            expect(response.body).to.have.property("_id");
+            done();
+          });
+      }
+    );
+  }
+
   //* testing add error because not verified account
   it("POST : add (error 1)", (done) => {
     chai
       .request(server)
       .post("/posts/add")
       .set("token", user2.token)
-      .send(testObjects.addPostObj2)
+      .send(testObjects.addPostObj)
       .end((error, response) => {
         expect(response.status).to.equal(400);
         done();
@@ -70,11 +94,12 @@ describe("Post Router Test Functions", () => {
   it("GET : getbyprovinceaddress (for free user - not required token)", (done) => {
     chai
       .request(server)
-      .get("/posts/free/getbyprovinceaddress/5ed2c0e3bd08e22e84efea49")
+      .get("/posts/free/getbyprovinceaddress/5eef530e7e22131964053531")
       .end((error, response) => {
         expect(response.status).to.equal(200);
         expect(response.body).to.be.an.instanceof(Array);
         expect(response.body).to.have.lengthOf(3);
+        expect(response.body[0].address).to.have.property("province", "İzmir");
         done();
       });
   });
@@ -122,7 +147,7 @@ describe("Post Router Test Functions", () => {
         expect(response.body.post).to.have.property("userId", user1._id);
         expect(response.body).to.have.property(
           "createdFullName",
-          "Test upd " + user1.lastName
+          "Test " + user1.lastName
         );
         done();
       });
@@ -137,7 +162,7 @@ describe("Post Router Test Functions", () => {
       .end((error, response) => {
         expect(response.status).to.equal(200);
         expect(response.body).to.be.an.instanceof(Array);
-        expect(response.body).to.have.lengthOf(5);
+        expect(response.body).to.have.lengthOf(10);
         expect(response.body[0]).to.have.property("userId", user1._id);
         done();
       });
@@ -147,15 +172,16 @@ describe("Post Router Test Functions", () => {
   it("GET : getbyfulladdress", (done) => {
     chai
       .request(server)
-      .get("/posts/getbyfulladdress/5eef567d7e22131964053540")
+      .get("/posts/getbyfulladdress/5eef567d7e2213196405353f")
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
         expect(response.body).to.be.an.instanceof(Array);
         expect(response.body[0].address).to.have.property(
           "districtId",
-          "5eef567d7e22131964053540"
+          "5eef567d7e2213196405353f"
         );
+        expect(response.body[0].address).to.have.property("district", "Ödemiş");
         done();
       });
   });
@@ -164,15 +190,16 @@ describe("Post Router Test Functions", () => {
   it("GET : getbyprovinceaddress", (done) => {
     chai
       .request(server)
-      .get("/posts/getbyprovinceaddress/5ed2c0e3bd08e22e84efea49")
+      .get("/posts/getbyprovinceaddress/5eef530e7e22131964053531")
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
         expect(response.body).to.be.an.instanceof(Array);
         expect(response.body[0].address).to.have.property(
           "provinceId",
-          "5ed2c0e3bd08e22e84efea49"
+          "5eef530e7e22131964053531"
         );
+        expect(response.body[0].address).to.have.property("province", "İzmir");
         done();
       });
   });

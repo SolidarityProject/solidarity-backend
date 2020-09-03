@@ -82,15 +82,17 @@ function userRouterTestBeforeFunc() {
 
 function postRouterTestBeforeFunc() {
   testObjects.addPostObj.userId = user1._id;
-  testObjects.addPostObj.description += faker_tr.random.words(5);
+  testObjects.addPostObj.description += faker_tr.random.words(15);
   testObjects.addPostObj.dateSolidarity = getDateForCheck_month(1);
 
-  testObjects.addPostObj2.userId = user2._id;
-  testObjects.addPostObj2.description += faker_tr.random.words(5);
-  testObjects.addPostObj2.dateSolidarity = getDateForCheck_month(1);
+  testObjects.addPostObj_otherDistrict.userId = user1._id;
+  testObjects.addPostObj_otherDistrict.description += faker_tr.random.words(15);
+  testObjects.addPostObj_otherDistrict.dateSolidarity = getDateForCheck_month(
+    1
+  );
 
   testObjects.updatePostObj.userId = user1._id;
-  testObjects.updatePostObj.description += faker_tr.random.words(5);
+  testObjects.updatePostObj.description += faker_tr.random.words(15);
   testObjects.updatePostObj.dateSolidarity = getDateForCheck_month(1);
 
   testObjects.deletePostObj.userId = user1._id;

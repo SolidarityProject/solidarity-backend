@@ -2,49 +2,49 @@
   "registerObj": {
     "gender": 0,
     "name": "Test",
-    "lastname": "User",
-    "username": "testuser",
-    "email": "user@test.com",
-    "password": "t123123",
+    "lastname": "lastname",
+    "username": "username",
+    "email": "email",
+    "password": "tU123.",
     "birthdate": "1996-06-04",
-    "pictureUrl": "pic.lk",
+    "pictureUrl": "https://raw.githubusercontent.com/SolidarityProject/solidarity_icons/master/test_user.png",
     "address": {
       "country": "Türkiye",
       "countryId": "5eef52787e2213196405352e",
       "province": "İzmir",
       "provinceId": "5eef530e7e22131964053531",
       "district": "Ödemiş",
-      "districtId": "5eef567d7e22131964053540"
+      "districtId": "5eef567d7e2213196405353f"
     }
   },
 
   "registerObj2": {
     "gender": 0,
     "name": "Test",
-    "lastname": "User",
-    "username": "testuser2",
-    "email": "user@test2.com",
-    "password": "t123123",
+    "lastname": "lastname",
+    "username": "username",
+    "email": "email",
+    "password": "tU123.",
     "birthdate": "1996-06-04",
-    "pictureUrl": "pic.lk",
+    "pictureUrl": "https://raw.githubusercontent.com/SolidarityProject/solidarity_icons/master/test_user.png",
     "address": {
       "country": "Türkiye",
       "countryId": "5eef52787e2213196405352e",
       "province": "İzmir",
       "provinceId": "5eef530e7e22131964053531",
       "district": "Ödemiş",
-      "districtId": "5eef567d7e22131964053540"
+      "districtId": "5eef567d7e2213196405353f"
     }
   },
 
   "loginObj": {
-    "email": "user@test.com",
-    "password": "t123123"
+    "email": "email",
+    "password": "tU123."
   },
 
   "authChangePasswordObj": {
     "_id": "id1",
-    "newPassword": "t123123x",
+    "newPassword": "tU123..",
     "passwordRequestCode": "000000"
   },
 
@@ -75,16 +75,16 @@
       "province": "İzmir",
       "provinceId": "5eef530e7e22131964053531",
       "district": "Ödemiş",
-      "districtId": "5eef567d7e22131964053540"
+      "districtId": "5eef567d7e2213196405353f"
     },
     "gender": 0,
     "_id": "id1",
-    "name": "Test upd",
+    "name": "Test",
     "lastname": "User",
     "username": "username",
     "email": "email",
-    "birthdate": "1996-06-04",
-    "pictureUrl": "pic.lk"
+    "birthdate": "1994-06-04",
+    "pictureUrl": "https://raw.githubusercontent.com/SolidarityProject/solidarity_icons/master/test_user.png"
   },
 
   "updateUserObj_username_mail": {
@@ -94,22 +94,22 @@
       "province": "İzmir",
       "provinceId": "5eef530e7e22131964053531",
       "district": "Ödemiş",
-      "districtId": "5eef567d7e22131964053540"
+      "districtId": "5eef567d7e2213196405353f"
     },
     "gender": 0,
     "_id": "id2",
-    "name": "Test upd username email",
-    "lastname": "User",
-    "username": "testuser_upd",
-    "email": "user@testt.com",
+    "name": "Test Upd",
+    "lastname": "lastname",
+    "username": "username",
+    "email": "email",
     "birthdate": "1996-06-04",
-    "pictureUrl": "pic.lk"
+    "pictureUrl": "https://raw.githubusercontent.com/SolidarityProject/solidarity_icons/master/test_user.png"
   },
 
   "changePasswordObj": {
     "_id": "id2",
-    "oldPassword": "t123123",
-    "newPassword": "t123123x"
+    "oldPassword": "tU123.",
+    "newPassword": "tU123.."
   },
 
   "deleteUserObj": {
@@ -122,53 +122,53 @@
 
   "addPostObj": {
     "address": {
-      "countryId": "5ed2c0e3bd08e22e84efea44",
-      "provinceId": "5ed2c0e3bd08e22e84efea49",
-      "districtId": "5eef567d7e22131964053540",
-      "country": "Türkiye",
-      "province": "İzmir",
-      "district": "Ödemiş"
-    },
-    "addressDetail": "Address Detail Ödemiş / İzmir",
-    "dateSolidarity": "2020-07-15T18:00",
-    "title": "Test Post",
-    "description": "Desc Test Post ",
-    "pictureUrl": "pic.lk",
-    "userId": "id1"
-  },
-
-  "addPostObj2": {
-    "address": {
-      "countryId": "5ed2c0e3bd08e22e84efea44",
-      "provinceId": "5ed2c0e3bd08e22e84efea49",
-      "districtId": "5eef567d7e22131964053540",
-      "country": "Türkiye",
-      "province": "İzmir",
-      "district": "Ödemiş"
-    },
-    "addressDetail": "Address Detail Ödemiş / İzmir",
-    "dateSolidarity": "2020-07-15T18:00",
-    "title": "Test Post",
-    "description": "Desc Test Post ",
-    "pictureUrl": "pic.lk",
-    "userId": "id2"
-  },
-
-  "updatePostObj": {
-    "address": {
-      "countryId": "5ed2c0e3bd08e22e84efea44",
-      "provinceId": "5ed2c0e3bd08e22e84efea49",
+      "countryId": "5eef52787e2213196405352e",
+      "provinceId": "5eef530e7e22131964053531",
       "districtId": "5eef567d7e2213196405353f",
       "country": "Türkiye",
       "province": "İzmir",
       "district": "Ödemiş"
     },
-    "addressDetail": "Address Detail Ödemiş / İzmir",
+    "addressDetail": "Address Detail",
+    "dateSolidarity": "date",
+    "title": "Test Post",
+    "description": "Desc Test Post ",
+    "pictureUrl": "https://raw.githubusercontent.com/SolidarityProject/solidarity_icons/master/icon_extra.png",
+    "userId": "id1"
+  },
+
+  "addPostObj_otherDistrict": {
+    "address": {
+      "countryId": "5eef52787e2213196405352e",
+      "provinceId": "5eef530e7e22131964053531",
+      "districtId": "5eef567d7e2213196405353e",
+      "country": "Türkiye",
+      "province": "İzmir",
+      "district": "Konak"
+    },
+    "addressDetail": "Address Detail",
+    "dateSolidarity": "date",
+    "title": "Test Post",
+    "description": "Desc Test Post ",
+    "pictureUrl": "https://raw.githubusercontent.com/SolidarityProject/solidarity_icons/master/icon_extra.png",
+    "userId": "id1"
+  },
+
+  "updatePostObj": {
+    "address": {
+      "countryId": "5eef52787e2213196405352e",
+      "provinceId": "5eef530e7e22131964053531",
+      "districtId": "5eef567d7e2213196405353f",
+      "country": "Türkiye",
+      "province": "İzmir",
+      "district": "Ödemiş"
+    },
+    "addressDetail": "Address Detail",
     "_id": "postId",
-    "dateSolidarity": "2020-07-10T12:00:00.000Z",
-    "title": "New Post upd",
-    "description": "Desc New Post Test ",
-    "pictureUrl": "pic.lk",
+    "dateSolidarity": "date",
+    "title": "Test Post Upd",
+    "description": "Desc Test Post Upd ",
+    "pictureUrl": "https://raw.githubusercontent.com/SolidarityProject/solidarity_icons/master/icon_extra.png",
     "userId": "id1"
   },
 
