@@ -19,25 +19,11 @@ describe("User Router Test Functions", () => {
     done();
   });
 
-  //* testing me
-  it("GET : me", (done) => {
-    chai
-      .request(server)
-      .get("/api/v1/users/me/")
-      .set("token", user1.token)
-      .end((error, response) => {
-        response.should.have.status(200);
-        response.body.should.be.a("object");
-        response.body.should.be.property("_id").eql(user1._id);
-        done();
-      });
-  });
-
   //* testing getbyid
   it("GET : getbyid", (done) => {
     chai
       .request(server)
-      .get("/api/v1/users/getbyid/" + user1._id)
+      .get("/api/v1/users/" + user1._id)
       .set("token", user1.token)
       .end((error, response) => {
         response.should.have.status(200);
@@ -51,7 +37,7 @@ describe("User Router Test Functions", () => {
   it("GET : getbyid (error)", (done) => {
     chai
       .request(server)
-      .get("/api/v1/users/getbyid/" + user1._id)
+      .get("/api/v1/users/" + user1._id)
       .end((error, response) => {
         response.should.have.status(401); // unauthorize
         done();
@@ -62,7 +48,7 @@ describe("User Router Test Functions", () => {
   it("GET : getbyusername", (done) => {
     chai
       .request(server)
-      .get("/api/v1/users/getbyusername/" + user1.username)
+      .get("/api/v1/users/u/" + user1.username)
       .set("token", user1.token)
       .end((error, response) => {
         response.should.have.status(200);
@@ -76,7 +62,7 @@ describe("User Router Test Functions", () => {
   it("PUT : update", (done) => {
     chai
       .request(server)
-      .put("/api/v1/users/update")
+      .put("/api/v1/users/")
       .set("token", user1.token)
       .send(testObjects.updateUserObj)
       .end((error, response) => {
@@ -95,7 +81,7 @@ describe("User Router Test Functions", () => {
     testObjects.updateUserObj.gender = 5;
     chai
       .request(server)
-      .put("/api/v1/users/update")
+      .put("/api/v1/users/")
       .set("token", user1.token)
       .send(testObjects.updateUserObj)
       .end((error, response) => {
@@ -108,7 +94,7 @@ describe("User Router Test Functions", () => {
   it("PUT : update (change email & username)", (done) => {
     chai
       .request(server)
-      .put("/api/v1/users/update")
+      .put("/api/v1/users/")
       .set("token", user2.token)
       .send(testObjects.updateUserObj_username_mail)
       .end((error, response) => {
@@ -131,7 +117,7 @@ describe("User Router Test Functions", () => {
   it("PUT : changepassword", (done) => {
     chai
       .request(server)
-      .put("/api/v1/users/changepassword")
+      .put("/api/v1/users/" + user2._id + "/password")
       .set("token", user2.token)
       .send(testObjects.changePasswordObj)
       .end((error, response) => {
@@ -150,7 +136,7 @@ describe("User Router Test Functions", () => {
     testObjects.changePasswordObj.oldPassword = "password";
     chai
       .request(server)
-      .put("/api/v1/users/changepassword")
+      .put("/api/v1/users/" + user2._id + "/password")
       .set("token", user2.token)
       .send(testObjects.changePasswordObj)
       .end((error, response) => {
@@ -163,7 +149,7 @@ describe("User Router Test Functions", () => {
   it("DEL : delete", (done) => {
     chai
       .request(server)
-      .del("/api/v1/users/delete")
+      .del("/api/v1/users/")
       .set("token", user2.token)
       .send(testObjects.deleteUserObj)
       .end((error, response) => {
@@ -181,7 +167,7 @@ describe("User Router Test Functions", () => {
   it("DEL : delete (error)", (done) => {
     chai
       .request(server)
-      .delete("/api/v1/users/delete")
+      .delete("/api/v1/users/")
       .set("token", user1.token)
       .send(testObjects.deleteUserObj)
       .end((error, response) => {

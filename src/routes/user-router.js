@@ -9,18 +9,8 @@ const {
 
 const router = express.Router();
 
-//* me
-router.get("/me", middleware.auth, async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    res.status(200).send(user);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-//* getbyid
-router.get("/getbyid/:userId", middleware.auth, async (req, res) => {
+//* get by id
+router.get("/:userId", middleware.auth, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     res.status(200).send(user);
@@ -29,8 +19,8 @@ router.get("/getbyid/:userId", middleware.auth, async (req, res) => {
   }
 });
 
-//* getbyusername
-router.get("/getbyusername/:username", middleware.auth, async (req, res) => {
+//* get by username
+router.get("/u/:username", middleware.auth, async (req, res) => {
   try {
     const user = await User.findOne({
       username: req.params.username,
@@ -43,7 +33,7 @@ router.get("/getbyusername/:username", middleware.auth, async (req, res) => {
 });
 
 //* update
-router.put("/update", middleware.auth_user, async (req, res) => {
+router.put("/", middleware.auth_user, async (req, res) => {
   //* update validations (_id, name, lastname ... all property)
   const { error } = validation.updateUserValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -76,8 +66,10 @@ router.put("/update", middleware.auth_user, async (req, res) => {
   }
 });
 
-//* changepassword
-router.put("/changepassword", middleware.auth_user, async (req, res) => {
+// TODO : PATCH - change password
+
+//* change password
+router.put("/:userId/password", middleware.auth_user, async (req, res) => {
   //* change password validations (_id, oldPassword, newPassword )
   const { error } = validation.changePasswordValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -105,7 +97,7 @@ router.put("/changepassword", middleware.auth_user, async (req, res) => {
 });
 
 //* delete
-router.delete("/delete", middleware.auth_user, async (req, res) => {
+router.delete("/", middleware.auth_user, async (req, res) => {
   //* delete validations (_id)
   const { error } = validation.deleteUserValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
