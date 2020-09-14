@@ -26,7 +26,7 @@ describe("Post Router Test Functions", () => {
       // POST : add (count of new post : 1,2,3,4,5)
       chai
         .request(server)
-        .post("/posts/add")
+        .post("/api/v1/posts/add")
         .set("token", user1.token)
         .send(testObjects.addPostObj)
         .end((error, response) => {
@@ -50,7 +50,7 @@ describe("Post Router Test Functions", () => {
         // POST : add (count of new post : 1,2,3,4,5 other district)
         chai
           .request(server)
-          .post("/posts/add")
+          .post("/api/v1/posts/add")
           .set("token", user1.token)
           .send(testObjects.addPostObj_otherDistrict)
           .end((error, response) => {
@@ -67,7 +67,7 @@ describe("Post Router Test Functions", () => {
   it("POST : add (error 1)", (done) => {
     chai
       .request(server)
-      .post("/posts/add")
+      .post("/api/v1/posts/add")
       .set("token", user2.token)
       .send(testObjects.addPostObj)
       .end((error, response) => {
@@ -81,7 +81,7 @@ describe("Post Router Test Functions", () => {
     testObjects.addPostObj.dateSolidarity = Date.now();
     chai
       .request(server)
-      .post("/posts/add")
+      .post("/api/v1/posts/add")
       .set("token", user1.token)
       .send(testObjects.addPostObj)
       .end((error, response) => {
@@ -94,7 +94,7 @@ describe("Post Router Test Functions", () => {
   it("GET : getbyprovinceaddress (for free user - not required token)", (done) => {
     chai
       .request(server)
-      .get("/posts/free/getbyprovinceaddress/5eef530e7e22131964053531")
+      .get("/api/v1/posts/free/getbyprovinceaddress/5eef530e7e22131964053531")
       .end((error, response) => {
         expect(response.status).to.equal(200);
         expect(response.body).to.be.an.instanceof(Array);
@@ -108,7 +108,7 @@ describe("Post Router Test Functions", () => {
   it("GET : getbyid", (done) => {
     chai
       .request(server)
-      .get("/posts/getbyid/" + user1.postId[0])
+      .get("/api/v1/posts/getbyid/" + user1.postId[0])
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
@@ -126,7 +126,7 @@ describe("Post Router Test Functions", () => {
   it("GET : getbyid (error)", (done) => {
     chai
       .request(server)
-      .get("/posts/getbyid/" + user1.postId[0])
+      .get("/api/v1/posts/getbyid/" + user1.postId[0])
       .set("token", "token")
       .end((error, response) => {
         expect(response.status).to.equal(400);
@@ -138,7 +138,7 @@ describe("Post Router Test Functions", () => {
   it("GET : getdetailbyid", (done) => {
     chai
       .request(server)
-      .get("/posts/getdetailbyid/" + user1.postId[0])
+      .get("/api/v1/posts/getdetailbyid/" + user1.postId[0])
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
@@ -157,7 +157,7 @@ describe("Post Router Test Functions", () => {
   it("GET : getbyuserid", (done) => {
     chai
       .request(server)
-      .get("/posts/getbyuserid/" + user1._id)
+      .get("/api/v1/posts/getbyuserid/" + user1._id)
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
@@ -172,7 +172,7 @@ describe("Post Router Test Functions", () => {
   it("GET : getbyfulladdress", (done) => {
     chai
       .request(server)
-      .get("/posts/getbyfulladdress/5eef567d7e2213196405353f")
+      .get("/api/v1/posts/getbyfulladdress/5eef567d7e2213196405353f")
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
@@ -190,7 +190,7 @@ describe("Post Router Test Functions", () => {
   it("GET : getbyprovinceaddress", (done) => {
     chai
       .request(server)
-      .get("/posts/getbyprovinceaddress/5eef530e7e22131964053531")
+      .get("/api/v1/posts/getbyprovinceaddress/5eef530e7e22131964053531")
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
@@ -209,7 +209,7 @@ describe("Post Router Test Functions", () => {
     testObjects.updatePostObj._id = user1.postId[0];
     chai
       .request(server)
-      .put("/posts/update")
+      .put("/api/v1/posts/update")
       .set("token", user1.token)
       .send(testObjects.updatePostObj)
       .end((error, response) => {
@@ -230,7 +230,7 @@ describe("Post Router Test Functions", () => {
     testObjects.updatePostObj.description = "desc";
     chai
       .request(server)
-      .put("/posts/update")
+      .put("/api/v1/posts/update")
       .set("token", user1.token)
       .send(testObjects.updatePostObj)
       .end((error, response) => {
@@ -244,7 +244,7 @@ describe("Post Router Test Functions", () => {
     testObjects.deletePostObj._id = user1.postId[4];
     chai
       .request(server)
-      .del("/posts/delete")
+      .del("/api/v1/posts/delete")
       .set("token", user1.token)
       .send(testObjects.deletePostObj)
       .end((error, response) => {
@@ -262,7 +262,7 @@ describe("Post Router Test Functions", () => {
     testObjects.deletePostObj.userId = user2._id;
     chai
       .request(server)
-      .del("/posts/delete")
+      .del("/api/v1/posts/delete")
       .set("token", user1.token)
       .send(testObjects.deletePostObj)
       .end((error, response) => {

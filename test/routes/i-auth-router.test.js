@@ -23,7 +23,7 @@ describe("Auth Router Test Functions", () => {
   it("register", (done) => {
     chai
       .request(server)
-      .post("/auth/register")
+      .post("/api/v1/auth/register")
       .send(testObjects.registerObj)
       .end((error, response) => {
         response.should.have.status(200);
@@ -48,7 +48,7 @@ describe("Auth Router Test Functions", () => {
     testObjects.registerObj.birthdate = "2020-01-01";
     chai
       .request(server)
-      .post("/auth/register")
+      .post("/api/v1/auth/register")
       .send(testObjects.registerObj)
       .end((error, response) => {
         response.should.have.status(400);
@@ -60,7 +60,7 @@ describe("Auth Router Test Functions", () => {
   it("register (other account)", (done) => {
     chai
       .request(server)
-      .post("/auth/register")
+      .post("/api/v1/auth/register")
       .send(testObjects.registerObj2)
       .end((error, response) => {
         response.should.have.status(200);
@@ -84,7 +84,7 @@ describe("Auth Router Test Functions", () => {
   it("login", (done) => {
     chai
       .request(server)
-      .post("/auth/login")
+      .post("/api/v1/auth/login")
       .send({ email: user1.email, password: testObjects.loginObj.password })
       .end((error, response) => {
         response.should.have.status(200);
@@ -98,7 +98,7 @@ describe("Auth Router Test Functions", () => {
   it("login (error)", (done) => {
     chai
       .request(server)
-      .post("/auth/login")
+      .post("/api/v1/auth/login")
       .send({ email: user1.email, password: "password" })
       .end((error, response) => {
         response.should.have.status(400);
@@ -112,7 +112,7 @@ describe("Auth Router Test Functions", () => {
   it("POST : passwordrequest", (done) => {
     chai
       .request(server)
-      .post("/auth/passwordrequest")
+      .post("/api/v1/auth/passwordrequest")
       .send({ email: user1.email })
       .end((error, response) => {
         response.should.have.status(200);
@@ -128,7 +128,7 @@ describe("Auth Router Test Functions", () => {
     testObjects.authChangePasswordObj._id = user1._id;
     chai
       .request(server)
-      .post("/auth/changepassword")
+      .post("/api/v1/auth/changepassword")
       .set("token", changePasswordToken)
       .send(testObjects.authChangePasswordObj)
       .end((error, response) => {
@@ -142,7 +142,7 @@ describe("Auth Router Test Functions", () => {
     testObjects.checkAvailableEmailObj.email += ".tr";
     chai
       .request(server)
-      .post("/auth/checkavailableemail")
+      .post("/api/v1/auth/checkavailableemail")
       .send(testObjects.checkAvailableEmailObj)
       .end((error, response) => {
         response.should.have.status(200);
@@ -154,7 +154,7 @@ describe("Auth Router Test Functions", () => {
   it("POST : checkavailableusername (error)", (done) => {
     chai
       .request(server)
-      .post("/auth/checkavailableusername")
+      .post("/api/v1/auth/checkavailableusername")
       .send(testObjects.checkAvailableUsernameObj)
       .end((error, response) => {
         response.should.have.status(400);
@@ -167,7 +167,7 @@ describe("Auth Router Test Functions", () => {
     testObjects.checkAvailableUsernameObj.username += "456";
     chai
       .request(server)
-      .post("/auth/checkavailableusername")
+      .post("/api/v1/auth/checkavailableusername")
       .send(testObjects.checkAvailableUsernameObj)
       .end((error, response) => {
         response.should.have.status(200);
