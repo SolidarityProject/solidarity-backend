@@ -7,7 +7,7 @@ require("dotenv/config");
 const authRouter = require("./routes/auth-router");
 const userRouter = require("./routes/user-router");
 const postRouter = require("./routes/post-router");
-const starredPostRouter = require("./routes/starred-router");
+const starredPostRouter = require("./routes/starred-post-router");
 
 const app = express();
 
