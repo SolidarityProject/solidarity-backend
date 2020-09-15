@@ -77,8 +77,8 @@ router.post("/login", async (req, res) => {
   res.status(200).send({ token: token });
 });
 
-//* passwordrequest
-router.post("/passwordrequest", async (req, res) => {
+//* change password request
+router.post("/password-request", async (req, res) => {
   //* password request validations (email)
   const { error } = validation.passwordRequestValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -98,8 +98,10 @@ router.post("/passwordrequest", async (req, res) => {
   res.status(200).send({ token: token });
 });
 
-//* changepassword
-router.post("/changepassword", change_password, async (req, res) => {
+//TODO : PATCH - change password - auth
+
+//* change password
+router.post("/:userId/password", change_password, async (req, res) => {
   //* change password validations (_id, newPassword, passwordCode)
   const { error } = validation.changePasswordValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -121,8 +123,8 @@ router.post("/changepassword", change_password, async (req, res) => {
   res.status(200).send({ _id: user._id, email: user.email });
 });
 
-//* checkavailableemail
-router.post("/checkavailableemail", async (req, res) => {
+//* check available email
+router.post("/available-email", async (req, res) => {
   //* check available email validation (email)
   const { error } = validation.checkAvailableEmailValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -134,8 +136,8 @@ router.post("/checkavailableemail", async (req, res) => {
   res.status(200).send("Available");
 });
 
-//* checkavailableusername
-router.post("/checkavailableusername", async (req, res) => {
+//* check available username
+router.post("/available-username", async (req, res) => {
   //* check available username validation (username)
   const { error } = validation.checkAvailableUsernameValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
