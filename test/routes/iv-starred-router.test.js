@@ -19,7 +19,7 @@ describe("Starred Router Test Functions", () => {
   it("POST : add", (done) => {
     chai
       .request(server)
-      .post("/api/v1/starred-posts/add")
+      .post("/api/v1/starred-posts")
       .set("token", user1.token)
       .send(testObjects.addStarredPostObj)
       .end((error, response) => {
@@ -34,7 +34,7 @@ describe("Starred Router Test Functions", () => {
   it("POST : add (error)", (done) => {
     chai
       .request(server)
-      .post("/api/v1/starred-posts/add")
+      .post("/api/v1/starred-posts")
       .set("token", user1.token)
       .send(testObjects.addStarredPostObj)
       .end((error, response) => {
@@ -47,7 +47,7 @@ describe("Starred Router Test Functions", () => {
   it("GET : getmystarredposts", (done) => {
     chai
       .request(server)
-      .get("/api/v1/starred-posts/getmystarredposts")
+      .get("/api/v1/starred-posts/my-starred-posts")
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
@@ -57,25 +57,11 @@ describe("Starred Router Test Functions", () => {
       });
   });
 
-  //* testing getusersbypostid
-  it("GET : getusersbypostid", (done) => {
-    chai
-      .request(server)
-      .get("/api/v1/starred-posts/getusersbypostid/" + user1.postId[0])
-      .set("token", user1.token)
-      .end((error, response) => {
-        expect(response.status).to.equal(200);
-        expect(response.body).to.be.an.instanceof(Array);
-        expect(response.body[0]).to.equal(user1._id);
-        done();
-      });
-  });
-
   //* testing getpostsbyuserid
   it("GET : getpostsbyuserid", (done) => {
     chai
       .request(server)
-      .get("/api/v1/starred-posts/getpostsbyuserid/" + user1._id)
+      .get("/api/v1/starred-posts/p/" + user1._id)
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
@@ -89,7 +75,7 @@ describe("Starred Router Test Functions", () => {
   it("GET : getusersinfobypostid", (done) => {
     chai
       .request(server)
-      .get("/api/v1/starred-posts/getusersinfobypostid/" + user1.postId[0])
+      .get("/api/v1/starred-posts/u/" + user1.postId[0])
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
@@ -103,7 +89,7 @@ describe("Starred Router Test Functions", () => {
   it("DEL : delete", (done) => {
     chai
       .request(server)
-      .delete("/api/v1/starred-posts/delete/" + user1.postId[0])
+      .delete("/api/v1/starred-posts/" + user1.postId[0])
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(200);
@@ -116,7 +102,7 @@ describe("Starred Router Test Functions", () => {
   it("DEL : delete (error)", (done) => {
     chai
       .request(server)
-      .delete("/api/v1/starred-posts/delete/" + user1.postId[0])
+      .delete("/api/v1/starred-posts/" + user1.postId[0])
       .set("token", user1.token)
       .end((error, response) => {
         expect(response.status).to.equal(400);
