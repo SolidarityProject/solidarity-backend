@@ -12,8 +12,6 @@ chai.use(chaiHttp);
 
 let testObjects;
 
-// TODO : rename test methods
-
 describe("Post Router Test Functions", () => {
   //* things to do before
   before((done) => {
@@ -66,7 +64,7 @@ describe("Post Router Test Functions", () => {
   }
 
   //* testing add error because not verified account
-  it("POST : add (error 1)", (done) => {
+  it("POST : add error 400 (not verified account)", (done) => {
     chai
       .request(server)
       .post("/api/v1/posts")
@@ -79,7 +77,7 @@ describe("Post Router Test Functions", () => {
   });
 
   //* testing add error because dateSolidarity isn't valid (valid time 2 hours later - 2 months later)
-  it("POST : add (error 2)", (done) => {
+  it("POST : add error 400 (date solidarity isn't valid)", (done) => {
     testObjects.addPostObj.dateSolidarity = Date.now();
     chai
       .request(server)
@@ -92,8 +90,8 @@ describe("Post Router Test Functions", () => {
       });
   });
 
-  //* testing getbyprovinceaddress - not required token
-  it("GET : getbyprovinceaddress (for free user - not required token)", (done) => {
+  //* testing get by province address - not required token
+  it("GET : get by province address (for free user - not required token)", (done) => {
     chai
       .request(server)
       .get("/api/v1/posts/free/5eef530e7e22131964053531")
@@ -106,8 +104,8 @@ describe("Post Router Test Functions", () => {
       });
   });
 
-  //* testing getbyid
-  it("GET : getbyid", (done) => {
+  //* testing get by id
+  it("GET : get by id", (done) => {
     chai
       .request(server)
       .get("/api/v1/posts/" + user1.postId[0])
@@ -124,8 +122,8 @@ describe("Post Router Test Functions", () => {
       });
   });
 
-  //* testing getbyid error because token is invalid
-  it("GET : getbyid (error)", (done) => {
+  //* testing get by id error because token is invalid
+  it("GET : get by id error 400 (token is invalid)", (done) => {
     chai
       .request(server)
       .get("/api/v1/posts/" + user1.postId[0])
@@ -136,8 +134,8 @@ describe("Post Router Test Functions", () => {
       });
   });
 
-  //* testing getdetailbyid
-  it("GET : getdetailbyid", (done) => {
+  //* testing get detail by id
+  it("GET : get detail by id", (done) => {
     chai
       .request(server)
       .get("/api/v1/posts/" + user1.postId[0] + "/details")
@@ -155,8 +153,8 @@ describe("Post Router Test Functions", () => {
       });
   });
 
-  //* testing getbyuserid
-  it("GET : getbyuserid", (done) => {
+  //* testing get by user id
+  it("GET : get by user id", (done) => {
     chai
       .request(server)
       .get("/api/v1/posts/u/" + user1._id)
@@ -170,8 +168,8 @@ describe("Post Router Test Functions", () => {
       });
   });
 
-  //* testing getbyfulladdress
-  it("GET : getbyfulladdress", (done) => {
+  //* testing get by full address
+  it("GET : get by full address", (done) => {
     chai
       .request(server)
       .get("/api/v1/posts/district/5eef567d7e2213196405353f")
@@ -188,8 +186,8 @@ describe("Post Router Test Functions", () => {
       });
   });
 
-  //* testing getbyprovinceaddress
-  it("GET : getbyprovinceaddress", (done) => {
+  //* testing get by province address
+  it("GET : get by province address", (done) => {
     chai
       .request(server)
       .get("/api/v1/posts/province/5eef530e7e22131964053531")
@@ -227,7 +225,7 @@ describe("Post Router Test Functions", () => {
   });
 
   //* testing update error because description isn't valid (valid description length : 10 - 250)
-  it("PUT : update (error)", (done) => {
+  it("PUT : update error 400 (description isn't valid)", (done) => {
     testObjects.updatePostObj._id = user1.postId[0];
     testObjects.updatePostObj.description = "desc";
     chai
@@ -259,7 +257,7 @@ describe("Post Router Test Functions", () => {
   });
 
   //* testing delete error because not own post
-  it("DEL : delete (error)", (done) => {
+  it("DEL : delete error 400 (not own post)", (done) => {
     testObjects.deletePostObj._id = user1.postId[0];
     testObjects.deletePostObj.userId = user2._id;
     chai

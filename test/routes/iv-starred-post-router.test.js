@@ -31,7 +31,7 @@ describe("Starred Router Test Functions", () => {
   });
 
   //* testing add error because this post already starred
-  it("POST : add (error)", (done) => {
+  it("POST : add error 400 (this post already starred)", (done) => {
     chai
       .request(server)
       .post("/api/v1/starred-posts")
@@ -43,8 +43,8 @@ describe("Starred Router Test Functions", () => {
       });
   });
 
-  //* testing getmystarredposts
-  it("GET : getmystarredposts", (done) => {
+  //* testing get my starred posts
+  it("GET : get my starred posts", (done) => {
     chai
       .request(server)
       .get("/api/v1/starred-posts/my-starred-posts")
@@ -57,8 +57,8 @@ describe("Starred Router Test Functions", () => {
       });
   });
 
-  //* testing getpostsbyuserid
-  it("GET : getpostsbyuserid", (done) => {
+  //* testing get posts by user id
+  it("GET : get posts by user id", (done) => {
     chai
       .request(server)
       .get("/api/v1/starred-posts/p/" + user1._id)
@@ -71,8 +71,8 @@ describe("Starred Router Test Functions", () => {
       });
   });
 
-  //* testing getusersinfobypostid
-  it("GET : getusersinfobypostid", (done) => {
+  //* testing get users info by post id
+  it("GET : get users info by post id", (done) => {
     chai
       .request(server)
       .get("/api/v1/starred-posts/u/" + user1.postId[0])
@@ -99,7 +99,7 @@ describe("Starred Router Test Functions", () => {
   });
 
   //* testing delete error because this post non starred
-  it("DEL : delete (error)", (done) => {
+  it("DEL : delete error 400 (this post non starred)", (done) => {
     chai
       .request(server)
       .delete("/api/v1/starred-posts/" + user1.postId[0])

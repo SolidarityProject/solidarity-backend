@@ -33,8 +33,8 @@ describe("User Router Test Functions", () => {
       });
   });
 
-  //* testing getbyid
-  it("GET : getbyid", (done) => {
+  //* testing get by id
+  it("GET : get by id", (done) => {
     chai
       .request(server)
       .get("/api/v1/users/" + user1._id)
@@ -47,8 +47,8 @@ describe("User Router Test Functions", () => {
       });
   });
 
-  //* testing getbyid error because token is required
-  it("GET : getbyid (error)", (done) => {
+  //* testing get by id error because token is required
+  it("GET : get by id error 401 (token is required)", (done) => {
     chai
       .request(server)
       .get("/api/v1/users/" + user1._id)
@@ -58,8 +58,8 @@ describe("User Router Test Functions", () => {
       });
   });
 
-  //* testing getbyusername
-  it("GET : getbyusername", (done) => {
+  //* testing get by username
+  it("GET : get by username", (done) => {
     chai
       .request(server)
       .get("/api/v1/users/u/" + user1.username)
@@ -91,7 +91,7 @@ describe("User Router Test Functions", () => {
   });
 
   //* testing update error because gender isn't valid (valid gender numbers : 0,1,2,3,4)
-  it("PUT : update (error)", (done) => {
+  it("PUT : update error 400 (gender isn't valid)", (done) => {
     testObjects.updateUserObj.gender = 5;
     chai
       .request(server)
@@ -105,7 +105,7 @@ describe("User Router Test Functions", () => {
   });
 
   //* testing update with changing email & username
-  it("PUT : update (change email & username)", (done) => {
+  it("PUT : update - change email & username", (done) => {
     chai
       .request(server)
       .put("/api/v1/users/")
@@ -127,8 +127,8 @@ describe("User Router Test Functions", () => {
       });
   });
 
-  //* testing changepassword
-  it("PUT : changepassword", (done) => {
+  //* testing change password
+  it("PUT : change password", (done) => {
     chai
       .request(server)
       .put("/api/v1/users/" + user2._id + "/password")
@@ -145,8 +145,8 @@ describe("User Router Test Functions", () => {
       });
   });
 
-  //* testing changepassword error because oldPassword is wrong
-  it("PUT : changepassword (error)", (done) => {
+  //* testing change password error because old password is wrong
+  it("PUT : changepassword error 400 (old password is wromg)", (done) => {
     testObjects.changePasswordObj.oldPassword = "password";
     chai
       .request(server)
@@ -178,7 +178,7 @@ describe("User Router Test Functions", () => {
   });
 
   //* testing delete error because not own account
-  it("DEL : delete (error)", (done) => {
+  it("DEL : delete error 400 (not own account)", (done) => {
     chai
       .request(server)
       .delete("/api/v1/users/")

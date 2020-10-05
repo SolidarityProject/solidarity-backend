@@ -20,7 +20,7 @@ describe("Auth Router Test Functions", () => {
   });
 
   //* testing register
-  it("register", (done) => {
+  it("POST : register", (done) => {
     chai
       .request(server)
       .post("/api/v1/auth/register")
@@ -38,13 +38,12 @@ describe("Auth Router Test Functions", () => {
         user1.lastName = testObjects.registerObj.lastname;
         user1.email = testObjects.registerObj.email;
         user1.username = testObjects.registerObj.username;
-
         done();
       });
   });
 
   //* testing register error because birthdate isn't valid (valid age : 18 - 100)
-  it("register (error)", (done) => {
+  it("POST : register error 400 (birthdate isn't valid)", (done) => {
     testObjects.registerObj.birthdate = "2020-01-01";
     chai
       .request(server)
@@ -57,7 +56,7 @@ describe("Auth Router Test Functions", () => {
   });
 
   //* testing register other account -> required update & delete
-  it("register (other account)", (done) => {
+  it("POST : register - other account", (done) => {
     chai
       .request(server)
       .post("/api/v1/auth/register")
@@ -75,13 +74,12 @@ describe("Auth Router Test Functions", () => {
         user2.lastName = testObjects.registerObj2.lastname;
         user2.email = testObjects.registerObj2.email;
         user2.username = testObjects.registerObj2.username;
-
         done();
       });
   });
 
   //* testing login
-  it("login", (done) => {
+  it("POST : login", (done) => {
     chai
       .request(server)
       .post("/api/v1/auth/login")
@@ -89,13 +87,13 @@ describe("Auth Router Test Functions", () => {
       .end((error, response) => {
         response.should.have.status(200);
         response.body.should.be.property("token");
-        response.header.should.be.property("token"); // check token header
+        response.header.should.be.property("token"); // check token header       
         done();
       });
   });
 
   //* testing login error because password is wrong
-  it("login (error)", (done) => {
+  it("POST : login error 400 (password is wrong)", (done) => {
     chai
       .request(server)
       .post("/api/v1/auth/login")
@@ -108,8 +106,8 @@ describe("Auth Router Test Functions", () => {
 
   let changePasswordToken;
 
-  //* testing passwordrequest
-  it("POST : passwordrequest", (done) => {
+  //* testing password-request
+  it("POST : password request", (done) => {
     chai
       .request(server)
       .post("/api/v1/auth/password-request")
@@ -123,8 +121,8 @@ describe("Auth Router Test Functions", () => {
       });
   });
 
-  //* testing changepassword error because passwordRequestCode is wrong
-  it("POST : changepassword (error)", (done) => {
+  //* testing change password error because password request code is wrong
+  it("POST : change password error 400 (password request code is wrong)", (done) => {
     testObjects.authChangePasswordObj._id = user1._id;
     chai
       .request(server)
@@ -139,8 +137,8 @@ describe("Auth Router Test Functions", () => {
       });
   });
 
-  //* testing checkavailableemail
-  it("POST : checkavailableemail", (done) => {
+  //* testing available-email
+  it("POST : available email", (done) => {
     testObjects.checkAvailableEmailObj.email += ".tr";
     chai
       .request(server)
@@ -152,8 +150,8 @@ describe("Auth Router Test Functions", () => {
       });
   });
 
-  //* testing checkavailableusername error because username exists
-  it("POST : checkavailableusername (error)", (done) => {
+  //* testing available-username error because username exists
+  it("POST : available username error 400 (username exists)", (done) => {
     chai
       .request(server)
       .post("/api/v1/auth/available-username")
@@ -164,8 +162,8 @@ describe("Auth Router Test Functions", () => {
       });
   });
 
-  //* testing checkavailableusername
-  it("POST : checkavailableusername", (done) => {
+  //* testing available-username
+  it("POST : available username", (done) => {
     testObjects.checkAvailableUsernameObj.username += "456";
     chai
       .request(server)
