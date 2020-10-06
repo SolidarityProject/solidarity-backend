@@ -1,125 +1,124 @@
-const chai = require("chai");
 const testObjects = require("../test-objects.json");
 const helper = require("../../src/helpers/auth-control-helper");
 
-const expect = chai.expect;
+var assert = require("assert");
 
 describe("Auth Control Helper Test Functions", () => {
-  //* testing auth_error
-  it("function : auth_error", (done) => {
+  //* testing auth_err_control
+  it("auth_err_control when true story should return false", (done) => {
     const result = helper.auth_err_control(testObjects.verifiedDataObj); // check error
-    expect(result).to.be.false; // undefined  ->  no error
+    assert.equal(result, false); // false  ->  no error
     done();
   });
 
-  //* testing auth_user_error
-  it("function : auth_user_error", (done) => {
+  //* testing auth_user_err_control
+  it("auth_user_err_control when true story should return false", (done) => {
     const result = helper.auth_user_err_control(
       testObjects.verifiedDataObj,
       testObjects.reqBodyDataObj
     ); // check error
-    expect(result).to.be.false; // undefined  ->  no error
+    assert.equal(result, false); // false  ->  no error
     done();
   });
 
-  //* testing auth_post_error
-  it("function : auth_post_error", (done) => {
+  //* testing auth_post_err_control
+  it("auth_post_err_control when true story should return false", (done) => {
     const result = helper.auth_post_err_control(
       testObjects.verifiedDataObj,
       testObjects.reqBodyDataObj
     );
-    expect(result).to.be.false;
+    assert.equal(result, false);
     done();
   });
 
-  //* testing auth_post_verified_error
-  it("function : auth_post_verified_error", (done) => {
+  //* testing auth_post_verified_err_control
+  it("auth_post_verified_err_control when true story should return false", (done) => {
     const result = helper.auth_post_verified_err_control(
       testObjects.verifiedDataObj,
       testObjects.reqBodyDataObj
     );
-    expect(result).to.be.false;
+    assert.equal(result, false);
     done();
   });
 });
 
 describe("Auth Control Helper Test Functions - Error", () => {
-  //* testing auth_error (not active)
-  it("function : auth_error (not active)", (done) => {
+  //* testing auth_error (token is not active)
+  it("auth_err_control when token is not active should return true", (done) => {
     const result = helper.auth_err_control(
       testObjects.verifiedDataObj_active_error
     ); // check error
-    expect(result).to.be.true; // true  ->  there is an error
+    assert.equal(result, true); // true  ->  there is an error
     done();
   });
 
-  //* testing auth_user_error (not active)
-  it("function : auth_user_error (not active)", (done) => {
+  //* testing auth_user_err_control (user is not active)
+  it("auth_user_err_control when user is not active should return true", (done) => {
     const result = helper.auth_user_err_control(
       testObjects.verifiedDataObj_active_error,
       testObjects.reqBodyDataObj
     ); // check error
-    expect(result).to.be.true; // true  ->  there is an error
+    assert.equal(result, true); // true  ->  there is an error
     done();
   });
 
-  //* testing auth_user_error (_id no matches)
-  it("function : auth_user_error (_id no matches)", (done) => {
+  //* testing auth_user_err_control (userId does not match the _id in token)
+  it("auth_user_err_control when userId does not match the id in token should return true", (done) => {
     const result = helper.auth_user_err_control(
       testObjects.verifiedDataObj,
       testObjects.reqBodyDataObj_error
     ); // check error
-    expect(result).to.be.true; // true  ->  there is an error
+    assert.equal(result, true); // true  ->  there is an error
     done();
   });
 
-  //* testing auth_post_error (not active)
-  it("function : auth_post_error (not active)", (done) => {
+  //* testing auth_post_err_control (token is not active)
+  it("auth_post_err_control when token is not active should return true", (done) => {
     const result = helper.auth_post_err_control(
       testObjects.verifiedDataObj_active_error,
       testObjects.reqBodyDataObj
     );
-    expect(result).to.be.true;
+    assert.equal(result, true);
     done();
   });
 
-  //* testing auth_post_error (userId no matches)
-  it("function : auth_post_error (userId no matches)", (done) => {
+  //* testing auth_post_err_control (userId does not match the _id in token)
+  it("auth_post_err_control when userId does not match the id in token should return true", (done) => {
     const result = helper.auth_post_err_control(
       testObjects.verifiedDataObj,
       testObjects.reqBodyDataObj_error
     );
-    expect(result).to.be.true;
+    assert.equal(result, true);
     done();
   });
 
-  //* testing auth_post_verified_error (not active)
-  it("function : auth_post_verified_error (not active)", (done) => {
+  //* testing auth_post_verified_err_control (token is not active)
+  it("auth_post_verified_err_control when token is not active should return true", (done) => {
     const result = helper.auth_post_verified_err_control(
       testObjects.verifiedDataObj_active_error,
       testObjects.reqBodyDataObj
     );
-    expect(result).to.be.true;
+    assert.equal(result, true);
     done();
   });
 
-  //* testing auth_post_verified_error (not verified)
-  it("function : auth_post_verified_error (not verified)", (done) => {
+  //* testing auth_post_verified_err_control (not verified)
+  it("auth_post_verified_err_control when token is not verified should return true", (done) => {
     const result = helper.auth_post_verified_err_control(
       testObjects.verifiedDataObj_verified_error,
       testObjects.reqBodyDataObj
     );
-    expect(result).to.be.true;
+    assert.equal(result, true);
     done();
   });
 
-  //* testing auth_post_verified_error (userId no matches)
-  it("function : auth_post_verified_error (userId no matches)", (done) => {
+  //* testing auth_post_verified_err_control (userId does not match the _id in token)
+  it("auth_post_verified_err_control when userId does not match the id in token should return true", (done) => {
     const result = helper.auth_post_verified_err_control(
       testObjects.verifiedDataObj,
       testObjects.reqBodyDataObj_error
     );
-    expect(result).to.be.true;
+    assert.equal(result, true);
     done();
   });
 });
