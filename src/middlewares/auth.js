@@ -9,7 +9,7 @@ function auth(req, res, next) {
     const verified = jwt.verify(token, process.env.SECRET_KEY);
 
     //* checking account -> is active account ?
-    if (helper.auth_error(verified))
+    if (helper.auth_err_control(verified))
       return res.status(400).send("Access Denied.");
 
     req.user = verified;
@@ -27,7 +27,7 @@ function auth_user(req, res, next) {
     const verified = jwt.verify(token, process.env.SECRET_KEY);
 
     //* checking account -> is active & own account ?
-    if (helper.auth_user_error(verified, req.body))
+    if (helper.auth_user_err_control(verified, req.body))
       return res.status(400).send("Access Denied.");
 
     req.user = verified;
@@ -45,7 +45,7 @@ function auth_post(req, res, next) {
     const verified = jwt.verify(token, process.env.SECRET_KEY);
 
     //* checking account -> is active account & own post ?
-    if (helper.auth_post_error(verified, req.body))
+    if (helper.auth_post_err_control(verified, req.body))
       return res.status(400).send("Access Denied.");
 
     req.user = verified;
@@ -63,7 +63,7 @@ function auth_post_verified(req, res, next) {
     const verified = jwt.verify(token, process.env.SECRET_KEY);
 
     //* checking account -> is active & verified account & own post
-    if (helper.auth_post_verified_error(verified, req.body))
+    if (helper.auth_post_verified_err_control(verified, req.body))
       return res.status(400).send("Access Denied.");
 
     req.user = verified;
