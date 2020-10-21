@@ -1,11 +1,7 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../../src/app");
-const {
-  user1,
-  user2,
-  userRouterTestBeforeFunc,
-} = require("../dynamic-test-data");
+const { user1, user2, userRouterTestBeforeFunc } = require("../dynamic-test-data");
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -80,12 +76,7 @@ describe("User Router Test Functions", () => {
       .set("token", user1.token)
       .send(testObjects.updateUserObj)
       .end((error, response) => {
-        response.should.have.status(200);
-        response.body.should.be.a("object");
-        response.body.should.be.property("_id").eql(user1._id);
-        response.body.should.be
-          .property("name")
-          .eql(testObjects.updateUserObj.name);
+        response.should.have.status(204);
         done();
       });
   });
@@ -112,17 +103,7 @@ describe("User Router Test Functions", () => {
       .set("token", user2.token)
       .send(testObjects.updateUserObj_username_mail)
       .end((error, response) => {
-        response.should.have.status(200);
-        response.body.should.be.a("object");
-        response.body.should.be
-          .property("_id")
-          .eql(testObjects.updateUserObj_username_mail._id);
-        response.body.should.be
-          .property("username")
-          .eql(testObjects.updateUserObj_username_mail.username.toLowerCase());
-        response.body.should.be
-          .property("email")
-          .eql(testObjects.updateUserObj_username_mail.email.toLowerCase());
+        response.should.have.status(204);
         done();
       });
   });
@@ -135,12 +116,7 @@ describe("User Router Test Functions", () => {
       .set("token", user2.token)
       .send(testObjects.changePasswordObj)
       .end((error, response) => {
-        response.should.have.status(200);
-        response.body.should.be.a("object");
-        response.body.should.be
-          .property("_id")
-          .eql(testObjects.changePasswordObj._id);
-        response.body.should.be.property("password");
+        response.should.have.status(204);
         done();
       });
   });
@@ -167,12 +143,7 @@ describe("User Router Test Functions", () => {
       .set("token", user2.token)
       .send(testObjects.deleteUserObj)
       .end((error, response) => {
-        response.should.have.status(200);
-        response.body.should.be.a("object");
-        response.body.should.be
-          .property("_id")
-          .eql(testObjects.deleteUserObj._id);
-        response.body.should.be.property("activeStatus").eql(false);
+        response.should.have.status(204);
         done();
       });
   });

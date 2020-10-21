@@ -1,127 +1,25 @@
 const express = require("express");
-const User = require("../models/user");
+const userController = require("../controllers/user-controller");
 const middleware = require("../middlewares/auth");
-const validation = require("../utils/validation/user-validation");
-const {
-  passwordComparing,
-  passwordHashing,
-} = require("../helpers/password-helper");
 
 const router = express.Router();
 
 //* get my info
-router.get("/me/info", middleware.auth, async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    res.status(200).send(user);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+router.get("/me/info", middleware.auth, userController.getMyInfo);
 
 //* get by id
-router.get("/:userId", middleware.auth, async (req, res) => {
-  try {
-    const user = await User.findById(req.params.userId);
-    res.status(200).send(user);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+router.get("/:userId", middleware.auth, userController.getById);
 
 //* get by username
-router.get("/u/:username", middleware.auth, async (req, res) => {
-  try {
-    const user = await User.findOne({
-      username: req.params.username,
-      activeStatus: true,
-    });
-    res.status(200).send(user);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+router.get("/u/:username", middleware.auth, userController.getByUsername);
 
 //* update
-router.put("/", middleware.auth_user, async (req, res) => {
-  //* update validations (_id, name, lastname ... all property)
-  const { error } = validation.updateUserValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  const user = await User.findById(req.user._id);
-
-  if (user.email != req.body.email) {
-    //* email validation (check mail exists)
-    const userExist_email = await User.exists({ email: req.body.email });
-    if (userExist_email)
-      return res.status(400).send("This email address already exists.");
-  }
-
-  if (user.username != req.body.username) {
-    //* username validation (check username exists)
-    const userExist_username = await User.exists({
-      username: req.body.username,
-    });
-    if (userExist_username)
-      return res.status(400).send("This username already exists.");
-  }
-
-  try {
-    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
-      new: true,
-    });
-    res.status(200).send(user);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-// TODO : PATCH - change password
+router.put("/", middleware.auth_user, userController.updateUser);
 
 //* change password
-router.put("/:userId/password", middleware.auth_user, async (req, res) => {
-  //* change password validations (_id, oldPassword, newPassword )
-  const { error } = validation.changePasswordValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  //* finding user
-  const findUser = await User.findById(req.body._id);
-
-  //* old password comparing
-  const validPassword = await passwordComparing(
-    req.body.oldPassword,
-    findUser.password
-  );
-  if (!validPassword) return res.status(400).send("Check your old password.");
-
-  //* new password hashing
-  const hashedPassword = await passwordHashing(req.body.newPassword);
-  findUser.password = hashedPassword;
-
-  try {
-    const user = await findUser.save();
-    res.status(200).send(user);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+router.put("/:userId/password", middleware.auth_user, userController.changePassword);
 
 //* delete
-router.delete("/", middleware.auth_user, async (req, res) => {
-  //* delete validations (_id)
-  const { error } = validation.deleteUserValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.body._id,
-      { $set: { activeStatus: false } },
-      { new: true }
-    );
-    res.status(200).send(user);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+router.delete("/", middleware.auth_user, userController.deleteUser);
 
 module.exports = router;
