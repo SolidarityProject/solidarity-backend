@@ -120,6 +120,18 @@ describe("Post Router Test Functions", () => {
       });
   });
 
+  //* testing get by id error because post not found
+  it("GET : get by id error 404 (post not found)", (done) => {
+    chai
+      .request(server)
+      .get("/api/v1/posts/1f6064e19b979c2f98cdda0a")
+      .set("token", user1.token)
+      .end((error, response) => {
+        expect(response.status).to.equal(404);
+        done();
+      });
+  });
+
   //* testing get detail by id
   it("GET : get detail by id", (done) => {
     chai

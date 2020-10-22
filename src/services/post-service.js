@@ -1,58 +1,56 @@
-const Post = require("../models/post");
-const User = require("../models/user");
-const { getDateForCheck_minute } = require("../helpers/date-helper");
+const postRepository = require("../repositories/post-repository");
+const Post = require("../models/post"); 
+const User = require("../models/user"); 
 const { detailPostDTO } = require("../models/dtos/detail-post-dto");
+const PostNotFoundException = require("../utils/exception/post-not-found-excepiton");
 
-async function getById(id) {
-  return Post.findById(id);
+async function isExistsWithId(id) {
+  const isExists = await postRepository.isExistsWithId(id);
+  if (!isExists) throw new PostNotFoundException(id);
 }
 
-async function getDetails(post) {
-  const user = await User.findById(post.userId);
+async function getById(id) {
+  await isExistsWithId(id);
+  return await postRepository.getById(id);
+}
+
+async function getDetails(id) {
+  const post = await getById(id);
+  const user = await User.findById(post.userId); // TODO : implement user repository
   return detailPostDTO(post, user);
 }
 
 async function getListByUserId(userId) {
-  return await Post.find({ userId: userId, activeStatus: true });
+  return await postRepository.getListByUserId(userId);
 }
 
 async function getListByDistrictId(districtId) {
-  return await Post.find({
-    "address.districtId": districtId,
-    activeStatus: true,
-    dateSolidarity: { $gt: getDateForCheck_minute(15) }
-  }).sort("dateSolidarity");
+  return await postRepository.getListByDistrictId(districtId);
 }
 
 async function getListByProvinceId(provinceId) {
-  return await Post.find({
-    "address.provinceId": provinceId,
-    activeStatus: true,
-    dateSolidarity: { $gt: getDateForCheck_minute(15) }
-  }).sort("dateSolidarity");
+  return await postRepository.getListByProvinceId(provinceId);
 }
 
 async function getListByProvinceIdForFree(provinceId) {
-  return await Post.find({
-    "address.provinceId": provinceId,
-    activeStatus: true,
-    dateSolidarity: { $gt: getDateForCheck_minute(15) }
-  }).sort("dateSolidarity").limit(3);
+  return await postRepository.getListByProvinceIdForFree(provinceId);
 }
 
 async function addPost(postToAdd, userId) {
   const newPost = new Post(postToAdd);
   newPost.userId = userId;
-  const post = await newPost.save();
-  return post._id;
+  await postRepository.addPost(newPost);
+  return newPost._id;
 }
 
 async function updatePost(id, postToUpdate) {
-  await Post.findByIdAndUpdate(id, postToUpdate);
+  await isExistsWithId(id);
+  await postRepository.updatePost(id, postToUpdate);
 }
 
 async function deletePost(id) {
-  await Post.findByIdAndUpdate(id, { $set: { activeStatus: false } });
+  await isExistsWithId(id);
+  await postRepository.deletePost(id);
 }
 
 module.exports = {
@@ -64,5 +62,5 @@ module.exports = {
   getListByProvinceIdForFree,
   addPost,
   updatePost,
-  deletePost
+  deletePost,
 };
