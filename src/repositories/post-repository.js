@@ -17,7 +17,7 @@ async function getListByDistrictId(districtId) {
   return await Post.find({
     "address.districtId": districtId,
     activeStatus: true,
-    dateSolidarity: { $gt: getDateForCheck_minute(15) },
+    dateSolidarity: { $gt: getDateForCheck_minute(15) }, // TODO : date func move to service
   }).sort("dateSolidarity");
 }
 
