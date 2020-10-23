@@ -24,7 +24,7 @@ async function getByUsername(username) {
   return await User.findOne({ username: username, activeStatus: true });
 }
 
-async function addUser(userToAdd) {
+async function addUser(userToAdd) { // TODO : save funct
   await userToAdd.save();
 }
 

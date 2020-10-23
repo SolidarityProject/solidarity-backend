@@ -28,27 +28,12 @@ function authRouterTestBeforeFunc() {
   const nameForUsername2 = "user" + faker.random.alphaNumeric(2);
 
   testObjects.registerObj.lastname = faker_tr.name.lastName();
-  testObjects.registerObj.username = faker.internet.userName(
-    nameForUsername,
-    faker.random.alphaNumeric(4)
-  );
-  testObjects.registerObj.email = faker.internet.email(
-    nameForUsername,
-    faker.random.alphaNumeric(4)
-  );
+  testObjects.registerObj.username = faker.internet.userName(nameForUsername, faker.random.alphaNumeric(4));
+  testObjects.registerObj.email = faker.internet.email(nameForUsername, faker.random.alphaNumeric(4));
 
   testObjects.registerObj2.lastname = faker_tr.name.lastName();
-  testObjects.registerObj2.username = faker.internet.userName(
-    nameForUsername2,
-    faker.random.alphaNumeric(4)
-  );
-  testObjects.registerObj2.email = faker.internet.email(
-    nameForUsername2,
-    faker.random.alphaNumeric(4)
-  );
-
-  testObjects.checkAvailableEmailObj.email = user1.email;
-  testObjects.checkAvailableUsernameObj.username = user1.username;
+  testObjects.registerObj2.username = faker.internet.userName(nameForUsername2, faker.random.alphaNumeric(4));
+  testObjects.registerObj2.email = faker.internet.email(nameForUsername2, faker.random.alphaNumeric(4));
 
   return testObjects;
 }
@@ -87,9 +72,7 @@ function postRouterTestBeforeFunc() {
 
   testObjects.addPostObj_otherDistrict.userId = user1._id;
   testObjects.addPostObj_otherDistrict.description += faker_tr.random.words(15);
-  testObjects.addPostObj_otherDistrict.dateSolidarity = getDateForCheck_month(
-    1
-  );
+  testObjects.addPostObj_otherDistrict.dateSolidarity = getDateForCheck_month(1);
 
   testObjects.updatePostObj.userId = user1._id;
   testObjects.updatePostObj.description += faker_tr.random.words(15);

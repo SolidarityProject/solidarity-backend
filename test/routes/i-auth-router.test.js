@@ -1,11 +1,7 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../../src/app");
-const {
-  user1,
-  user2,
-  authRouterTestBeforeFunc,
-} = require("../dynamic-test-data");
+const { user1, user2, authRouterTestBeforeFunc } = require("../dynamic-test-data");
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -26,15 +22,11 @@ describe("Auth Router Test Functions", () => {
       .post("/api/v1/auth/register")
       .send(testObjects.registerObj)
       .end((error, response) => {
-        response.should.have.status(200);
-        response.should.be.a("object");
-        response.body.should.be.property("_id");
-        response.body.should.be
-          .property("email")
-          .eql(testObjects.registerObj.email);
+        response.should.have.status(201);
+        user1._id = response.header.location.split("/").pop();
+        response.header.location.should.eql("/api/v1/users/" + user1._id);
 
         // update user1 (temp test object) values
-        user1._id = response.body._id;
         user1.lastName = testObjects.registerObj.lastname;
         user1.email = testObjects.registerObj.email;
         user1.username = testObjects.registerObj.username;
@@ -62,15 +54,11 @@ describe("Auth Router Test Functions", () => {
       .post("/api/v1/auth/register")
       .send(testObjects.registerObj2)
       .end((error, response) => {
-        response.should.have.status(200);
-        response.should.be.a("object");
-        response.body.should.be.property("_id");
-        response.body.should.be
-          .property("email")
-          .eql(testObjects.registerObj2.email);
+        response.should.have.status(201);
+        response.header.should.be.property("location");
 
         // update user2 (temp test object) values
-        user2._id = response.body._id;
+        user2._id = response.header.location.split("/").pop();
         user2.lastName = testObjects.registerObj2.lastname;
         user2.email = testObjects.registerObj2.email;
         user2.username = testObjects.registerObj2.username;
@@ -87,7 +75,7 @@ describe("Auth Router Test Functions", () => {
       .end((error, response) => {
         response.should.have.status(200);
         response.body.should.be.property("token");
-        response.header.should.be.property("token"); // check token header       
+        response.header.should.be.property("token"); // check token header
         done();
       });
   });
@@ -126,9 +114,7 @@ describe("Auth Router Test Functions", () => {
     testObjects.authChangePasswordObj._id = user1._id;
     chai
       .request(server)
-      .post(
-        "/api/v1/auth/" + testObjects.authChangePasswordObj._id + "/password"
-      )
+      .post("/api/v1/auth/" + testObjects.authChangePasswordObj._id + "/password")
       .set("token", changePasswordToken)
       .send(testObjects.authChangePasswordObj)
       .end((error, response) => {
@@ -139,7 +125,7 @@ describe("Auth Router Test Functions", () => {
 
   //* testing available-email
   it("POST : available email", (done) => {
-    testObjects.checkAvailableEmailObj.email += ".tr";
+    testObjects.checkAvailableEmailObj.email = user1.email + ".tr";
     chai
       .request(server)
       .post("/api/v1/auth/available-email")
@@ -152,6 +138,7 @@ describe("Auth Router Test Functions", () => {
 
   //* testing available-username error because username exists
   it("POST : available username error 400 (username exists)", (done) => {
+    testObjects.checkAvailableUsernameObj.username = user1.username;
     chai
       .request(server)
       .post("/api/v1/auth/available-username")
@@ -164,7 +151,7 @@ describe("Auth Router Test Functions", () => {
 
   //* testing available-username
   it("POST : available username", (done) => {
-    testObjects.checkAvailableUsernameObj.username += "456";
+    testObjects.checkAvailableUsernameObj.username = user1.username + "456";
     chai
       .request(server)
       .post("/api/v1/auth/available-username")
