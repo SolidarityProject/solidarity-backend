@@ -5,6 +5,10 @@ async function isExistsWithId(id) {
   return await Post.exists({ _id: id });
 }
 
+async function isExistsWithIdForStarred(id, dateSolidarity) {
+  return await Post.exists({ _id: id, activeStatus: true, dateSolidarity: { $gt: dateSolidarity } });
+}
+
 async function getById(id) {
   return Post.findById(id);
 }
@@ -40,7 +44,11 @@ async function getListByProvinceIdForFree(provinceId) {
 }
 
 async function addPost(postToAdd) {
-  await postToAdd.save();
+  await postToAdd.save(); // TODO : research - add post func
+}
+
+async function savePost(postToSave) {
+  await postToSave.save();
 }
 
 async function updatePost(id, postToUpdate) {
@@ -53,12 +61,14 @@ async function deletePost(id) {
 
 module.exports = {
   isExistsWithId,
+  isExistsWithIdForStarred,
   getById,
   getListByUserId,
   getListByDistrictId,
   getListByProvinceId,
   getListByProvinceIdForFree,
   addPost,
+  savePost,
   updatePost,
   deletePost,
 };

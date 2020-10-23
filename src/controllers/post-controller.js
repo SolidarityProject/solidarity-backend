@@ -94,3 +94,14 @@ exports.delete = async (req, res) => {
     res.status(error.status || 500).send(error.message);
   }
 };
+
+//* starred-post
+
+exports.getStarredUsersByPostId = async (req, res) => {
+  try {
+    const starredUsers = await postService.getStarredUsersByPostId(req.params.postId);
+    res.status(200).send(starredUsers);
+  } catch (error) {
+    res.status(error.status || 500).send(error.message);
+  }
+};

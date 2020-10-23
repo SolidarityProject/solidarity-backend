@@ -1,8 +1,8 @@
 const postRepository = require("../repositories/post-repository");
-const Post = require("../models/post"); 
-const User = require("../models/user"); 
-const { detailPostDTO } = require("../models/dtos/detail-post-dto");
+const userRepository = require("../repositories/user-repository");
+const Post = require("../models/post");
 const PostNotFoundException = require("../utils/exception/post-not-found-excepiton");
+const { detailPostDTO } = require("../models/dtos/detail-post-dto");
 
 async function isExistsWithId(id) {
   const isExists = await postRepository.isExistsWithId(id);
@@ -16,7 +16,7 @@ async function getById(id) {
 
 async function getDetails(id) {
   const post = await getById(id);
-  const user = await User.findById(post.userId); // TODO : implement user repository
+  const user = await userRepository.getById(post.userId);
   return detailPostDTO(post, user);
 }
 
@@ -53,6 +53,32 @@ async function deletePost(id) {
   await postRepository.deletePost(id);
 }
 
+//* starred-post
+
+async function getStarredUsersByPostId(postId) {
+  const post = await getById(postId);
+  const starredUsers = [];
+
+  for (const userId of post.starredUsers) {
+    if (await userRepository.isActiveWithId(userId)) {
+      const user = await userRepository.getById(userId);
+      starredUsers.push(user);
+    }
+  }
+
+  return starredUsers;
+}
+
+async function addStarredPost(post, userId) {
+  post.starredUsers.push(userId);
+  await postRepository.savePost(post);
+}
+
+async function deleteStarredPost(post, userId) {
+  post.starredUsers.pull(userId);
+  await postRepository.savePost(post);
+}
+
 module.exports = {
   getById,
   getDetails,
@@ -63,4 +89,7 @@ module.exports = {
   addPost,
   updatePost,
   deletePost,
+  getStarredUsersByPostId,
+  addStarredPost,
+  deleteStarredPost,
 };

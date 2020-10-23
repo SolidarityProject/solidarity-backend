@@ -157,7 +157,7 @@ describe("Post Router Test Functions", () => {
       .end((error, response) => {
         expect(response.status).to.equal(200);
         expect(response.body).to.be.an.instanceof(Array);
-        expect(response.body).to.have.lengthOf(10);
+        expect(response.body).to.have.lengthOf(12);
         expect(response.body[0]).to.have.property("userId", user1._id);
         done();
       });
@@ -247,6 +247,20 @@ describe("Post Router Test Functions", () => {
       .send(testObjects.deletePostObj)
       .end((error, response) => {
         expect(response.status).to.equal(400);
+        done();
+      });
+  });
+
+  //* testing get starred users by post id
+  it("GET : get starred users by post id", (done) => {
+    chai
+      .request(server)
+      .get("/api/v1/posts/" + user1.starredPostId[0] + "/starred")
+      .set("token", user1.token)
+      .end((error, response) => {
+        expect(response.status).to.equal(200);
+        expect(response.body).to.be.an.instanceof(Array);
+        expect(response.body[0]._id).to.equal(user1._id);
         done();
       });
   });

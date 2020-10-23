@@ -31,4 +31,9 @@ router.put("/", middleware.auth_post, postController.update);
 //* delete
 router.delete("/", middleware.auth_post, postController.delete);
 
+//* starred-post
+
+//* get starred users by post id
+router.get("/:postId/starred", middleware.auth, postController.getStarredUsersByPostId);
+
 module.exports = router;

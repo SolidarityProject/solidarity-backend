@@ -11,6 +11,7 @@ let user1 = {
   email: "",
   token: "",
   postId: [],
+  starredPostId: [],
 }; // user1 -> temp test object
 
 let user2 = {
@@ -62,6 +63,10 @@ function userRouterTestBeforeFunc() {
 
   testObjects.deleteUserObj_error._id = user2._id;
 
+  testObjects.addPostObj_starredPost.userId = user1._id;
+  testObjects.addPostObj_starredPost.description += faker_tr.random.words(15);
+  testObjects.addPostObj_starredPost.dateSolidarity = getDateForCheck_month(1);
+
   return testObjects;
 }
 
@@ -83,17 +88,10 @@ function postRouterTestBeforeFunc() {
   return testObjects;
 }
 
-function starredRouterTestBeforeFunc() {
-  testObjects.addStarredPostObj.postId = user1.postId[0];
-
-  return testObjects;
-}
-
 module.exports = {
   user1,
   user2,
   authRouterTestBeforeFunc,
   userRouterTestBeforeFunc,
   postRouterTestBeforeFunc,
-  starredRouterTestBeforeFunc,
 };

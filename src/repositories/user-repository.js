@@ -12,6 +12,10 @@ async function isExistsWithUsername(usernameToCheck) {
   return await User.exists({ username: usernameToCheck, activeStatus: true });
 }
 
+async function isActiveWithId(idToCheck) {
+  return await User.exists({ _id: idToCheck, activeStatus: true });
+}
+
 async function getById(id) {
   return await User.findById(id);
 }
@@ -24,8 +28,12 @@ async function getByUsername(username) {
   return await User.findOne({ username: username, activeStatus: true });
 }
 
-async function addUser(userToAdd) { // TODO : save funct
-  await userToAdd.save();
+async function addUser(userToAdd) {
+  await userToAdd.save(); // TODO : research add user funct
+}
+
+async function saveUser(userToSave) {
+  await userToSave.save();
 }
 
 async function updateUser(id, userToUpdate) {
@@ -40,10 +48,12 @@ module.exports = {
   isExistsWithId,
   isExistsWithEmail,
   isExistsWithUsername,
+  isActiveWithId,
   getById,
   getByEmail,
   getByUsername,
   addUser,
+  saveUser,
   updateUser,
   deleteUser,
 };

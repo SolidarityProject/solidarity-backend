@@ -4,6 +4,7 @@ const server = require("../../src/app");
 const { user1, user2, userRouterTestBeforeFunc } = require("../dynamic-test-data");
 
 const should = chai.should();
+const expect = chai.expect;
 chai.use(chaiHttp);
 
 let testObjects;
@@ -157,6 +158,131 @@ describe("User Router Test Functions", () => {
       .send(testObjects.deleteUserObj)
       .end((error, response) => {
         response.should.have.status(400);
+        done();
+      });
+  });
+
+  //* starred-post
+
+  //* testing add post for starred-post test
+  it("POST : add post for starred-post test", (done) => {
+    chai
+      .request(server)
+      .post("/api/v1/posts")
+      .set("token", user1.token)
+      .send(testObjects.addPostObj_starredPost)
+      .end((error, response) => {
+        expect(response.status, 201);
+        user1.starredPostId[0] = response.header.location.split("/").pop();
+        expect(response.header.location, "/api/v1/posts/" + user1.starredPostId[0]);
+        done();
+      });
+  });
+
+  //* testing add post for starred-post test (delete)
+  it("POST : add post for starred-post test (for delete operation)", (done) => {
+    chai
+      .request(server)
+      .post("/api/v1/posts")
+      .set("token", user1.token)
+      .send(testObjects.addPostObj_starredPost)
+      .end((error, response) => {
+        expect(response.status, 201);
+        user1.starredPostId[1] = response.header.location.split("/").pop();
+        expect(response.header.location, "/api/v1/posts/" + user1.starredPostId[1]);
+        done();
+      });
+  });
+
+  //* testing add starred post
+  it("POST : add starred post", (done) => {
+    testObjects.addStarredPostObj.postId = user1.starredPostId[0];
+    chai
+      .request(server)
+      .post("/api/v1/users/" + user1._id + "/starred/")
+      .set("token", user1.token)
+      .send(testObjects.addStarredPostObj)
+      .end((error, response) => {
+        expect(response.status).to.equal(201);
+        done();
+      });
+  });
+
+  //* testing add starred post (other post)
+  it("POST : add starred post (other post)", (done) => {
+    testObjects.addStarredPostObj.postId = user1.starredPostId[1];
+    chai
+      .request(server)
+      .post("/api/v1/users/" + user1._id + "/starred/")
+      .set("token", user1.token)
+      .send(testObjects.addStarredPostObj)
+      .end((error, response) => {
+        expect(response.status).to.equal(201);
+        done();
+      });
+  });
+
+  //* testing add starred post error because this post already starred
+  it("POST : add starred post error 400 (this post already starred)", (done) => {
+    chai
+      .request(server)
+      .post("/api/v1/users/" + user1._id + "/starred/")
+      .set("token", user1.token)
+      .send(testObjects.addStarredPostObj)
+      .end((error, response) => {
+        expect(response.status).to.equal(400);
+        done();
+      });
+  });
+
+  //* testing get my starred posts
+  it("GET : get my starred posts", (done) => {
+    chai
+      .request(server)
+      .get("/api/v1/users/me/starred-post/")
+      .set("token", user1.token)
+      .end((error, response) => {
+        expect(response.status).to.equal(200);
+        expect(response.body).to.be.an.instanceof(Array);
+        expect(response.body[0]).to.equal(user1.starredPostId[0]);
+        done();
+      });
+  });
+
+  //* testing get starred posts by user id
+  it("GET : get starred posts by user id", (done) => {
+    chai
+      .request(server)
+      .get("/api/v1/users/" + user1._id + "/starred/")
+      .set("token", user1.token)
+      .end((error, response) => {
+        expect(response.status).to.equal(200);
+        expect(response.body).to.be.an.instanceof(Array);
+        expect(response.body[0]._id).to.equal(user1.starredPostId[0]);
+        done();
+      });
+  });
+
+  //* testing delete starred post
+  it("DEL : delete starred post", (done) => {
+    chai
+      .request(server)
+      .delete("/api/v1/users/" + user1._id + "/starred/" + user1.starredPostId[1])
+      .set("token", user1.token)
+      .end((error, response) => {
+        expect(response.status).to.equal(204);
+        done();
+      });
+  });
+
+  //* testing delete starred post error because this post non starred
+  it("DEL : delete starred post error 400 (this post non starred)", (done) => {
+    chai
+      .request(server)
+      .delete("/api/v1/users/" + user1._id + "/starred/" + user1.starredPostId[1])
+      .set("token", user1.token)
+      .end((error, response) => {
+        expect(response.status).to.equal(400);
         done();
       });
   });

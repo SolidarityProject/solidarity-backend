@@ -120,6 +120,23 @@
     "_id": "id2"
   },
 
+  "addPostObj_starredPost": {
+    "address": {
+      "countryId": "5eef52787e2213196405352e",
+      "provinceId": "5eef530e7e22131964053531",
+      "districtId": "5eef567d7e2213196405353f",
+      "country": "Türkiye",
+      "province": "İzmir",
+      "district": "Ödemiş"
+    },
+    "addressDetail": "Address Detail",
+    "dateSolidarity": "date",
+    "title": "Test Post",
+    "description": "Desc Test Post - Starred Test ",
+    "pictureUrl": "https://raw.githubusercontent.com/SolidarityProject/solidarity_icons/master/icon_extra.png",
+    "userId": "id1"
+  },
+
   "addPostObj": {
     "address": {
       "countryId": "5eef52787e2213196405352e",

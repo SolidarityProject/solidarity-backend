@@ -1,10 +1,7 @@
 const Joi = require("@hapi/joi");
 const addressValidationObj = require("./address-validation");
 const { getDateForCheck_year } = require("../../helpers/date-helper");
-const {
-  usernameRegexPattern,
-  emailRegexPattern,
-} = require("../../helpers/regex-pattern-helper");
+const { usernameRegexPattern, emailRegexPattern } = require("../../helpers/regex-pattern-helper");
 
 function updateUserValidation(data) {
   const schema = Joi.object({
@@ -14,18 +11,9 @@ function updateUserValidation(data) {
 
     lastname: Joi.string().min(2).max(50).required(),
 
-    username: Joi.string()
-      .min(2)
-      .max(20)
-      .regex(usernameRegexPattern)
-      .required(),
+    username: Joi.string().min(2).max(20).regex(usernameRegexPattern).required(),
 
-    email: Joi.string()
-      .max(50)
-      .lowercase()
-      .email()
-      .regex(emailRegexPattern)
-      .required(),
+    email: Joi.string().max(50).lowercase().email().regex(emailRegexPattern).required(),
 
     pictureUrl: Joi.string(),
 
@@ -61,8 +49,17 @@ function changePasswordValidation(data) {
   return schema.validate(data);
 }
 
+function addStarredPostValidation(data) {
+  const schema = Joi.object({
+    postId: Joi.string().required(),
+  });
+
+  return schema.validate(data);
+}
+
 module.exports = {
   updateUserValidation,
   deleteUserValidation,
   changePasswordValidation,
+  addStarredPostValidation,
 };

@@ -22,4 +22,18 @@ router.put("/:userId/password", middleware.auth_user, userController.changePassw
 //* delete
 router.delete("/", middleware.auth_user, userController.deleteUser);
 
+//* starred-post
+
+//* get my starred posts (only post id)
+router.get("/me/starred-post", middleware.auth, userController.getMyStarredPosts);
+
+//* get starred posts by user id
+router.get("/:userId/starred", middleware.auth, userController.getStarredPostsByUserId);
+
+//* add starred post
+router.post("/:userId/starred", middleware.auth, userController.addStarredPost);
+
+//* delete starred post
+router.delete("/:userId/starred/:postId", middleware.auth, userController.deleteStarredPost);
+
 module.exports = router;

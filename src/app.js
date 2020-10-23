@@ -7,7 +7,6 @@ require("dotenv/config");
 const authRouter = require("./routes/auth-router");
 const userRouter = require("./routes/user-router");
 const postRouter = require("./routes/post-router");
-const starredPostRouter = require("./routes/starred-post-router");
 
 const app = express();
 
@@ -18,7 +17,6 @@ app.use(bodyParser.json());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
-app.use("/api/v1/starred-posts", starredPostRouter);
 
 app.get("/", (req, res) => {
   res.status(200).send("----  Solidarity Backend  ----");

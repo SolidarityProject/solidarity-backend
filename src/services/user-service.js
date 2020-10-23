@@ -1,8 +1,12 @@
 const userRepository = require("../repositories/user-repository");
+const postRepository = require("../repositories/post-repository");
 const UserNotFoundException = require("../utils/exception/user-not-found-excepiton");
 const UserAlreadyExistsException = require("../utils/exception/user-already-exists-excepiton");
 const WrongPasswordException = require("../utils/exception/wrong-password-exception");
+const PostAlreadyStarredException = require("../utils/exception/post-already-starred-excepiton");
+const PostNonStarredException = require("../utils/exception/post-non-starred-excepiton");
 const { passwordComparing, passwordHashing } = require("../helpers/password-helper");
+const { getDateForCheck_minute } = require("../helpers/date-helper");
 
 async function isExistsWithId(id) {
   const isExists = await userRepository.isExistsWithId(id);
@@ -64,10 +68,56 @@ async function deleteUser(id) {
   await userRepository.deleteUser(id);
 }
 
+//* starred-posts
+
+async function checkStarredStatusForAdd(starredPosts, postId) {
+  if (starredPosts.includes(postId)) throw new PostAlreadyStarredException(postId);
+}
+
+async function checkStarredStatusForDelete(starredPosts, postId) {
+  if (!starredPosts.includes(postId)) throw new PostNonStarredException(postId);
+}
+
+async function getMyStarredPosts(id) {
+  const user = await getById(id);
+  return user.starredPosts;
+}
+
+async function getStarredPostsByUserId(userId) {
+  const user = await getById(userId);
+  const date = getDateForCheck_minute(15);
+  const starredPosts = [];
+
+  for (const postId of user.starredPosts) {
+    if (await postRepository.isExistsWithIdForStarred(postId, date)) {
+      const post = await postRepository.getById(postId);
+      starredPosts.push(post);
+    }
+  }
+
+  return starredPosts.sort((a, b) => a.dateSolidarity - b.dateSolidarity);
+}
+
+async function addStarredPost(user, postId) {
+  user.starredPosts.push(postId);
+  await userRepository.saveUser(user);
+}
+
+async function deleteStarredPost(user, postId) {
+  user.starredPosts.pull(postId);
+  await userRepository.saveUser(user);
+}
+
 module.exports = {
   getById,
   getByUsername,
   changePassword,
   updateUser,
   deleteUser,
+  checkStarredStatusForAdd,
+  checkStarredStatusForDelete,
+  getMyStarredPosts,
+  getStarredPostsByUserId,
+  addStarredPost,
+  deleteStarredPost,
 };
