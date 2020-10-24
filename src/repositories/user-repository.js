@@ -28,8 +28,10 @@ async function getByUsername(username) {
   return await User.findOne({ username: username, activeStatus: true });
 }
 
-async function addUser(userToAdd) {
-  await userToAdd.save(); // TODO : research add user funct
+async function createUser(userToCreate) {
+  const newUser = new User(userToCreate);
+  await saveUser(newUser);
+  return newUser._id;
 }
 
 async function saveUser(userToSave) {
@@ -52,7 +54,7 @@ module.exports = {
   getById,
   getByEmail,
   getByUsername,
-  addUser,
+  createUser,
   saveUser,
   updateUser,
   deleteUser,

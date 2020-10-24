@@ -43,8 +43,10 @@ async function getListByProvinceIdForFree(provinceId) {
     .limit(3);
 }
 
-async function addPost(postToAdd) {
-  await postToAdd.save(); // TODO : research - add post func
+async function createPost(postToCrate) {
+  const newPost = new Post(postToCrate);
+  await savePost(newPost);
+  return newPost._id;
 }
 
 async function savePost(postToSave) {
@@ -67,7 +69,7 @@ module.exports = {
   getListByDistrictId,
   getListByProvinceId,
   getListByProvinceIdForFree,
-  addPost,
+  createPost,
   savePost,
   updatePost,
   deletePost,

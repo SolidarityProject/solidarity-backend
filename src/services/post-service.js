@@ -1,6 +1,5 @@
 const postRepository = require("../repositories/post-repository");
 const userRepository = require("../repositories/user-repository");
-const Post = require("../models/post");
 const PostNotFoundException = require("../utils/exception/post-not-found-excepiton");
 const { detailPostDTO } = require("../models/dtos/detail-post-dto");
 
@@ -37,10 +36,8 @@ async function getListByProvinceIdForFree(provinceId) {
 }
 
 async function addPost(postToAdd, userId) {
-  const newPost = new Post(postToAdd);
-  newPost.userId = userId;
-  await postRepository.addPost(newPost);
-  return newPost._id;
+  postToAdd.userId = userId;
+  return await postRepository.createPost(postToAdd);
 }
 
 async function updatePost(id, postToUpdate) {

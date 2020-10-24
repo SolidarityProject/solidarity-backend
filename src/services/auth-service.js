@@ -1,5 +1,4 @@
 const userRepository = require("../repositories/user-repository");
-const User = require("../models/user");
 const LoginException = require("../utils/exception/login-excepiton");
 const UserNotFoundException = require("../utils/exception/user-not-found-excepiton");
 const UserAlreadyExistsException = require("../utils/exception/user-already-exists-excepiton");
@@ -58,12 +57,9 @@ async function register(userToRegister) {
   await isAlreadyExistsWithUsername(userToRegister.username);
 
   const hashedPassword = await passwordHashing(userToRegister.password);
+  userToRegister.password = hashedPassword;
 
-  const newUser = new User(userToRegister);
-  newUser.password = hashedPassword;
-
-  await userRepository.addUser(newUser);
-  return newUser._id;
+  return await userRepository.createUser(userToRegister);
 }
 
 async function login(userToLogin) {
