@@ -2,6 +2,7 @@ const postRepository = require("../repositories/post-repository");
 const userRepository = require("../repositories/user-repository");
 const PostNotFoundException = require("../utils/exception/post-not-found-excepiton");
 const { detailPostDTO } = require("../models/dtos/detail-post-dto");
+const { getDateForCheck_minute } = require("../helpers/date-helper");
 
 async function isExistsWithId(id) {
   const isExists = await postRepository.isExistsWithId(id);
@@ -24,15 +25,15 @@ async function getListByUserId(userId) {
 }
 
 async function getListByDistrictId(districtId) {
-  return await postRepository.getListByDistrictId(districtId);
+  return await postRepository.getListByDistrictId(districtId, getDateForCheck_minute(15));
 }
 
 async function getListByProvinceId(provinceId) {
-  return await postRepository.getListByProvinceId(provinceId);
+  return await postRepository.getListByProvinceId(provinceId, getDateForCheck_minute(15));
 }
 
 async function getListByProvinceIdForFree(provinceId) {
-  return await postRepository.getListByProvinceIdForFree(provinceId);
+  return await postRepository.getListByProvinceIdForFree(provinceId, getDateForCheck_minute(15));
 }
 
 async function addPost(postToAdd, userId) {

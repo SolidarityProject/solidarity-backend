@@ -1,5 +1,4 @@
 const Post = require("../models/post");
-const { getDateForCheck_minute } = require("../helpers/date-helper");
 
 async function isExistsWithId(id) {
   return await Post.exists({ _id: id });
@@ -17,27 +16,27 @@ async function getListByUserId(userId) {
   return await Post.find({ userId: userId, activeStatus: true });
 }
 
-async function getListByDistrictId(districtId) {
+async function getListByDistrictId(districtId, dateSolidarity) {
   return await Post.find({
     "address.districtId": districtId,
     activeStatus: true,
-    dateSolidarity: { $gt: getDateForCheck_minute(15) }, // TODO : date func move to service
+    dateSolidarity: { $gt: dateSolidarity },
   }).sort("dateSolidarity");
 }
 
-async function getListByProvinceId(provinceId) {
+async function getListByProvinceId(provinceId, dateSolidarity) {
   return await Post.find({
     "address.provinceId": provinceId,
     activeStatus: true,
-    dateSolidarity: { $gt: getDateForCheck_minute(15) },
+    dateSolidarity: { $gt: dateSolidarity },
   }).sort("dateSolidarity");
 }
 
-async function getListByProvinceIdForFree(provinceId) {
+async function getListByProvinceIdForFree(provinceId, dateSolidarity) {
   return await Post.find({
     "address.provinceId": provinceId,
     activeStatus: true,
-    dateSolidarity: { $gt: getDateForCheck_minute(15) },
+    dateSolidarity: { $gt: dateSolidarity },
   })
     .sort("dateSolidarity")
     .limit(3);
